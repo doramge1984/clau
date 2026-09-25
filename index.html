@@ -86,6 +86,21 @@ header.top .sub{margin:0;color:var(--muted);font-size:17px}
 .tab:hover:not(.active){border-color:var(--clay);color:var(--clay)}
 .tab.active{background:var(--clay);color:#fff;border-color:var(--clay)}
 .tab .t-time{font-size:13px;font-weight:500;opacity:.8}
+.qbox{margin:14px 0 8px;padding:16px 20px;border:1.5px dashed #C9A544;border-radius:14px;background:#FFFCF2}
+.qbox .qb-l{display:inline-block;font-size:13px;font-weight:800;color:#fff;background:#A8841F;border-radius:999px;padding:3px 11px;margin-bottom:8px}
+.qbox p{margin:0;font-size:19px;color:#3d3218}
+.finbox{margin:4.8em 0 28px;padding:24px 26px 18px;border:2px dashed #C9A544;border-radius:16px;background:#FFFCF2}
+.finbox .s-title{margin-top:0}
+.whyc{margin:22px 0 8px;padding:18px 22px;border:1.5px solid #C9A544;border-radius:14px;background:linear-gradient(160deg,#FFF8E1,#FCEFC2)}
+.whyc .wc-t{font-weight:800;font-size:19px;color:#4A3708;margin-bottom:8px}
+.whyc p{margin:0 0 8px;color:#3d3218;line-height:1.7}
+.whyc .wc-s{margin:10px 0 0;padding-top:10px;border-top:1px dashed #D9BE6E;color:#5b4a1e}
+.prelink{margin:18px 0 26px;padding:18px 20px;border:1.5px solid #C9A544;border-radius:14px;background:linear-gradient(160deg,#FFF8E1,#FCEFC2)}
+.prelink .pl-t{font-weight:800;font-size:18px;color:#4A3708;margin-bottom:4px}
+.prelink p{margin:0 0 10px;color:#5b4a1e}
+.prelink .pl-a{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:10px;background:#fff;border:1px solid #E2CB83;color:#4A3708;font-weight:700;text-decoration:none;word-break:break-all;font-size:15px}
+.prelink .pl-a span{flex:none;font-size:13.5px;color:#fff;background:#A8841F;border-radius:999px;padding:4px 11px}
+.prelink .pl-a:hover{border-color:#A8841F}
 .tab.key{
   border:1px solid #C9A544; color:#4A3708; font-weight:800;
   background:linear-gradient(160deg,#FCEFC2 0%,#F3DC96 42%,#E7C86B 72%,#F7E7B4 100%);
@@ -249,6 +264,11 @@ body.tmode .tnote{display:block}
   font-size:14.5px;font-weight:700;color:var(--muted);cursor:pointer;
   box-shadow:0 3px 14px rgba(0,0,0,.1)}
 body.tmode .tbtn{background:var(--clay);color:#fff;border-color:var(--clay)}
+body:not(.tch) .tbtn{display:none}
+body:not(.tch) .tnote{display:none!important}
+.tnote table{width:100%;border-collapse:collapse;margin:10px 0 6px;background:#fff;font-size:15px}
+.tnote th,.tnote td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tnote th{background:var(--clay-soft);font-weight:800}
 
 /* ── 체크 ── */
 .check{display:inline-flex;align-items:center;gap:9px;margin-top:8px;font-size:15.5px;
@@ -569,6 +589,14 @@ details.ex .exb{padding:18px 20px 20px}
 details.ex.figfold>summary{font-size:15.5px;font-weight:600;justify-content:flex-end;padding:9px 18px}
 details.ex.figfold .exb{padding:14px 14px 16px}
 details.ex .exb>p{margin:0 0 12px}
+details.tlock>summary::before{content:"🔒 강사";flex:none;order:2;margin-left:auto;font-size:12.5px;font-weight:800;color:#fff;background:#A8841F;border-radius:999px;padding:3px 10px}
+details.tlock>summary::after{order:3}
+body:not(.tch) details.tlock>summary{cursor:default;opacity:.85}
+body:not(.tch) details.tlock>summary::after{content:"강사가 펼칩니다";order:3;font-size:13px;font-weight:600;color:var(--ink-3)}
+body:not(.tch) details.tlock>.exb{display:none}
+details.tlock table{width:100%;border-collapse:collapse;background:#fff;font-size:15px}
+details.tlock th,details.tlock td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+details.tlock th{background:var(--clay-soft);font-weight:800}
 .tip.gap2{margin-bottom:78px}
 #s-make{margin-bottom:78px}
 @media (max-width:560px){.tip.gap2{margin-bottom:52px}#s-make{margin-bottom:52px}}
@@ -759,12 +787,6 @@ body:not(.unl) .tgrp{opacity:.5}
     <p class="kicker">여주초등학교 교원연수</p>
     <h1 class="disp">한 번 가르쳐주면 알아서 하는<br><span class="hl">클로드 스킬과 코워크</span></h1>
     <p class="sub">오늘 만드신 스킬은 연수가 끝나도 남습니다.</p>
-    <ul class="meta">
-      <li>일시 <b>미정</b></li>
-      <li>장소 <b>컴퓨터실</b></li>
-      
-      <li>강사 <b>이애진</b></li>
-    </ul>
   </div>
 </header>
 
@@ -773,12 +795,11 @@ body:not(.unl) .tgrp{opacity:.5}
   <nav class="tabs" role="tablist">
     <button class="tab active" data-tab="home" onclick="showTab('home')">🏠 홈</button>
     <button class="tab" data-tab="setup" onclick="go('setup')">🛠️ 시작 전 세팅</button>
-    <button class="tab" data-tab="ask" onclick="go('ask')">💡 매주 똑같이 하고 있나</button>
+    <button class="tab" data-tab="ask" onclick="go('ask')">💡 왜 클로드일까</button>
     <button class="tab key" data-tab="skill" onclick="go('skill')">🧰 스킬</button>
     <button class="tab key" data-tab="cowork" onclick="go('cowork')">🤝 코워크</button>
-    <button class="tab" data-tab="project" onclick="go('project')">🗂️ 프로젝트</button>
+    <button class="tab key" data-tab="project" onclick="go('project')">🗂️ 프로젝트</button>
     <button class="tab" data-tab="artifact" onclick="go('artifact')">🎨 아티팩트</button>
-    <button class="tab" data-tab="bundle" onclick="go('bundle')">🔗 묶기</button>
     <button class="tab" data-tab="bonus" onclick="go('bonus')">🎁 선물</button>
     <button class="tab" data-tab="more" onclick="go('more')">📖 더 알아보기</button>
   </nav>
@@ -792,36 +813,29 @@ body:not(.unl) .tgrp{opacity:.5}
 
     <div class="cards">
       <button class="card" type="button" onclick="go('setup')"><span class="lk">🔒 잠김</span><span class="ic">🛠️</span><b>시작 전 세팅</b><i>설치 확인 · 폴더 연결 · 모델 확인</i></button>
-      <button class="card" type="button" onclick="go('ask')"><span class="lk">🔒 잠김</span><span class="ic">💡</span><b>이거, 매주 똑같이 하고 있나</b><i>오늘 갈라지는 두 갈래 길</i></button>
+      <button class="card" type="button" onclick="go('ask')"><span class="lk">🔒 잠김</span><span class="ic">💡</span><b>왜 클로드일까</b><i>일을 맡기는 AI · 오늘의 질문 하나</i></button>
       <button class="card key" type="button" onclick="go('skill')"><span class="lk">🔒 잠김</span><span class="ic">🧰</span><b>스킬 — 한 번 가르쳐두기</b><i>오늘 전원이 하나씩 만듭니다</i></button>
       <button class="card key" type="button" onclick="go('cowork')"><span class="lk">🔒 잠김</span><span class="ic">🤝</span><b>코워크 — 내 자리에 앉은 동료</b><i>폴더를 통째로 맡기는 일</i></button>
-      <button class="card" type="button" onclick="go('project')"><span class="lk">🔒 잠김</span><span class="ic">🗂️</span><b>프로젝트</b><i>업무 하나에 방 하나 — 5분 보여드립니다</i></button>
+      <button class="card key" type="button" onclick="go('project')"><span class="lk">🔒 잠김</span><span class="ic">🗂️</span><b>프로젝트 — 업무 하나에 방 하나</b><i>과정안 한 장을 같이 만듭니다</i></button>
       <button class="card" type="button" onclick="go('artifact')"><span class="lk">🔒 잠김</span><span class="ic">🎨</span><b>아티팩트</b><i>말로 만드는 웹페이지 — 이 교안도 그것입니다</i></button>
-      <button class="card" type="button" onclick="go('bundle')"><span class="lk">🔒 잠김</span><span class="ic">🔗</span><b>묶기 — 다섯 칸과 한 바퀴</b><i>여러 단계를 한 줄로</i></button>
       <button class="card" type="button" onclick="go('bonus')"><span class="lk">🔒 잠김</span><span class="ic">🎁</span><b>선물</b><i>스크롤 캡처 · 크롬 연동</i></button>
     </div>
 
     <p class="gmsg" id="gmsg">암호를 넣으시면 모든 탭이 열립니다.</p>
 
-    <div class="note"><b>직접 하시는 건 넷입니다</b> — <b>스킬 하나 만들기</b>, <b>한글 스킬 올려 양식 채우기</b>, <b>폴더 하나 맡겨 보기</b>, <b>동의서 열 장에서 안 낸 학생 찾기.</b> 나머지는 제가 화면으로 보여드립니다. <b>따라 하지 않으셔도 됩니다.</b></div>
 
-    <div class="tip">
-      <span class="lab">오늘의 질문 하나</span>
-      <p style="font-size:21px;line-height:1.5"><b>“이거, 내가 매주 똑같이 하고 있나?”</b></p>
-      <p>오늘 가져가실 건 도구가 아니라 이 질문 하나입니다. <b>그렇다면 → 스킬</b>, <b>파일이 쌓여 있다면 → 코워크</b>입니다.</p>
-    </div>
-
-    <div class="tnote"><span class="tag">강사</span>
-      <b>1차 교안과 다른 점</b><br><br>
-      이 판은 <b>스킬을 앞에 두고 전원이 하나씩 만들게</b> 합니다. 코워크는 주로 보여드립니다. 이유는 둘입니다 — <b>스킬은 무료 계정에서도 되고</b>, 연수가 끝나 연수용 계정이 없어져도 <b>스킬 파일은 남기</b> 때문입니다.<br><br>
-      <b>시간이 밀리면</b> 묶기 탭을 통째로 건너뛰고 “교안에 있습니다”로 넘기세요. <b>마무리 10분은 지키셔야</b> 합니다.
-    </div>
   </section>
 <section class="panel" id="p-setup">
     <h2 class="s-title disp">시작 전 세팅</h2>
     <p class="s-sub">미리 설치해 두신 것을 다 같이 한 번 확인하고 시작합니다.</p>
     <div class="s-meta">
       <span>방식 <b>각자, 기다려 드립니다</b></span><span>결과 <b>폴더 연결 완료</b></span>
+    </div>
+
+    <div class="prelink">
+      <div class="pl-t">📨 미리 보내드린 설치 안내</div>
+      <p>연수 전에 보내드린 그 링크입니다. 설치가 덜 되신 분은 여기서 다시 여시면 됩니다.</p>
+      <a class="pl-a" href="https://claude.ai/artifact/6GCPyonhjY2u6uVM2HyiL9" target="_blank" rel="noopener">https://claude.ai/artifact/6GCPyonhjY2u6uVM2HyiL9<span>새 창에서 열기 ↗</span></a>
     </div>
 
     <div class="tnote"><span class="tag">강사</span>
@@ -937,14 +951,13 @@ body:not(.unl) .tgrp{opacity:.5}
         <span class="block-n">5</span><span class="block-t">실습 폴더 만들고 연결하기</span><span class="chev">⌄</span>
       </div>
       <div class="block-body">
-        <div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zAll','여주초_연수실습자료.zip')"><b>⬇ 오늘 쓸 자료 전부 (한 번만 받으면 됩니다)</b><i>147개 파일 · 3.5MB · 오늘 쓸 것이 다 들어 있습니다</i></button></div>
         <ol class="steps">
-          <li>위 단추를 눌러 받은 압축파일을 <b>바탕화면에 풉니다.</b> ‘연수실습’ 폴더가 생깁니다.</li>
+          <li>바탕화면 빈 곳에서 <b>오른쪽 클릭 → 새로 만들기 → 폴더.</b> 이름은 <b>연수실습</b>.</li>
           <li>입력창 아래 <b>‘프로젝트 또는 폴더’</b>를 클릭합니다.</li>
           <li>메뉴 맨 아래 <b>‘폴더 추가’</b>를 선택합니다.</li>
           <li>바탕화면의 <b>연수실습</b> 폴더를 고릅니다.</li>
         </ol>
-        <div class="note"><b>오늘 폴더 연결은 이 한 번이 전부입니다.</b> 모듈이 바뀌어도 다시 연결하지 않으셔도 됩니다. 폴더 안에 여덟 개가 들어 있고, 그때그때 이름만 불러 쓰면 됩니다.</div>
+        <div class="note"><b>여기서는 폴더 연결이 되는지만 확인합니다.</b> 실습 자료는 <b>탭마다 그 자리에서</b> 받고, 실습할 때마다 <b>그 폴더를 새로 연결</b>합니다. 방법은 지금과 똑같습니다.</div>
         <figure class="shot narrow"><img src="img/c5da2cbe5083.png" alt="목록 맨 아래 ‘폴더 추가’를 누릅니다." loading="lazy"><figcaption>목록 맨 아래 ‘폴더 추가’를 누릅니다.</figcaption></figure>
         <div class="note"><b>이렇게 되면 성공</b> 입력창 아래에 폴더 경로가 보입니다.</div>
         <p style="margin-top:18px">잘 됐는지 한 줄로 확인해 봅니다.</p>
@@ -1027,7 +1040,7 @@ body:not(.unl) .tgrp{opacity:.5}
           <div class="file"><b>주간 사용량</b><span>한 주 동안 쓴 양입니다<br>세션과 <b>따로</b> 계산됩니다</span></div>
         </div>
         <div class="note"><b>“이 대화에서 몇 개 썼다”까지는 안 나옵니다.</b> 게이지와 남은 시간 정도입니다. 한도에 가까워지면 <b>대화창 위에 먼저 경고가 뜹니다.</b></div>
-        <div class="note"><b>무엇이 많이 쓰이냐면</b> — <b>사진 여러 장 읽기</b>, <b>파일 만들기</b>, <b>폴더 맡기기</b>입니다. 글로 주고받는 건 얼마 안 씁니다. 오늘 사진 읽는 실습을 <b>제가 대신 보여드리는 이유</b>가 이것입니다.</div>
+        <div class="note"><b>무엇이 많이 쓰이냐면</b> — <b>사진 여러 장 읽기</b>, <b>파일 만들기</b>, <b>폴더 맡기기</b>입니다. 글로 주고받는 건 얼마 안 씁니다. 그래서 오늘 사진 읽는 실습은 <b>동의서 한 번</b>만 직접 하시고, 나머지 사진 작업은 <b>제가 보여드립니다.</b></div>
         <div class="note"><b>아껴 쓰는 법 하나</b> — <b>한 번에 자세히</b> 물어보세요. 짧게 여러 번 주고받는 것보다 덜 씁니다.</div>
         <label class="check"><input type="checkbox"> 사용량 화면을 찾았어요</label>
       </div>
@@ -1153,20 +1166,43 @@ body:not(.unl) .tgrp{opacity:.5}
       <div class="file"><b>설치 문의</b><span>FlowDX 이애진 · <a href="mailto:ai@flowdx.kr">ai@flowdx.kr</a></span></div>
     </div>
 
-    <div class="tnote"><span class="tag">강사</span>
-      3번에서 대부분 걸립니다. <b>‘개인 Free’로 되어 있으면 Cowork가 아예 안 뜹니다.</b> 시작하자마자 “왼쪽 아래 계정 이름 눌러서 여주초등학교에 체크 있는지 봐 주세요”를 전체에게 한 번 시키고 넘어가세요. 개별 대응보다 빠릅니다.<br><br>
-      2번(로그인)은 미리 해 오신 분은 건너뜁니다. 당일 로그인이 풀린 분만 펼쳐서 보시게 하세요. 메일함을 거치는 방식이라 처음 보면 당황하십니다.<br><br>
-      5번의 ‘안녕하세요.txt’는 그냥 확인 절차가 아닙니다. <b>탐색기를 띄워 실제 파일을 보여주세요.</b> “화면 안이 아니라 내 컴퓨터에 진짜 파일이 생긴다”가 오늘 두 시간의 요점이고, 이 장면이 그걸 3초에 전달합니다.<br><br>
-      안 되시는 분은 붙잡지 마세요. 옆자리와 함께 보시게 하고 진행하세요. 끝에 파일로 다 드린다고 먼저 말씀드리면 조급함이 줄어듭니다.<br><br>
-      설치 자체가 안 된 분이 계시면 당일 자리 배치를 미리 조정해 두세요. 되는 분 옆에 앉히는 게 가장 낫습니다.<br><br>7번(Win+V)은 <b>반응이 확실합니다.</b> “복사한 게 다 남아 있어요?”가 나옵니다. 모르고 계신 분이 정말 많고, 오늘 두 시간 동안 프롬프트를 복사해 쓰실 거라 여기서 꼭 켜게 하세요.
-    </div>
   </section>
   <section class="panel" id="p-ask">
-    <h2 class="s-title disp">이거, 매주 똑같이 하고 있나</h2>
-    <p class="s-sub">오늘은 여기서 갈라집니다. 두 갈래뿐입니다.</p>
+    <h2 class="s-title disp">왜 클로드일까</h2>
+    <p class="s-sub">일을 맡기는 AI, 그리고 오늘의 질문 하나 — “이거, 매주 똑같이 하고 있나?”</p>
     <div class="s-meta">
       <span>방식 <b>강사 이야기</b></span><span>준비 <b>없음</b></span><span class="bd bd-show">보기만</span>
     </div>
+
+    <div class="whyc">
+      <div class="wc-t">왜 클로드로 하나요?</div>
+      <p>AI는 지금 <b>묻고 답하는 AI</b>에서 <b>일을 맡기는 AI(에이전트 AI)</b>로 넘어가고 있습니다. 챗GPT·제미나이·클로드 모두 그쪽으로 가고 있습니다.</p>
+      <p>그중 <b>일을 맡기는 쪽은 지금 클로드가 가장 앞서 있다</b>고 봅니다. 여러 AI를 두루 써 보고 오늘 클로드를 고른 이유입니다.</p>
+      <p>가르친 방법도 달랐습니다. 사람이 답마다 점수를 매겨 길들이는 대신, <b>지켜야 할 원칙을 글로 적어 두고</b>(‘헌법’이라고 부릅니다) <b>그 원칙에 비추어 스스로 답을 고치도록</b> 훈련했습니다. 오늘 여러 번 보실 <b>“지어내지 않고 되묻는”</b> 모습이 이 방식과 닿아 있습니다.</p>
+      <p class="wc-s">그래도 <b>오늘 배우시는 시키는 방법은 어느 AI에서나 똑같이 통합니다.</b> 챗GPT를 쓰시는 분도 그대로 가져가시면 됩니다.</p>
+    </div>
+
+    <div class="qbox">
+      <span class="qb-l">질문 하나</span>
+      <p>클로드 모델 이름 — <b>Opus · Sonnet · Haiku · Fable</b>, 무슨 뜻일까요?</p>
+    </div>
+    <details class="ex keep tlock">
+      <summary>!!</summary>
+      <div class="exb">
+      <table>
+          <thead><tr><th>이름</th><th>어느 나라 말</th><th>원래 뜻</th><th>무엇인가</th></tr></thead>
+          <tbody>
+            <tr><td><b>Haiku</b> 하이쿠</td><td>일본어 俳句</td><td>익살스러운 구절</td><td>5·7·5, 17음절. 가장 짧은 시</td></tr>
+            <tr><td><b>Sonnet</b> 소네트</td><td>이탈리아어 <i>sonetto</i></td><td>작은 노래</td><td>14줄로 짓는 정형시. 셰익스피어 소네트</td></tr>
+            <tr><td><b>Opus</b> 오퍼스</td><td>라틴어</td><td>일, 작품</td><td>음악의 작품 번호(쇼팽 Op. 9). 대작·역작</td></tr>
+            <tr><td><b>Fable</b> 페이블</td><td>라틴어 <i>fabula</i> → 프랑스어 → 영어</td><td>이야기</td><td>이솝 우화처럼 교훈을 담은 이야기</td></tr>
+            <tr><td><b>Mythos</b> 미토스</td><td>그리스어 μῦθος</td><td>이야기, 신화</td><td>신화. 가장 큰 이야기</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px"><b>한마디로</b> — “나라는 제각각인데 <b>전부 글이나 작품의 형식</b>입니다. 하이쿠(짧은 시) → 소네트(14줄 시) → 오퍼스(대작) 순으로 길어지고, 모델 크기도 그 순서입니다.”</p>
+      </div>
+    </details>
+    <div style="height:4.8em" aria-hidden="true"></div>
 
     <figure class="sld slide"><img src="img/4f1ef82f5643.jpg" alt="오늘 가져가실 건 도구가 아니라 질문 하나입니다 — “이거, 내가 매주 똑같이 하고 있나?”" loading="lazy"><figcaption>오늘 가져가실 건 도구가 아니라 질문 하나입니다 — “이거, 내가 매주 똑같이 하고 있나?”</figcaption></figure>
 
@@ -1176,6 +1212,7 @@ body:not(.unl) .tgrp{opacity:.5}
       <p><b>“이거, 내가 매주 똑같이 하고 있나?”</b></p>
       <p><b>그렇다면 → 스킬로 만듭니다.</b> 한 번 가르쳐두면 다음부터는 한마디로 끝납니다. <b>무료 계정에서도 바로 됩니다.</b></p>
       <p><b>파일이 쌓여 있다면 → 코워크로 넘깁니다.</b> 폴더를 통째로 맡기면 읽고·분류하고·저장까지 합니다. <b>유료에서 열립니다.</b></p>
+      <p><b>한 해 내내 같은 자료를 펴 놓고 한다면 → 프로젝트 방에 넣어 둡니다.</b> 성취기준·양식을 한 번 넣어 두면 그 방에서는 매번 올리지 않아도 됩니다. <b>무료에서도 다섯 개까지 됩니다.</b></p>
     </div>
     <div class="sp3"></div>
 
@@ -1183,13 +1220,14 @@ body:not(.unl) .tgrp{opacity:.5}
     <figure class="sld slide"><img src="img/361da87c6233.jpg" alt="두 번 이상 하신 일이 오늘 스킬이 될 후보입니다" loading="lazy"><figcaption>두 번 이상 하신 일이 오늘 스킬이 될 후보입니다</figcaption></figure>
     <div class="note"><b>두 번 이상 하신 일</b>이 오늘 스킬이 될 후보입니다. 지금 머릿속에 하나만 떠올려 두세요. 이따 그걸로 만드셔도 됩니다.</div>
 
-    <h3 class="blk disp">오늘 다룰 것은 딱 두 개</h3>
+    <h3 class="blk disp">오늘 다룰 것은 셋</h3>
     <div class="cmp">
       <table>
         <thead><tr><th>구분</th><th>무엇인가</th><th>플랜</th></tr></thead>
         <tbody>
           <tr><td><b>스킬</b></td><td>클로드에게 건네는<br><b>나만의 업무 매뉴얼</b></td><td><b class="hot">무료로 가능</b></td></tr>
           <tr class="dim"><td>코워크</td><td>지정한 폴더에서<br>직접 일하는 에이전트</td><td>Pro 이상</td></tr>
+          <tr class="dim"><td>프로젝트</td><td>업무 하나에 방 하나 —<br>자료와 지침을 넣어 두는 곳</td><td>무료 5개 · Pro 이상 제한 없음</td></tr>
         </tbody>
       </table>
     </div>
@@ -1645,9 +1683,9 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
     <figure class="sld slide"><img src="img/a427f34bb9a2.jpg" alt="이번 주에 하실 것 두 개 — 추상적으로 끝내지 않습니다" loading="lazy"><figcaption>이번 주에 하실 것 두 개 — 추상적으로 끝내지 않습니다</figcaption></figure>
     <div class="note"><b>추상적으로 끝내지 않습니다.</b> 연습 말고 <b>진짜 업무로</b> 이번 주 안에 한 번. 그리고 그 결과를 <b>부서나 학년 단톡방에 한 번.</b> 여기까지 가야 오늘 연수가 학교에 남습니다.</div>
 
-    <h3 class="blk disp">다음 주에 딱 하나만</h3>
+    <h3 class="blk disp">진짜 업무로 한 번 — 끝에 이 한 줄</h3>
     <div class="tip">
-      <span class="lab">이것 하나만 해보세요</span>
+      <span class="lab">이렇게 해 보세요</span>
       <p><b>이번 주에 두 번 이상 하신 일</b>을 하나 골라, 클로드와 한 번 제대로 해 보고 끝에 이 한 줄을 붙이세요.</p>
     </div>
     <div class="prompt">
@@ -1665,16 +1703,6 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
       <p>채팅은 훌륭한 동료지만 <b>손이 없습니다.</b> 그 손을 붙인 것이 <b>코워크</b>입니다 — 다음 탭에서 봅니다.</p>
     </div>
 
-    <div class="tnote"><span class="tag">강사</span>
-      <b>오늘의 중심입니다. 35분을 여기 쓰세요.</b><br><br>
-      <b>시작 전에 준비하실 것 — 맨 앞 시연용입니다.</b> 강사 계정에 <b>공문 스킬이 미리 올라가 있어야</b> 합니다(가져가실 것 탭의 스킬 3종 중 하나). 그리고 <b>공문 PDF 한 장</b>을 바탕화면에 꺼내 두세요. 시연은 <b>30초를 넘기지 마세요.</b> 여기서 설명을 시작하면 만드는 시간이 없어집니다. “이걸 지금부터 만듭니다” 한마디로 넘기시면 됩니다.<br><br>
-      <b>2번에서 클로드가 되물을 때 기다려 주세요.</b> 선생님들이 당황하십니다. “각자 학교 사정대로 답하시면 됩니다”라고 미리 말씀해 두세요.<br><br>
-      <b>‘스킬 저장’ 버튼을 안 누르는 분이 반드시 나옵니다.</b> 2번 끝에 한 번 더 확인하세요 — “저장 누르셨어요?”<br><br>
-      <b>2-1은 시간이 빠듯하면 건너뛰셔도 됩니다.</b> 다만 하시면 <b>“채운 것” 줄을 소리 내어 읽어 주세요</b> — 교시별 일정, 14:30 시청각실, 선도학교 성과 보고는 <b>공문에 없습니다.</b> “이건 선생님이 아셔서 넣으신 겁니다. AI는 이걸 지어내면 안 됩니다.” 이 한마디가 오늘 안전 수칙의 전부입니다.<br><br>
-      <b>3번이 오늘의 하이라이트입니다.</b> 여기서 “오!” 소리가 납니다. <b>새 대화창을 꼭 열게 하세요.</b> 같은 창에서 하면 스킬이 켜진 건지 알 수가 없습니다. 돌리기 전에 한 번 물어보세요 — <b>“아까 몇 번 주고받으셨죠?”</b> 그리고 한 줄로 끝나는 걸 보여주시면 됩니다.<br><br>
-      <b>5번에서 내려받기를 꼭 시키세요.</b> 연수용 계정이 없어진다는 걸 말씀하셔야 움직이십니다.<br><br>
-      <b>6번은 1분입니다.</b> “압축 풀지 마세요”를 두 번 말씀하세요. 여기서 반드시 푸시는 분이 나옵니다.<br><br>      <b>7번이 두 번째 하이라이트입니다.</b> <b>한글 파일이 나오는 순간</b>이요. 돌리기 전에 한마디 얹으세요 — “클로드에 한글은 원래 없습니다. 스킬 하나 올렸더니 나옵니다.”<br><br>      <b>만들어진 파일을 한글에서 열게 하세요.</b> 화면에 파일 이름만 뜨고 끝나면 반이 안 믿으십니다. 한 분이라도 열어서 보여주시면 됩니다.<br><br>      <b>시간이 밀리면 7번만 강사 시연으로</b> 돌리세요. 6번(올리기)은 각자 하셔야 집에 가서 쓰십니다.
-    </div>
   </section>
 
   <section class="panel" id="p-cowork">
@@ -1733,11 +1761,11 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
     <figure class="sld slide"><img src="img/a09580f0dcb7.jpg" alt="시작 전 준비 세 가지 — 데스크톱 앱 · 크롬 확장 · 커넥터" loading="lazy"><figcaption>시작 전 준비 세 가지 — 데스크톱 앱 · 크롬 확장 · 커넥터</figcaption></figure>
     <div class="files">
       <div class="file"><b>가. 데스크탑 앱 설치</b><span>내 컴퓨터의 폴더와 파일을 다룰 수 있게 권한을 줍니다.<br><b>이것만 있으면 폴더 작업은 전부 됩니다</b></span></div>
-      <div class="file"><b>나. 크롬 확장 설치</b><span>웹에서 자료를 찾고 페이지 내용을 확인할 수 있게 합니다<br><b class="mut">유료 플랜 전용</b></span>
+      <div class="file"><b>나. 크롬 확장 설치</b><span>웹에서 자료를 찾고 페이지 내용을 확인할 수 있게 합니다<br><b class="mut">오늘은 안 쓰셔도 됩니다 · 유료 플랜 전용</b></span>
         <a class="fbtn" href="https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn" target="_blank" rel="noopener">⬇ 크롬에서 설치</a></div>
       <div class="file"><b>다. 커넥터 연결</b><span>드라이브·지메일·캘린더 등 외부 서비스 연동<br><b>선택 사항입니다</b></span></div>
     </div>
-    <div class="note"><b>커넥터를 연결하지 않아도 폴더 작업은 다 됩니다.</b> 오늘은 가만 하시면 됩니다. 나머지는 나중에 필요해지면 그때 붙이세요.</div>
+    <div class="note"><b>커넥터를 연결하지 않아도 폴더 작업은 다 됩니다.</b> 오늘은 그냥 두시면 됩니다. 나머지는 나중에 필요해지면 그때 붙이세요.</div>
     <details class="qf">
       <summary>다. 커넥터 연결하는 법 — 오늘은 안 하셔도 됩니다</summary>
       <div class="qfb">
@@ -1956,8 +1984,8 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
             <div class="qa-a"><b class="hot">‘비고’ 칸에 사진 파일 이름을 적었습니다.</b> 학생마다 어느 사진을 보고 판단했는지 남겨서, <b>나중에 원본을 찾기 쉽습니다.</b></div>
           </div>
         </div>
-        <details class="ex">
-          <summary>강사용 정답 — 파일과 학생 짝</summary>
+        <details class="ex tlock">
+          <summary>정답 확인 — 파일과 학생 짝</summary>
           <div class="exb">
             <p><b>낸 학생 열 명</b> — 6 · 7 · 8 · 10 · 11 · 13 · 17 · 18 · 20 · 21번. <b>안 낸 학생 열한 명</b> — 1 · 2 · 3 · 4 · 5 · 9 · 12 · 14 · 15 · 16 · 19번.</p>
             <p>그중 <b>8번(IMG_2834)이 일부러 흐린 사진</b>입니다. 그래서 <b>“제출 9 + 확인 필요 1”</b>로 나오면 가장 잘한 것이고, 8번을 확신해서 “제출 10”으로 적었으면 <b>지어낸 것</b>입니다. 어느 쪽인지 옆 선생님과 비교해 보세요.</p>
@@ -2053,94 +2081,9 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
       </div>
     </div>
 
-    <h3 class="blk disp">시간이 남으면 — 더 보여드릴 수 있는 것들</h3>
-    <figure class="sld slide"><img src="img/77861f5b1442.jpg" alt="사진 뭉치가 데이터가 되는 장면 — 사진 (3).jpg 가 20309_정예린.jpg 로" loading="lazy"><figcaption>사진 뭉치가 데이터가 되는 장면 — 사진 (3).jpg 가 20309_정예린.jpg 로</figcaption></figure>
-    <p><b>여기는 건너뛰어도 됩니다.</b> 프롬프트는 교안에 남으니 학교에서 보시면 됩니다. <b>셋 다 따라 하지 마시고 보기만</b> 하세요.</p>
-    <div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zRcpt','1_영수증.zip')"><b>⬇ 영수증 사진 20장</b><i>여섯 장이 일부러 망가져 있습니다</i></button></div><div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zPerf','8_수행평가사진.zip')"><b>⬇ 수행평가 사진 15장</b><i>셋이 일부러 망가져 있습니다 — 흔들림·이름칸 빈 것·어두운 것</i></button></div>
-    <div class="block" id="c-ocr">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">영수증 스무 장이 엑셀 한 장으로</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <div class="prompt">
-          <div class="ph"><span class="pl">시연 프롬프트</span><button class="copy" type="button">복사</button></div>
-<pre>이 폴더의 영수증 사진을 모두 읽고
-날짜 / 상호 / 품목 / 금액으로 표를 만들어 줘.
-읽기 어려운 건 [확인 필요]로 표시하고, 합계도 내 줘.
-엑셀 파일로 저장해 줘.</pre>
-        </div>
-        <div class="note"><b>여기서 짚기</b> 스무 장 중 <b>여섯 장이 일부러 망가져 있습니다.</b> 흐릿한 것, 어두운 것, 아래가 잘린 것. 클로드가 <b>없는 금액을 지어내는지, <code>[확인 필요]</code>로 남기는지</b> 보세요. <b>오늘 내내 확인할 지점입니다.</b></div>
-        <div class="warnbox"><b>실제 영수증에는 카드번호 뒷자리와 승인번호가 찍혀 있습니다.</b> 올리실 때는 그 부분을 가리고 찍어 주세요.</div>
       </div>
     </div>
 
-    <div class="block" id="c-rename">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">사진 이름이 학생 이름으로 바뀌는 장면</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p>수행평가 결과물을 찍어 두면 파일 이름은 전부 <code>IMG_3412</code>입니다. 나중에 찾으려면 하나씩 열어봐야 합니다.</p>
-        <div class="prompt">
-          <div class="ph"><span class="pl">시연 프롬프트</span><button class="copy" type="button">복사</button></div>
-<pre>이 폴더의 사진을 모두 읽고, 사진에 적힌 학생 이름을 찾아
-파일 이름을 [학년반_번호_이름] 형식으로 바꿔 줘.
-
-- 이름이 안 보이거나 흐릿한 건 바꾸지 말고 '확인필요' 폴더에 따로 모아 줘
-- 원본은 지우지 말 것
-- 바꾸기 전에 어떻게 바꿀 건지 표로 먼저 보여 줘</pre>
-        </div>
-        <div class="note"><b>마지막 줄이 중요합니다.</b> <b>바꾸기 전에 목록을 먼저 보여달라</b>고 하세요. 200장을 잘못 바꾸면 되돌리기 어렵습니다. 보고 나서 “그대로 해 줘” 하시면 됩니다.</div>
-        <div class="note"><b>결과가 채팅창이 아니라 탐색기 안에서 보입니다.</b> <code>IMG_3412.jpg</code> 가 <code>30201_김서연.jpg</code> 로 촤르륵 바뀝니다.</div>
-        <div class="warnbox"><b>본인 컴퓨터에서만 하세요.</b> 학생 이름이 들어가는 일입니다. 그리고 <b>결과를 링크(아티팩트)로 만들지 마세요.</b></div>
-      </div>
-    </div>
-
-    
-
-    <div class="block" id="c-lead">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">선도학교 계획서·보고서 — 엑셀 아홉 개가 표 한 장으로</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <div class="warnbox"><b>이건 따라 하지 마세요. 보기만 하십니다.</b> 폴더 안에 <b>양식 2 · 작년 계획서 1 · 엑셀 9 · 워드 5</b>가 들어 있습니다. 한 번 돌리는 데 <b>5~10분</b>이고 사용량도 큽니다. 다 같이 돌리면 한도에 걸리는 분이 나옵니다.</div>
-        <p>담당 선생님이라면 아시는 그 일입니다. <b>실적 엑셀을 하나씩 열어 숫자를 옮겨 적고</b>, 양식 표에 채우고, 마지막에 합계가 맞나 계산기로 다시 두드리는 일이요.</p>
-        <div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zPlan','5_선도학교_계획서.zip')"><b>⬇ 계획서 쓸 때 폴더</b><i>양식 · 작년 계획서 · 학교 현황 엑셀 5개</i></button></div><div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zRep','5_선도학교_보고서.zip')"><b>⬇ 보고서 쓸 때 폴더</b><i>양식 · 운영 실적 엑셀 9개 · 성과보고 자료</i></button></div>
-        <div class="prompt">
-          <div class="ph"><span class="pl">① 계획서 — 연초에 쓰는 것</span><button class="copy" type="button">복사</button></div>
-<pre>이 폴더 보고 2026년 AI·디지털 활용 선도학교 운영 계획서를 써 줘.
-
-01_학교제공_양식의 계획서 양식을 그대로 쓰고,
-02_작년계획서의 구성과 말투를 따라 줘.
-03_가상자료_학교현황의 숫자를 근거로 삼아 줘.
-
-- 자료에 없는 숫자는 지어내지 말고 [확인 필요]로 남겨 줘
-- 예산은 예산편성지침 요약의 기준을 넘지 않게
-- 새 한글 파일로 '결과물' 폴더에 저장해 줘. 원본은 건드리지 마
-
-바로 하지 말고, 어떤 순서로 할 건지 계획을 먼저 보여 줘.</pre>
-        </div>
-        <div class="prompt">
-          <div class="ph"><span class="pl">② 보고서 — 연말에 쓰는 것</span><button class="copy" type="button">복사</button></div>
-<pre>같은 폴더에서 이번엔 운영보고서 및 정산서를 써 줘.
-
-04_가상자료_운영실적의 엑셀을 전부 읽고 실적 표를 채워 줘.
-예산집행내역의 합계가 정산서 총계와 맞는지 확인해서 알려 줘.
-안 맞으면 어디가 얼마나 다른지 짚어 줘.
-
-근거가 없는 칸은 [확인 필요]로 남기고, 마지막에 그 목록을 따로 보여 줘.</pre>
-        </div>
-        <div class="note"><b>여기서 짚기</b> — 글을 잘 쓰는 게 아니라 <b>엑셀 아홉 개를 다 읽고, 숫자를 옮기고, 합계를 검산한 것</b>입니다. 손으로 하면 반나절이고, <b>틀리면 정산에서 걸립니다.</b></div>
-        <div class="note"><b>폴더 안에 <code>00_작업규칙(클로드용).md</code>가 있습니다.</b> 문체·숫자·개인정보 규칙이 적혀 있어 매번 시키지 않아도 먼저 읽고 지킵니다. <b>담당 업무마다 이 파일 하나씩</b> 만들어 두시면, 내년 담당 선생님께 <b>폴더째로</b> 넘어갑니다.</div>
-        <div class="warnbox"><b>숫자는 반드시 눈으로 대조하세요.</b> 정산은 틀리면 돌아옵니다. <b>“최종 판단은 내가 한다는 전제로”</b>를 붙이시고, 합계는 직접 한 번 더 보셔야 합니다.</div>
-      </div>
-    </div>
-      </div>
-    </div>
-
-        <div class="tnote"><span class="tag">강사</span>
-      <b>칸 1은 5분 안에 넘기세요.</b> 비교표와 슬라이드만 보여 주시면 됩니다. 준비 세 가지는 이미 설치해 오셨습니다.<br><br><b>칸 2(폴더 정리)는 몸풀기입니다. 7분.</b> <b>먼저 대표님이 3분 시연하고</b>, 선생님들이 같은 폴더로 따라 하게 하세요. 폴더 안에 <b>알아보는 장면</b>이 심어져 있습니다 — ① <code>다운로드 (3).pdf</code>는 체험학습 안전교육 공문 → 이름을 바꾸는지 ② 교육과정 운영계획 <code>(최종)</code>과 <code>(최종)(1)</code>은 <b>내용까지 똑같은</b> 중복 ③ 학년협의회 회의록 <code>(1)</code>은 <b>한 줄이 더 있는 수정본 — 지우면 안 됨</b> ④ <code>IMG_4822</code>와 카톡 <code>141530</code>은 <b>같은 사진</b> ⑤ 스크린샷 하나는 <b>성적 입력 화면</b> ⑥ <code>새 텍스트 문서.txt</code>는 <b>회의 메모</b> ⑦ <code>무제.txt</code>는 빈 파일. 결과가 나오면 ③부터 짚으세요 — “이름만 보고 지웠으면 수정본이 날아갈 뻔했습니다.” 이어서 <b>“방금 거 되돌려 줘”</b> 한 줄로 원래대로 돌리는 것까지 보여 주시면 됩니다. 여기서 <b>폴더 연결</b>을 전원이 한 번 통과해야 합니다. 막히는 분은 이 자리에서 잡고 가세요 — <b>칸 3에서 또 막히면 그때는 늦습니다.</b><br><br><b>칸 2 — 결과가 사람마다 다른 걸 가르칠 거리로 쓰세요.</b> 끝나면 <b>“옆 선생님 화면 한번 보세요. 폴더가 같으세요?”</b> 하고 물으세요. 다르게 나온 걸 보면 불안해하시는데, <b>“정답이 있는 게 아니라 클로드가 판단한 거라 그렇습니다. 사람한테 맡겨도 다 다르게 정리하죠”</b>로 받으시면 됩니다.<br><b>와우 장면은 대표님 시연에서 이미 보여 드렸으니</b>, 선생님들 화면에서 안 나와도 괜찮습니다. <b>이름만 보고 나눈 분</b>이 보이면 토글 아래 <b>“한 줄 더” 프롬프트</b>를 붙이게 하세요. 두 번째 결과에서 공문 이름이 바뀌는 걸 직접 보시면 그게 더 크게 남습니다.<br><b>선생님들은 Sonnet</b>이라 대표님 시연(Max)보다 덜 꼼꼼할 수 있습니다. <b>리허설은 반드시 팀 계정 + Sonnet으로</b> 한 번 돌려 보세요.<br><br>
-      <b>칸 3(동의서)이 오늘의 본 실습입니다. 13분.</b> 폴더만 바꿔 연결하면 되니 칸 2를 통과하신 분은 금방 따라오십니다. <b>새 엑셀 파일이 폴더에 떨어지는 것</b>까지 확인시켜 주세요.<br><br><b>칸 3을 시작하기 전에 꼭 물어보세요</b> — <b>“동의서 확인, 한 반에 얼마나 걸리세요?”</b> 누군가 “30분이요” 하면 그 30분이 1분이 되는 걸 같이 봅니다. 안 물어보고 바로 시키면 “빠르네”로 끝납니다.<br><br><b>정답 토글을 같이 열어 보세요.</b> 흐린 한 장을 [확인 필요]로 뺐는지가 핵심입니다. 뺐으면 “지어내지 않았다”, 확신해서 적었으면 “이래서 눈으로 확인하셔야 한다” — <b>어느 쪽이 나와도 가르칠 거리</b>가 됩니다.<br><br><b>칸 3이 안 풀리는 분은 그냥 두세요.</b> 칸 2에서 이미 성공하셨으니 빈손이 아닙니다.<br><br><b>탐색기를 반쪽에 띄우게 하세요.</b> 이게 오늘 코워크 시간의 전부라고 해도 됩니다. 파일이 생기는 걸 눈으로 봐야 “아, 내 컴퓨터에서 진짜 일을 하는구나”가 옵니다.<br><br><b>칸 4의 체험학습 사진은 강사 시연입니다. 5분.</b> 정소연 선생님이 직접 요청하신 업무라 꼭 보여 주세요. 탐색기를 크게 띄우고, <b>파일이 폴더로 옮겨지는 순간</b>을 보여 주시면 됩니다. “따라 하지 마세요, 보기만 하세요”를 먼저 말씀하세요. <b>맨 마지막 ‘시간이 남으면’은 통째로 버리는 카드</b>입니다.<br><br>      <b>세 마디 중 ①만 힘주어 말씀하세요.</b> ②는 “이런 것도 있다” 정도, ③은 문서 만들 때 쓰라고만 하시면 됩니다.
-    </div>
   </section>
 
   <section class="panel" id="p-project">
@@ -2235,12 +2178,19 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
         <p>과정안을 쓸 때 <b>제일 손이 가는 칸이 관련 성취기준</b>입니다. 클로드는 성취기준 목록을 외우고 있지 않습니다. 그냥 시키면 <b>[확인 필요]로 비워 두거나</b>, 더 나쁘면 <b>그럴듯한 코드를 지어냅니다.</b> 교육과정이 바뀐 뒤라면 더 그렇습니다.</p>
         <div class="note"><b>그 칸을 채우는 방법이 프로젝트입니다.</b> 방을 하나 만들고 <b>성취기준 파일을 넣어 두면</b>, 그 방 안에서 만드는 과정안은 <b>코드와 문장을 목록에서 찾아</b> 넣습니다.</div>
 
-        <h4 class="pnum">먼저 두 파일을 받습니다</h4>
-        <p class="psub">오늘은 <b>4학년 사회</b>로 해 봅니다. <b>3~4학년군</b>과 <b>과정안 본보기</b>를 받으세요.</p>
+        <h4 class="pnum">먼저 자료 폴더를 준비합니다</h4>
+        <p class="psub">오늘은 <b>4학년 사회</b>로 해 봅니다. 방에 연결할 폴더를 하나 만들고, 그 안에 두 파일을 넣습니다.</p>
+        <ol class="steps">
+          <li><b>바탕화면에 새 폴더</b>를 만듭니다. 바탕화면 빈 곳에서 <b>오른쪽 클릭 → 새로 만들기 → 폴더</b>. 이름은 <b>교수학습과정안_자료</b>.</li>
+          <li>아래 두 버튼을 눌러 <b>3~4학년군 성취수준</b>과 <b>과정안 본보기</b>를 받습니다.</li>
+          <li>받은 두 파일을 <b>방금 만든 폴더 안으로</b> 옮깁니다. <span class="mut">받은 파일은 보통 ‘다운로드’ 폴더에 있습니다. 끌어다 놓으시면 됩니다</span></li>
+        </ol>
         <div class="dls">
           <button class="dlbtn" type="button" onclick="dl(this,'zStd34','성취수준_3-4학년군.pdf')"><b>⬇ ① 3~4학년군 성취수준</b><i>PDF · 6MB · 오늘은 이것</i></button>
           <button class="dlbtn" type="button" onclick="dl(this,'zSample','여주초_교수학습과정안.hwpx')"><b>⬇ ② 과정안 본보기 — 여주초 서식</b><i>한글 · 1학년 수학 한 장</i></button>
         </div>
+        <div class="note"><b>폴더를 열었을 때 이렇게 두 파일이 들어 있으면 됩니다.</b> 이 폴더를 방에 연결합니다.</div>
+        <figure class="sld nofold"><img src="img/project_folder.jpg" alt="교수학습과정안 자료 폴더 — 성취수준 3-4학년군 PDF와 여주초 교수학습과정안 한글 파일" loading="lazy" style="max-width:480px;margin:0 auto"></figure>
         <details class="qf pdfview" ontoggle="if(this.open){var f=this.querySelector('iframe');if(!f.src)f.src=f.dataset.src;}">
           <summary>📖 2022 개정 교육과정에 따른 3~4학년군 성취수준 — 넘겨 보기</summary>
           <div class="qfb">
@@ -2248,7 +2198,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
             <iframe data-src="files/성취수준_3-4학년군.pdf#page=42" title="2022 개정 교육과정에 따른 3~4학년군 성취수준" style="width:100%;height:760px;border:1px solid var(--line);border-radius:10px;background:#fff"></iframe>
           </div>
         </details>
-        <div class="note"><b>과정안 본보기는 여주초 서식 그대로입니다.</b> 1학년 수학 ‘몇 시 30분’ 수업이고, 빨간 칸 <b>관련 성취기준</b>에는 지금 <b>[2수03-07]</b>이 들어 있습니다. 오늘은 이 칸이 <b>4학년 사회 성취기준으로 제대로 바뀌는지</b> 봅니다.</div>
+        <div class="note"><b>과정안 본보기는 여주초 서식 그대로입니다.</b> 1학년 수학 「3. 모양과 시각」 6차시 과정안이고, 빨간 칸 <b>관련 성취기준</b>에는 지금 <b>[2수03-07]</b>이 들어 있습니다. 오늘은 이 칸이 <b>4학년 사회 성취기준으로 제대로 바뀌는지</b> 봅니다.</div>
         <figure class="sld nofold"><img src="img/plan_sample.jpg" alt="여주초 교수학습과정안 본보기 — 1학년 수학, 관련 성취기준 2수03-07" loading="lazy"></figure>
         <details class="qf">
           <summary>다른 학년군 성취수준 — 집에서 쓰실 때</summary>
@@ -2263,12 +2213,25 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
 
         <h4 class="pnum">방을 만듭니다</h4>
         <ol class="steps">
-          <li>왼쪽 <b>프로젝트 → ＋ 새 프로젝트</b>. 이름은 <b>「교수학습과정안」</b>.</li>
-          <li>방의 <b>파일</b> 자리에 받은 두 파일을 올립니다. <span class="mut">압축 파일이 아니라 그대로 올리시면 됩니다</span></li>
-          <li><b>지침</b> 자리에 아래를 붙여넣습니다.</li>
+          <li>입력창 아래 <b>프로젝트 또는 폴더 → ＋ 새 프로젝트</b>.</li>
         </ol>
+        <figure class="sld nofold"><img src="img/project_new.jpg" alt="입력창 아래 프로젝트 또는 폴더를 눌러 새 프로젝트를 고르는 화면" loading="lazy" style="max-width:720px;margin:0 auto"></figure>
+        <div class="note">화면에 따라 <b>왼쪽 메뉴의 ‘프로젝트’</b>에서 만들 수도 있습니다. 어느 쪽이든 <b>＋ 새 프로젝트</b>를 누르면 됩니다.</div>
+        <ol class="steps" style="counter-reset:st 1">
+          <li><b>프로젝트 생성</b> 창이 뜹니다. 세 칸을 채웁니다.
+            <ul style="margin:8px 0 0 0;padding-left:18px">
+              <li><b>무엇을 작업 중이신가요?</b> → <b>교수학습과정안</b></li>
+              <li><b>어떤 목표를 달성하려고 하시나요?</b> → 아래 지침을 붙여넣기</li>
+              <li><b>폴더 사용</b> → 위에서 받은 <b>두 파일을 넣어 둔 폴더</b>를 고르기</li>
+            </ul>
+          </li>
+          <li><b>프로젝트 생성</b>을 누릅니다.</li>
+          <li>파일 변경 허용을 묻는 창이 뜨면 <b>항상 허용</b>을 누릅니다.</li>
+        </ol>
+        
+        <figure class="sld nofold"><img src="img/project_create.jpg" alt="프로젝트 생성 창에 이름과 지침을 넣고 폴더를 연결한 뒤, 항상 허용을 누르는 화면" loading="lazy"></figure>
         <div class="prompt">
-          <div class="ph"><span class="pl">프로젝트 지침에 넣으세요</span><button class="copy" type="button">복사</button></div>
+          <div class="ph"><span class="pl">‘어떤 목표를 달성하려고 하시나요?’에 붙여넣으세요</span><button class="copy" type="button">복사</button></div>
 <pre>나는 여주초등학교 교사야. 교수·학습과정안을 만들 때 아래를 지켜 줘.
 
 - 관련 성취기준은 <span class="hi">올려 둔 성취기준 파일에서 찾아서</span>
@@ -2281,24 +2244,94 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
 
 모르는 건 물어봐.</pre>
         </div>
+        <div class="note"><b>‘목표’ 칸이 곧 지침 자리입니다.</b> 여기 적은 내용은 이 방 안의 모든 대화에 저절로 적용됩니다. <b>‘폴더 사용’</b>으로 성취수준 PDF와 과정안 본보기가 든 폴더를 연결하면, 파일을 따로 올리지 않아도 방 안에서 그 파일을 읽습니다.</div>
+        <div class="warnbox"><b>‘폴더 사용’이 안 보이면 — 파일만 넣어도 됩니다.</b> 무료 계정이거나 웹에서 여셨을 때입니다. 이름과 지침만 넣어 방을 만든 뒤, 방 화면의 <b>파일</b> 자리에 두 파일을 <b>직접 올리시면</b> 됩니다. 폴더를 연결한 것과 똑같이 방 안에서 그 파일을 읽습니다.</div>
+        <details class="qf">
+          <summary>무료 계정이라면 — 파일 올릴 때 알아 두실 것</summary>
+          <div class="qfb">
+            <div class="tblwrap"><table class="cmp">
+              <tr><th>구분</th><th>무료</th><th>Pro 이상 (팀 계정 포함)</th></tr>
+              <tr><td>프로젝트 개수</td><td><b>5개까지</b></td><td>제한 없음</td></tr>
+              <tr><td>파일 한 개 크기</td><td colspan="2"><b>30MB까지</b> (같음)</td></tr>
+              <tr><td>파일 개수</td><td colspan="2">제한 없음 (같음)</td></tr>
+              <tr><td>넣을 수 있는 총량</td><td><b>모든 파일을 합쳐 클로드가 한 번에 읽을 수 있는 양까지</b></td><td>넉넉합니다 — 필요한 부분만 찾아 읽습니다</td></tr>
+            </table></div>
+            <div class="note"><b>무료에서 걸리는 건 ‘총량’입니다.</b> 3~4학년군 성취수준 PDF는 <b>200쪽이 넘어서</b> 통째로 올리면 다 못 읽을 수 있습니다. 무료 계정에서는 <b>가르치는 교과 부분만</b> 올리세요. 오늘 쓰는 사회는 잘라 둔 파일이 있습니다.</div>
+            <div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zStd34soc','성취수준_3-4학년군_사회만.pdf')"><b>⬇ 3~4학년군 성취수준 — 사회만</b><i>PDF · 7쪽 · 무료 계정용</i></button></div>
+            <div class="src">출처: Claude 고객센터 「What are projects?」, 「Upload files to Claude」, 「RAG for projects」 (2026년 9월 확인)</div>
+          </div>
+        </details>
         <div class="note"><b>지침은 한 번만 적어 두면 됩니다.</b> 이 방 안에서 여는 대화에는 매번 저절로 적용됩니다.</div>
 
         <h4 class="pnum">방 안에서 과정안을 시킵니다</h4>
-        <ol class="steps" style="counter-reset:st 3">
+        <ol class="steps" style="counter-reset:st 4">
           <li>방 안에서 <b>새 대화</b>를 엽니다. <span class="mut">방 밖의 대화창에서 하면 성취기준 파일을 못 봅니다</span></li>
           <li>아래를 붙여넣습니다.</li>
         </ol>
         <div class="prompt">
           <div class="ph"><span class="pl">방 안의 새 대화에 붙여넣으세요</span><button class="copy" type="button">복사</button></div>
 <pre>4학년 사회 · 민주주의와 자치 · 3/6차시로 과정안 만들어 줘.
-10월 14일(화) 3교시, 4학년 2반 교실.
+10월 13일(화) 3교시, 4학년 2반 교실.
 우리 지역 주민 참여 사례(주민 제안, 주민 회의)를 조사해
 모둠별로 발표하는 수업이야. 태블릿과 패들렛을 써.
 평가: 주민 참여가 왜 중요한지 사례를 들어 말할 수 있는가
 
 모르는 건 물어봐.</pre>
         </div>
-        <div class="note"><b>확인할 곳은 한 칸입니다</b> — <b>관련 성취기준.</b> 방에 넣어 둔 파일에서 <b>[4사08-02]</b>를 찾아 코드와 문장을 그대로 넣었는지 보세요. 지어낸 것이 아니라 <b>파일에 있는 것</b>이어야 합니다.</div>
+        <figure class="sld nofold"><img src="img/project_prompt.jpg" alt="방 안의 새 대화에 프롬프트를 붙여넣은 화면 — 입력창 아래 교수학습과정안 +1" loading="lazy" style="max-width:720px;margin:0 auto"></figure>
+        <div class="note"><b>입력창 아래 파란 칸을 보세요</b> — <b>‘교수학습과정안’</b>이 보이면 방 안에서 대화하고 있는 겁니다. 옆의 <b>+1</b>은 방에 연결한 폴더입니다. 여기가 비어 있으면 방 밖이라 성취기준 파일을 못 봅니다.</div>
+        <div class="note"><b>클로드가 되물어 옵니다.</b> 수업자처럼 프롬프트에 없는 칸은 <b>지어내지 않고 먼저 묻습니다.</b> 보기 중에 고르시거나, 모르면 <b>[확인 필요]로 비워 두기</b>를 누르세요. 질문은 여러 개일 수 있습니다 — 위쪽 <b>“4개 중 1개”</b>처럼 몇 개인지 나옵니다. 다 답하면 과정안을 만들기 시작합니다.</div>
+        <figure class="sld nofold"><img src="img/project_asks.jpg" alt="클로드가 수업자 칸에 무엇을 적을지 보기를 주며 되묻는 화면" loading="lazy" style="max-width:720px;margin:0 auto"></figure>
+        <div class="note">이게 지침 맨 끝 <b>“모르는 건 물어봐.”</b>가 하는 일입니다. 이 한 줄이 없으면 그럴듯하게 채워 넣습니다.</div>
+        <div class="note">시간이 길게 표시돼도 괜찮습니다. <b>질문에 답하는 동안의 시간까지 함께 세어집니다.</b></div>
+
+        <h4 class="pnum">이렇게 나옵니다</h4>
+        <div class="note"><b>여주초 서식 그대로, 새 한글 파일이 연결한 폴더에 저장됩니다.</b> 표의 칸과 줄 수는 본보기와 똑같고 글자만 바뀝니다. 대화창에 뜨는 다운로드 버튼은 같은 파일의 사본이라, 누르지 않으셔도 폴더에 이미 있습니다.</div>
+        <div class="note"><b>폴더를 열어 보면</b> 본보기 옆에 <b>새 파일</b> <code>여주초_교수학습과정안_4학년사회_3차시.hwpx</code>가 생겼습니다(빨간 칸). 본보기 원본은 그대로입니다.</div>
+        <figure class="sld nofold"><img src="img/project_folder_after.jpg" alt="자료 폴더에 새로 생긴 4학년 사회 과정안 한글 파일" loading="lazy" style="max-width:480px;margin:0 auto"></figure>
+        <div class="note"><b>새 파일을 한글에서 열면 이렇습니다.</b></div>
+        <figure class="sld nofold"><img src="img/plan_result.jpg" alt="완성된 4학년 사회 교수학습과정안 — 관련 성취기준 4사08-02" loading="lazy"></figure>
+        <div class="tip">
+          <span class="lab">이건 초안입니다</span>
+          <p><b>완성본이 아니라 초안입니다.</b> 대신 <b>빈 서식 채우기, 성취기준 찾아 옮기기, 시간 맞추기</b>처럼 손만 가는 일은 다 끝나 있습니다.</p>
+          <p>선생님은 <b>[확인 필요] 네 칸과 활동 다듬기</b>에만 시간을 쓰시면 됩니다.</p>
+        </div>
+        <div class="qa">
+          <div class="qa-h">여기서 보셔야 할 것 — 클로드는 이렇게 판단했습니다</div>
+          <div class="qa-r">
+            <div class="qa-q">관련 성취기준<br>(맨 위 큰 빨간 칸)</div>
+            <div class="qa-a"><b class="hot">[4사08-02]를 파일에서 찾아 문장까지 그대로 넣었습니다.</b> 본보기의 [2수03-07] 자리입니다. 방에 넣어 둔 성취수준 PDF의 「(8) 민주주의와 자치」에서 찾았다고 밝혔습니다. <b>지어낸 코드가 아닙니다.</b></div>
+          </div>
+          <div class="qa-r">
+            <div class="qa-q">[확인 필요]<br>네 곳<br>(작은 빨간 칸)</div>
+            <div class="qa-a"><b class="hot">모르는 건 비워 뒀습니다.</b> 보여 줄 여주 지역 사례, 사례 자료 목록, 학생 검색 사이트 범위, 다음 차시 예고. <b>그럴듯한 사례를 지어내지 않았습니다.</b> 선생님이 채워 넣으시면 됩니다.</div>
+          </div>
+          <div class="qa-r">
+            <div class="qa-q">학습 요소와<br>평가</div>
+            <div class="qa-a"><b class="hot">고른 답대로 짰습니다.</b> 사례학습모형에 맞춰 학습 요소 칸을 <b>사례 제시 → 사례 분석 → 일반화</b>로 바꾸고, 평가는 관찰평가(모둠 발표)로 네 단계 기준을 만들었습니다. 시간도 합쳐서 40분이 맞게 나눴습니다.</div>
+          </div>
+        </div>
+        <details class="ex keep">
+          <summary>대화 과정 보기 — 질문 네 개부터 결과까지</summary>
+          <div class="exb">
+            <div class="note">질문 네 개에 답하자 과정안을 만들고, <b>확인해 주실 것</b>([확인 필요] 네 곳, 단원 번호 등)을 따로 정리해 줬습니다. 파일이 어디 저장됐는지도 알려 줍니다.</div>
+            <figure class="sld nofold"><img src="img/plan_chat.jpg" alt="과정안을 만든 뒤 확인할 것을 정리한 대화 화면" loading="lazy" style="max-width:720px;margin:0 auto"></figure>
+          </div>
+        </details>
+
+        <h4 class="pnum">더 좋은 초안을 받으려면</h4>
+        <div class="note"><b>결과는 주신 만큼 나옵니다.</b> 오늘은 수업을 여섯 줄로만 적어서 활동이 무난하게 나왔습니다. <b>선생님 머릿속 수업을 더 적을수록</b> — 발문, 활동 순서, 우리 반 상황 — 결과가 좋아집니다.</div>
+        <div class="note"><b>그리고 한마디 더 하면 됩니다.</b> 처음부터 완벽하게 시키는 게 아니라, 초안을 보고 고칠 곳을 말하는 겁니다. 같은 대화창에 이어서 붙여넣으세요.</div>
+        <div class="prompt">
+          <div class="ph"><span class="pl">이어서 붙여넣으세요 — 예시 하나</span><button class="copy" type="button">복사</button></div>
+<pre>활동 2를 더 구체적으로 써 줘.
+모둠별로 맡을 사례를 나눠 주고, 발표 시간은 모둠당 2분으로 해 줘.</pre>
+        </div>
+        <div class="prompt">
+          <div class="ph"><span class="pl">이어서 붙여넣으세요 — 예시 둘</span><button class="copy" type="button">복사</button></div>
+<pre>동기유발을 우리 반 학급 회의 장면으로 바꿔 줘.
+지난주에 체험학습 장소를 학급 회의로 정했어.</pre>
+        </div>
         <div class="warnbox"><b>나온 성취기준 코드는 꼭 눈으로 대조하세요.</b> 파일에 있는 것만 쓰라고 해 두어도, <b>학년이나 영역을 잘못 고르는 일</b>은 있습니다. 코드 한 줄만 확인하시면 됩니다.</div>
         <div class="note">연수용 계정에서 만든 방은 <b>연수용 계정이 없어지면 같이 없어집니다.</b> 집에서 쓰실 방은 <b>개인 계정</b>에 다시 만드세요. 무료 계정에서도 됩니다.</div>
         <label class="check"><input type="checkbox"> 성취기준 칸이 채워졌어요</label>
@@ -2379,8 +2412,32 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
       </div>
     </div>
 
-        <div class="tnote"><span class="tag">강사</span>
-      스킬 탭이 끝나고 코워크로 넘어가기 전에 하세요. <b>칸 2만 여시면 됩니다.</b> 교안은 <b>전원 실습</b>으로 짜 두었습니다. 당일 <b>시간과 사용량을 보고</b> 강사 시연으로 돌리셔도 되고, 그때는 “보기만 하세요” 한마디면 됩니다.<br><br><b>미리 해 두실 것</b> — 강사 계정에 <b>「교수학습과정안」 프로젝트</b>를 만들고 <code>프로젝트_과정안_시연자료</code> 폴더의 셋을 넣어 두세요. 성취기준 발췌 PDF, 과정안 본보기, 지침. <b>당일에 올리지 마세요</b> — 그것만으로 5분이 갑니다.<br><br><b>순서</b> — ① 방 안을 보여 줍니다(파일 셋 · 지침). ② 시연 프롬프트를 붙여넣습니다. ③ 결과에서 <b>관련 성취기준 칸 하나만</b> 가리킵니다. “방에 넣어 둔 파일에서 찾아 왔습니다.” ④ 표 한 장으로 마무리 — <b>“프로젝트는 자리, 스킬은 방법, 코워크는 손입니다.”</b><br><br><b>여유가 있으면 한 번 더</b> — “지역의 공공기관으로 과정안 만들어 줘”라고 쳐 보세요. 2015 개정 때 단원이라 <b>2022 개정 성취기준에는 그대로 된 것이 없습니다.</b> 지침대로라면 지어내지 않고 [확인 필요] + 후보를 보여 줍니다. 선생님들이 제일 크게 반응하시는 장면입니다.<br><br><b>꼭 한마디 얹을 것</b> — “프로젝트는 연수용 계정이 없어지면 같이 없어집니다. <b>개인 계정에서 만드세요.</b> 무료 계정에서도 됩니다.”</div>
+        <div class="secbreak"></div>
+    <div class="finbox">
+    <h2 class="s-title disp">마무리 — 오늘 가져가실 세 줄</h2>
+    <p class="s-sub">스킬에서도, 코워크에서도, 프로젝트에서도 같은 세 줄을 썼습니다.</p>
+    <div class="prompt">
+      <div class="ph"><span class="pl">어떤 일을 시키든 끝에 붙이세요</span><button class="copy" type="button">복사</button></div>
+<pre>모르는 건 물어봐.
+바로 하지 말고 계획을 먼저 보여 줘.
+원본은 건드리지 마.</pre>
+    </div>
+    <div class="note"><b>모르는 건 물어봐</b> — 지어내지 않고 [확인 필요]로 남깁니다. <b>계획 먼저</b> — 틀린 방향을 실행 전에 잡습니다. <b>원본은 건드리지 마</b> — 결과가 마음에 안 들어도 잃는 게 없습니다.</div>
+    </div>
+
+    <div class="part"><b>쓰시기 전에 알아 두실 것 셋</b><span>앞으로 혼자 쓰실 때</span></div>
+    <div class="warn3">
+      <div class="w3"><span class="n">하나</span><b>자료가 부실하면 결과도 무의미합니다</b><p>흐릿한 사진에서 잘못 읽은 값으로 표를 만들면, 그 뒤 단계는 <b>전부 틀린 것 위에 쌓입니다.</b> 그래서 <b>1단계(모으기)는 사람이 한 번 보고</b> 넘어가야 합니다. 묶는 건 2·3단계부터가 안전합니다.</p></div>
+      <div class="w3"><span class="n">둘</span><b>남의 스킬만 쓰면 다 똑같아집니다</b><p>제가 드린 스킬을 그대로만 쓰시면 <b>학교마다 반마다 같은 문장</b>이 나옵니다. 오늘 공문 스킬을 직접 만들어 보신 이유가 이것입니다. <b>내 말투와 내 순서로 고쳐서</b> 쓰세요.</p></div>
+      <div class="w3"><span class="n">셋</span><b>판단은 사람이 합니다</b><p>자동화의 목적은 <b>선생님의 판단을 없애는 게 아니라, 선생님의 기준을 더 일관되게 적용하는 것</b>입니다. 결과를 보고 고칠 곳을 정하는 건 끝까지 사람 몫입니다.</p></div>
+    </div>
+
+    <div class="tip">
+      <span class="lab">그래서 아낀 시간은</span>
+      <p>문서와 파일에 쓰던 시간을 줄여서 <b>아이들과 눈 마주치는 시간</b>으로 돌리자는 것이 오늘의 전부입니다.</p>
+      <p><b>좋은 자료는 좋은 수업과 꾸준한 관찰에서 나옵니다.</b> 그건 아무도 대신 못 합니다.</p>
+    </div>
+
   </section>
 
   <section class="panel" id="p-artifact">
@@ -2392,6 +2449,13 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
 
     <div class="note"><b>오늘 실습하지 않습니다.</b> 그런데 <b>선생님들이 제일 많이 물으시는 것</b>이라 따로 모아 뒀습니다. 집에서 한 번 해보시면 바로 아십니다.</div>
 
+    <div class="mega" id="ar-1">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">1</span>
+        <span class="mt"><b>아티팩트가 뭔가요</b><i>대화창 옆에 열리는 결과물 창 · 만든 뒤에 할 수 있는 것</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
     <h3 class="blk disp">아티팩트가 무엇인가</h3>
     <p><b>대화창 옆에 따로 열리는 결과물 창</b>입니다. 채팅 글자 속에 섞이지 않고, <b>제목이 붙고 저장되고 고칠 수 있는 덩어리</b>요.</p>
     <div class="qa">
@@ -2416,8 +2480,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
     <div class="note"><b>‘아티팩트=웹페이지’가 아닙니다.</b> 웹페이지는 <b>그중 하나</b>입니다. 그래서 입력창 아래 <b>Output</b>의 맨 아래 <b>Artifact</b>가 <b>“종류는 클로드가 알아서 고르게”</b>라는 뜻입니다.</div>
     <figure class="sld nofold"><img src="img/707d238fca8f.jpg" alt="Output 목록과 Artifact" loading="lazy"><figcaption>맨 아래 <b>Artifact — Let Claude pick the format</b>이 기본값입니다.</figcaption></figure>
 
-    <h3 class="blk disp">만드는 법 — 따로 없습니다</h3>
-    <p><b>그냥 말씀하시면 됩니다.</b> “○○ 웹페이지로 만들어 줘” 한마디면 오른쪽에 창이 하나 열립니다. 설치할 것도, 눌러 둘 것도 없습니다.</p>
+    <h3 class="blk disp">만든 뒤에 하실 수 있는 것</h3>
     <div class="qa">
       <div class="qa-h">만든 뒤에 하실 수 있는 것</div>
       <div class="qa-r"><div class="qa-q">고치기</div><div class="qa-a">말로 하시면 됩니다 — <b>“글씨를 더 크게”</b>, <b>“문제를 열 개로 늘려 줘”</b>. 몇 번이고 고쳐집니다.</div></div>
@@ -2425,8 +2488,25 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
       <div class="qa-r"><div class="qa-q">내려받기</div><div class="qa-a">파일로 받아 두실 수도 있습니다. <b>연수용 계정이 없어져도</b> 파일은 남습니다.</div></div>
     </div>
     <div class="warnbox"><b>링크는 자물쇠가 아니라 커튼입니다.</b> 주소를 아는 사람은 <b>누구나</b> 볼 수 있습니다. <b>학생 이름·사진·연락처가 들어간 페이지는 링크로 만들지 마세요.</b> 그런 건 <b>파일로 만들어</b> 필요한 분께만 보내시는 게 맞습니다.</div>
+      </div>
+    </div>
 
+    <div class="mega" id="ar-2">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">2</span>
+        <span class="mt"><b>이렇게 만들어 보세요</b><i>말 한마디면 됩니다 · 학부모 안내 페이지 · 수업 페이지</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <h3 class="blk disp">만드는 법 — 따로 없습니다</h3>
+    <p><b>그냥 말씀하시면 됩니다.</b> “○○ 웹페이지로 만들어 줘” 한마디면 오른쪽에 창이 하나 열립니다. 설치할 것도, 눌러 둘 것도 없습니다.</p>
     <div class="part"><b>선생님이 쓰실 자리는 둘</b><span>학부모께 보내는 안내 · 아이들이 눌러가며 배우는 수업</span></div>
+    <div class="prelink" style="margin:3.2em 0">
+      <div class="pl-t">🔗 실제로 만든 예 — 파주 AI-ROAD 학생 체험 교안</div>
+      <p>아이들이 눌러 가며 따라 하는 교안에, 선생님이 반별로 제출물을 모아 보는 <b>교사용 대시보드</b>까지 붙였습니다. 이것도 클로드와 대화로 만들었습니다.</p>
+      <a class="pl-a" href="https://doramge1984.github.io/pajuhak/" target="_blank" rel="noopener">https://doramge1984.github.io/pajuhak/<span>새 창에서 열기 ↗</span></a>
+      <p style="margin:10px 0 0;font-size:14.5px">실제 수업에 쓰는 페이지입니다. <b>둘러보기만 하시고 제출은 누르지 말아 주세요.</b></p>
+    </div>
 
     <div class="block" id="g-art1">
       <div class="block-head" onclick="toggle(this)">
@@ -2485,25 +2565,34 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
           <b>오늘 연수에서는 하지 않습니다.</b> 이런 것도 된다는 것만 알고 가시면 됩니다.</div>
       </div>
     </div>
+      </div>
+    </div>
 
+    <div class="mega" id="ar-3">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">3</span>
+        <span class="mt"><b>크게 만들어 나누기</b><i>16MB가 넘을 때 · 아티팩트 · 깃허브 · 넷리파이 · 버셀</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
     <h3 class="blk disp">한 페이지에 다 담기지 않을 때 — 용량은 16MB까지</h3>
     <p>아티팩트는 <b>페이지 하나에 16MB까지</b>입니다. 그림과 내려받을 파일도 <b>페이지 안에 같이 들어가서 함께 셉니다.</b> 사진 몇 장, 한글 양식 몇 개 정도는 괜찮습니다. 그런데 <b>PDF 여러 개를 받게 하거나 사진이 많으면</b> 금방 넘칩니다.</p>
     <div class="note"><b>이 교안도 그랬습니다.</b> 프로젝트 탭의 성취수준 PDF 세 개가 합쳐서 17MB입니다. 이미 15MB인 교안에 넣으려니 넘쳐서, <b>깃허브에 올려 배포하는 방식</b>으로 바꿨습니다. 지금 보시는 이 교안이 그것입니다.</div>
     <div class="tblwrap"><table class="cmp">
-      <tr><th>구분</th><th>아티팩트 (클로드)</th><th>깃허브 · 넷리파이</th></tr>
-      <tr><td>만드는 곳</td><td>대화창에서 바로</td><td>클로드가 만든 파일을 <b>내가 올려서</b> 배포</td></tr>
-      <tr><td>용량</td><td><b>16MB까지</b> — 그림·파일 포함</td><td>넉넉합니다 — 파일을 폴더째로 올립니다</td></tr>
-      <tr><td>내려받을 파일</td><td>몇 개 정도</td><td><b>여러 개도 괜찮습니다</b> (PDF · 한글 · 압축파일)</td></tr>
-      <tr><td>고치기</td><td>“여기 고쳐 줘” 한마디</td><td>클로드가 고친 파일을 <b>다시 올려야</b> 합니다</td></tr>
-      <tr><td>필요한 것</td><td>클로드 계정</td><td>깃허브나 넷리파이 <b>가입</b> (무료)</td></tr>
-      <tr><td>맞는 것</td><td>안내 페이지, 수업 퀴즈, 한 장짜리 자료</td><td><b>연수 교안, 자료실</b>처럼 파일이 많은 것</td></tr>
+      <tr><th>구분</th><th>아티팩트<br>(클로드)</th><th>깃허브 Pages</th><th>넷리파이</th><th>버셀</th></tr>
+      <tr><td>올리는 법</td><td>대화창에서 바로</td><td>저장소에 파일을 올리고 <b>Pages</b>를 켭니다</td><td>폴더를 <b>끌어다 놓으면</b> 끝 (Netlify Drop)</td><td><b>깃허브 저장소를 연결</b>합니다</td></tr>
+      <tr><td>주소 모양</td><td>claude.ai/…</td><td>아이디.github.io/…</td><td>이름.netlify.app</td><td>이름.vercel.app</td></tr>
+      <tr><td>용량</td><td><b>16MB까지</b> — 그림·파일 포함</td><td>넉넉합니다<br>(웹에서 올릴 때 파일당 25MB)</td><td>넉넉합니다</td><td>넉넉합니다</td></tr>
+      <tr><td>고칠 때</td><td>“여기 고쳐 줘” 한마디</td><td>고친 파일을 <b>다시 올립니다</b></td><td>폴더를 <b>다시 끌어다 놓습니다</b></td><td>깃허브에 올리면 <b>저절로 바뀝니다</b></td></tr>
+      <tr><td>가입</td><td>클로드 계정</td><td>깃허브 (무료)</td><td>넷리파이 (무료)</td><td>버셀 (무료 · 개인·비영리용)</td></tr>
+      <tr><td>맞는 것</td><td>안내 페이지, 수업 퀴즈, 한 장짜리 자료</td><td><b>연수 교안, 자료실</b> — 이 교안이 여기 있습니다</td><td><b>가장 빨리</b> 주소 하나 만들 때</td><td>자주 고치는 사이트, 깃허브를 이미 쓰는 분</td></tr>
     </table></div>
     <details class="qf">
       <summary>어떻게 올리나 — 클로드에게 이렇게 말하면 됩니다</summary>
       <div class="qfb">
         <div class="prompt mini">
           <div class="ph"><span class="pl">복사해서 붙여넣으세요</span><button class="copy" type="button">복사</button></div>
-<pre>이 페이지를 깃허브 페이지(또는 넷리파이)에 올릴 수 있게
+<pre>이 페이지를 깃허브 페이지(또는 넷리파이·버셀)에 올릴 수 있게
 폴더로 만들어 줘. 그림은 img 폴더에, 내려받을 파일은 files 폴더에 나눠 넣고,
 index.html에서 그 파일들을 불러오게 해 줘.</pre>
         </div>
@@ -2511,103 +2600,416 @@ index.html에서 그 파일들을 불러오게 해 줘.</pre>
           <li>클로드가 <b>index.html · img 폴더 · files 폴더</b>를 만들어 줍니다.</li>
           <li><b>넷리파이</b>라면 — 넷리파이 드롭(Netlify Drop) 화면에 <b>그 폴더를 끌어다 놓으면</b> 바로 주소가 나옵니다. 제일 쉽습니다.</li>
           <li><b>깃허브</b>라면 — 저장소를 하나 만들어 폴더 안 파일을 올리고, 설정에서 <b>Pages</b>를 켜면 주소가 나옵니다.</li>
+          <li><b>버셀</b>이라면 — 위 깃허브 저장소를 버셀에서 <b>가져오기(Import)</b> 하면 주소가 나옵니다. 그다음부터는 깃허브에 올릴 때마다 <b>저절로 바뀝니다.</b></li>
         </ol>
         <div class="warnbox"><b>배포한 주소도 커튼입니다.</b> 주소를 아는 사람은 누구나 봅니다. 학생 이름·사진·연락처는 올리지 마세요. 아티팩트와 똑같은 원칙입니다.</div>
       </div>
     </details>
-
-    <div class="tnote"><span class="tag">강사</span>
-      <b>이 탭은 연수 시간 0분입니다.</b> 마무리에서 <b>“이 교안도 클로드가 만든 겁니다”</b> 한마디면 충분합니다. 그 한마디에 제일 크게 반응하십니다.<br><br>
-      <b>시간이 남으면 이 교안을 켜 두고</b> — <b>“이것도 대화창에서 한 번에 나왔습니다”</b>만 말씀하세요. 만드는 과정을 보여주기 시작하면 <b>10분이 순식간에 갑니다.</b><br><br>
-      <b>개인정보 경고는 꼭 읽어 주세요.</b> 링크는 자물쇠가 아니라 커튼이라는 것. 선생님들이 신나서 학생 명단을 넣으실 수 있습니다.<br><br>
-      <b>파이어베이스 이름은 꺼내지 마세요.</b> <b>“아이들이 쓴 답을 모아 볼 수도 있다”</b>까지만. 방법을 물으시면 <b>“따로 연락 주세요”</b>로 받으시는 게 낫습니다.
+      </div>
     </div>
+
+    <div class="mega" id="ar-4">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">4</span>
+        <span class="mt"><b>직접 해 보기 — 오늘의 커피 담당자</b><i>다 같이 들어와서 · 이름과 메뉴를 적고 · 룰렛을 돌립니다</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <p>마지막은 <b>다 같이 들어와서 쓰는 앱</b>입니다. 이름과 마실 메뉴를 적으시면 화면 앞 룰렛에 이름이 올라갑니다. 룰렛이 멈추는 분이 오늘의 커피 담당자입니다. <b>마지막에 작은 선물이 있습니다.</b> 🎁</p>
+    <div class="prelink" style="margin:1.6em 0">
+      <div class="pl-t">☕ 오늘의 커피 담당자</div>
+      <p>휴대폰으로 여셔도 됩니다.</p>
+      <a class="pl-a" href="https://doramge1984.github.io/coffee/" target="_blank" rel="noopener">https://doramge1984.github.io/coffee/<span>새 창에서 열기 ↗</span></a>
+    </div>
+    <ol class="steps">
+      <li><b>이름</b>과 <b>주문 메뉴</b>를 적고 <b>주문 목록에 등록</b>을 누릅니다.</li>
+      <li>오른쪽 <b>현재 접수 현황</b>에 내 이름이 뜨는지 봅니다. 잘못 적으셨으면 <b>지우기</b>로 지우고 다시 적으세요.</li>
+      <li>화면 앞 룰렛을 함께 봅니다. 강사가 돌리면 <b>모든 화면에서 같이 돌아갑니다.</b></li>
+    </ol>
+    <h3 class="blk disp">이 앱은 어떻게 만들었나</h3>
+    <p>이것도 <b>클로드와 대화로</b> 만들었습니다. 3번에서 본 대로 화면은 <b>깃허브</b>에 올렸고, 여러분이 적은 주문은 <b>구글 시트</b>에 모입니다. 그래서 모두의 화면이 같은 목록을 봅니다.</p>
+    <div class="prompt">
+      <div class="ph"><span class="pl">이렇게 시작했습니다</span><button class="copy" type="button">복사</button></div>
+<pre>연수에서 쓸 '오늘의 커피 담당자' 웹앱을 만들어 줘.
+- 선생님들이 각자 휴대폰으로 들어와 이름과 메뉴를 적으면 목록에 쌓이게
+- 강사가 룰렛을 돌리면 모두의 화면에서 같이 돌아가고, 멈춘 사람을 크게 보여 줘
+- 당첨자가 나오면 메뉴별로 몇 잔인지 정리해 줘
+- 저장은 구글 시트로 하고, 룰렛은 강사만 돌릴 수 있게
+- 남색과 금색으로 차분하게</pre>
+    </div>
+    <div class="note"><b>여러 사람이 같이 쓰려면 저장할 곳이 필요합니다.</b> 혼자 쓰는 퀴즈나 안내 페이지는 필요 없지만, 이 앱처럼 <b>모두의 입력을 한곳에 모으려면</b> 구글 시트 같은 저장소를 붙입니다. 붙이는 방법도 클로드가 한 단계씩 알려 줍니다.</div>
+    <div class="warnbox"><b>학생과 쓰실 때는</b> 이름 대신 <b>번호나 모둠명</b>만 받으세요. 2번 "더 가면"과 같은 원칙입니다.</div>
+    <details class="ex keep tlock">
+      <summary>강사 화면</summary>
+      <div class="exb">
+        <p>강사 화면에서만 <b>룰렛 돌리기</b>와 <b>새 접수 시작하기</b> 단추가 보입니다. 처음 누를 때 강사 암호를 한 번 묻습니다.</p>
+        <div class="prelink" style="margin:12px 0 0"><a class="pl-a" href="https://doramge1984.github.io/coffee/?host" target="_blank" rel="noopener">강사 화면 열기<span>새 창에서 열기 ↗</span></a></div>
+      </div>
+    </details>
+    <details class="ex keep tlock">
+      <summary>구글 시트 연결 방법 — 코드 포함</summary>
+      <div class="exb">
+        <p><b>개인 구글 계정(gmail)으로 하세요.</b> 학교 계정은 "모든 사용자" 공개가 막혀 있는 경우가 많습니다.</p>
+        <ol class="steps">
+          <li><b>시트 만들기</b> — 주소창에 <code>sheets.new</code> → 제목을 <b>오늘의 커피 담당자</b>로. 시트 안에는 아무것도 적지 않습니다.</li>
+          <li><b>Apps Script 열기</b> — 메뉴 <b>[확장 프로그램] → [Apps Script]</b>.</li>
+          <li><b>코드 붙여넣기</b> — Code.gs의 글을 모두 지우고 아래 코드를 붙여넣습니다. 맨 위 <code>'강사암호'</code> 자리에 <b>강사 암호</b>를 넣고 <b>Ctrl+S</b>.</li>
+          <li><b>배포</b> — 오른쪽 위 <b>[배포] → [새 배포]</b> → 톱니바퀴 → <b>[웹 앱]</b>. 실행: <b>[나]</b>, 액세스 권한: <b>[모든 사용자]</b> → <b>[배포]</b>.</li>
+          <li><b>권한 허용</b> — [액세스 승인] → 내 계정 → "확인하지 않은 앱"이 뜨면 <b>[고급] → [(프로젝트)(으)로 이동] → [허용]</b>.</li>
+          <li><b>주소 넣기</b> — 나온 <b>웹 앱 URL</b>(…/exec)을 앱 <code>index.html</code>의 <code>var SCRIPT_URL = "";</code> 따옴표 안에 넣고, 깃허브 <b>coffee 저장소</b>에 올립니다. 주소는 <code>doramge1984.github.io/coffee/</code>, 강사 화면은 끝에 <code>?host</code>.</li>
+          <li><b>확인</b> — 시크릿 창(Ctrl+Shift+N)에서 웹 앱 URL을 열어 <code>{"ok":true,...}</code> 한 줄이 나오면 성공입니다. 로그인 화면이 나오면 4번의 액세스 권한이 [모든 사용자]가 아닌 것입니다.</li>
+        </ol>
+        <div class="prompt">
+          <div class="ph"><span class="pl">Code.gs에 붙여넣으세요</span><button class="copy" type="button">복사</button></div>
+<pre>/**
+ * 오늘의 커피 담당자 — 구글 시트 연결용 앱스 스크립트
+ * 룰렛 돌리기 · 새 접수 · 남의 주문 지우기는 아래 강사 암호가 있어야 됩니다.
+ */
+var HOST_KEY = '강사암호';   // ← 따옴표 안에 강사 암호를 넣으세요
+
+var SS = SpreadsheetApp.getActiveSpreadsheet();
+
+function sheet_(name, headers) {
+  var s = SS.getSheetByName(name);
+  if (!s) { s = SS.insertSheet(name); s.appendRow(headers); }
+  return s;
+}
+function readState_() {
+  var s = sheet_('상태', ['키', '값']);
+  var v = s.getDataRange().getValues().slice(1), o = {};
+  v.forEach(function (r) { if (r[0] !== '') o[r[0]] = r[1]; });
+  if (!o.round) o.round = 1;
+  return o;
+}
+function writeState_(o) {
+  var s = sheet_('상태', ['키', '값']);
+  s.clearContents();
+  s.appendRow(['키', '값']);
+  Object.keys(o).forEach(function (k) { s.appendRow([k, o[k]]); });
+}
+function ordersSheet_() { return sheet_('주문', ['회차', '번호', '이름', '메뉴', '등록 시각', '확인값']); }
+function orders_(round) {
+  var v = ordersSheet_().getDataRange().getValues().slice(1);
+  return v.filter(function (r) { return String(r[0]) === String(round); })
+          .map(function (r) { return { id: String(r[1]), name: String(r[2]), menu: String(r[3]), token: String(r[5]) }; });
+}
+function out_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
+}
+function view_() {
+  var st = readState_();
+  var list = orders_(st.round).map(function (o) { return { id: o.id, name: o.name, menu: o.menu }; });
+  var w = st.winnerId ? { id: String(st.winnerId), name: String(st.winnerName), menu: String(st.winnerMenu), at: String(st.spinAt) } : null;
+  return { ok: true, round: Number(st.round), orders: list, winner: w };
+}
+function clean_(t, n) { return String(t || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, n); }
+
+function doGet() { return out_(view_()); }
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var b = JSON.parse((e &amp;&amp; e.postData &amp;&amp; e.postData.contents) || '{}');
+    var st = readState_();
+    var isHost = String(b.key || '') === HOST_KEY;
+
+    if (b.action === 'add') {
+      var name = clean_(b.name, 12), menu = clean_(b.menu, 24);
+      if (!name || !menu) return out_({ ok: false, error: '이름과 메뉴를 모두 적어 주세요.' });
+      if (orders_(st.round).length &gt;= 80) return out_({ ok: false, error: '이번 회차는 가득 찼습니다.' });
+      var id = Utilities.getUuid().slice(0, 8);
+      ordersSheet_().appendRow([st.round, id, name, menu, new Date(), clean_(b.token, 40)]);
+    }
+    else if (b.action === 'delete') {
+      var sh = ordersSheet_(), v = sh.getDataRange().getValues();
+      for (var i = v.length - 1; i &gt;= 1; i--) {
+        if (String(v[i][0]) === String(st.round) &amp;&amp; String(v[i][1]) === String(b.id)) {
+          if (isHost || (b.token &amp;&amp; String(v[i][5]) === String(b.token))) sh.deleteRow(i + 1);
+          else return out_({ ok: false, error: '내가 등록한 주문만 지울 수 있습니다.' });
+          break;
+        }
+      }
+    }
+    else if (b.action === 'spin') {
+      if (!isHost) return out_({ ok: false, error: '룰렛은 강사만 돌릴 수 있습니다.' });
+      var list = orders_(st.round);
+      if (list.length &lt; 2) return out_({ ok: false, error: '두 분 이상 등록해야 돌릴 수 있습니다.' });
+      var w = list[Math.floor(Math.random() * list.length)];
+      st.winnerId = w.id; st.winnerName = w.name; st.winnerMenu = w.menu; st.spinAt = String(Date.now());
+      writeState_(st);
+    }
+    else if (b.action === 'reset') {
+      if (!isHost) return out_({ ok: false, error: '새 접수는 강사만 시작할 수 있습니다.' });
+      writeState_({ round: Number(st.round) + 1 });
+    }
+    return out_(view_());
+  } finally {
+    lock.releaseLock();
+  }
+}</pre>
+        </div>
+        <div class="note"><b>코드를 고친 뒤에는</b> [배포] → [배포 관리] → 연필(✏) → 버전 <b>[새 버전]</b> → [배포]를 눌러야 반영됩니다. 주소는 바뀌지 않습니다.</div>
+        <div class="note"><b>알아 두실 것</b> — 주문은 시트의 '주문' 탭, 룰렛 결과는 '상태' 탭에 쌓입니다. 새 접수를 시작해도 지난 주문은 시트에 남습니다. 누가 뽑힐지는 시트 쪽에서 무작위로 정해서, 화면을 조작해도 결과가 바뀌지 않습니다.</div>
+      </div>
+    </details>
+      </div>
+    </div>
+
   </section>
 
-  <section class="panel" id="p-bundle">
-    <h2 class="s-title disp">묶기 — 다섯 칸과 한 바퀴</h2>
-    <p class="s-sub">여기부터는 보기만 하십니다. 프롬프트는 교안에 남습니다.</p>
+
+  <section class="panel" id="p-bonus">
+    <h2 class="s-title disp">선물</h2>
+    <p class="s-sub">오늘 연수에서는 다루지 않습니다. 그런데 쓰시면 제일 자주 쓰시게 될 것들입니다.</p>
     <div class="s-meta">
-      <span>방식 <b>강사 시연</b></span><span>준비 <b>없음</b></span><span class="bd bd-show">보기만</span>
+      <span>방식 <b>교안으로만</b></span><span class="bd bd-show">가져가시는 것</span>
     </div>
 
-    <div class="note"><b>따라 하지 마시고 보기만 하세요.</b> 오늘 직접 하실 건 앞에서 다 하셨습니다. 여기는 <b>“이런 것까지 된다”</b>를 보여드리는 자리입니다.</div>
+    <div class="note"><b>여기는 읽을거리입니다.</b> 연수 중에는 제가 이름만 말씀드리고 넘어갑니다. <b>학교에 돌아가셔서 하나씩</b> 열어 보세요. 다 하실 필요 없습니다. <b>지금 당장 아쉬운 것 하나만</b> 고르시면 됩니다.</div>
 
-    <h3 class="blk disp">업무 하나를 다섯 칸에 넣어봅니다</h3>
-    <figure class="sld slide"><img src="img/1865ae4bc61d.jpg" alt="업무 하나를 다섯 칸에 — 시연은 잊혀도 이 다섯 칸은 남습니다" loading="lazy"><figcaption>업무 하나를 다섯 칸에 — <b>시연은 잊혀도 이 다섯 칸은 남습니다</b></figcaption></figure>
-    <p>일을 시키기 전에 <b>다섯 칸만 채워 보시면</b> 프롬프트가 저절로 나옵니다. 시연은 잊으셔도 <b>이 다섯 칸은 남습니다.</b></p>
-    <div class="five">
-      <div class="fc"><span class="n">01 입력</span><b>어디서 가져올까</b><p>내 폴더 · 드라이브<br>메일 · 웹 검색</p></div>
-      <div class="fc"><span class="n">02 처리</span><b>무엇을 시킬까</b><p>정리 · 요약 · 비교<br>분류 · 점검</p></div>
-      <div class="fc"><span class="n">03 출력</span><b>어떤 형태로</b><p>한글 · 엑셀 · PPT<br>워드 · 웹페이지</p></div>
-      <div class="fc"><span class="n">04 저장</span><b>어디에 둘까</b><p>내 폴더 · 드라이브<br>메일 초안</p></div>
-      <div class="fc"><span class="n">05 시점</span><b>언제 실행할까</b><p>지금 · 파일을 넣으면<br>매주 월요일</p></div>
+    <div class="mega" id="gf-1">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">1</span>
+        <span class="mt"><b>집에 가셔서 — 무료 계정에서 되는 것</b><i>스킬은 무료에서 다 됩니다 · 막히는 건 폴더 하나</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <div class="cmp">
+      <table>
+        <thead><tr><th>기능</th><th>무료</th><th>Pro 이상</th></tr></thead>
+        <tbody>
+          <tr><td><b>스킬 만들기 · 쓰기 · 올리기</b></td><td><b class="hot">○</b></td><td>○</td></tr>
+          <tr><td>채팅에서 파일 올려 작업</td><td>○</td><td>○</td></tr>
+          <tr><td>아티팩트(문서·웹페이지 만들기)</td><td>○</td><td>○</td></tr>
+          <tr><td><b>프로젝트</b>(업무별 방 만들기)</td><td><b class="hot">○</b> 5개까지</td><td>○ 제한 없음</td></tr>
+          <tr><td>코워크 — 폴더 연결</td><td>✕</td><td>○</td></tr>
+          <tr><td>루틴(예약 실행) · 플러그인</td><td>✕</td><td>○</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="note"><b>05 시점</b>이 잘 안 알려진 칸입니다. <b>“매주 월요일 아침 9시에 해 줘”</b>라고 하면 그때마다 저절로 돕니다. 예정된 일은 <b>‘예정됨’ 탭</b>에서 확인하실 수 있습니다.</div>
+    <div class="note"><b>오늘의 중심인 스킬은 무료에서 다 됩니다.</b> 구독을 안 하셔도 <b>오늘 만드신 스킬은 계속 쓰실 수 있습니다.</b> 프로젝트도 다섯 개까지 됩니다.</div>
+    <div class="note"><b>무료에서 막히는 건 하나입니다</b> — <b>내 컴퓨터 폴더를 통째로 맡기는 것.</b> 나머지는 다 하실 수 있습니다.</div>
+      </div>
+    </div>
 
-    <div class="part" id="b-loop"><b>한 바퀴 돌려 보기 — 체험학습 한 건</b><span>모으기 → 만들기 → 점검하기</span></div>
-    <p>하나의 행사를 <b>처음부터 끝까지</b> 따라가 봅니다. <b>①②는 이미 하신 것</b>이고, 여기서는 <b>그 셋이 한 줄기로 이어지는 것</b>만 보시면 됩니다.</p>
-    
-    <div class="block open" id="b-1">
+    <div class="mega" id="gf-2">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">2</span>
+        <span class="mt"><b>화면을 통째로 찍는 법 — 픽픽</b><i>스크롤 캡처 · 복사가 안 되는 화면도 클로드에게</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <p>클로드에게 화면을 보여드려야 할 때가 많습니다. 그런데 <b>화면에 다 안 들어가는 긴 표</b>가 문제입니다. 나이스 명단, 긴 공문, 스크롤을 내려야 끝이 보이는 웹페이지요.</p>
+    <div class="note"><b>윈도우 기본 캡처(<code>Win</code>+<code>Shift</code>+<code>S</code>)로는 보이는 만큼만 찍힙니다.</b> 스크롤을 내리면서 이어 붙이려면 <b>스크롤 캡처</b>가 되는 프로그램이 필요합니다.</p></div>
+
+        <div class="dls"><a class="dlbtn" href="https://picpick.app/ko/download/" target="_blank" rel="noopener">
+          <b>⬇ 픽픽 내려받기 — 한국어판</b><i>picpick.app/ko/download · 새 창에서 열립니다</i></a></div>
+        <ol class="steps">
+          <li>위 단추로 <b>한국어판</b>을 내려받아 설치합니다.</li>
+          <li>실행하면 작은 창이 뜹니다. <b>‘스크롤 윈도우’</b>를 고릅니다.</li>
+          <li>찍을 창을 한 번 누르면 <b>저절로 스크롤하며</b> 끝까지 찍습니다.</li>
+          <li>저장하고, 그 그림을 <b>클로드 대화창에 끌어다 놓습니다.</b></li>
+        </ol>
+        <div class="prompt mini">
+          <div class="ph"><span class="pl">찍은 그림을 올리고 이렇게</span><button class="copy" type="button">복사</button></div>
+<pre>이 화면에 있는 표를 그대로 엑셀로 만들어 줘.
+흐릿해서 못 읽은 칸은 [확인 필요]로 남겨 줘.</pre>
+        </div>
+        <div class="warnbox"><b>반드시 한국 사이트에서 받으세요.</b> <b>한국어판은 개인·기관·상업 사용 모두 무료</b>로 배포됩니다. 영문판은 비상업용만 무료라 조건이 다릅니다.<br>
+          <b>학교 업무용 컴퓨터</b>에 설치하실 때는 전산 담당 선생님께 한 번 여쭤보시는 게 좋습니다. 프로그램 설치를 막아 둔 학교가 있습니다.</div>
+        <div class="note"><b>이게 왜 선물이냐면</b> — 클로드에 <b>무엇을 줄 수 있는지</b>가 넓어집니다. 파일이 없어도, 복사가 안 되는 화면이어도, <b>찍어서 주면 됩니다.</b></div>
+      </div>
+    </div>
+
+    <div class="mega" id="gf-3">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">3</span>
+        <span class="mt"><b>크롬 안으로 클로드 불러들이기</b><i>Claude in Chrome · 유료 계정 전용</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <p>지금까지는 <b>내 폴더</b>를 맡겼습니다. 이번엔 <b>내가 열어 둔 웹페이지</b>를 맡기는 이야기입니다.</p>
+    <p>로그인해 둔 사이트를 <b>클로드가 같이 보고, 대신 눌러 줍니다.</b> 화면을 캡처해 올릴 필요도, 내용을 복사해 붙여넣을 필요도 없습니다. <b>보고 있는 그 페이지 그대로</b> 일을 시킵니다.</p>
+
+        <div class="warnbox"><b>먼저 확인하실 것 — 유료 플랜에서만 됩니다.</b> Pro·Max·Team·Enterprise에서 열립니다. <b>무료 계정에서는 안 됩니다.</b> 그리고 <b>크롬에서만</b> 됩니다. 엣지나 웨일에서는 안 됩니다.</div>
+        <div class="dls"><a class="dlbtn" href="https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn" target="_blank" rel="noopener">
+          <b>⬇ Claude 크롬 확장 설치하기</b><i>크롬 웹스토어 · 새 창에서 열립니다 · 크롬에서 눌러 주세요</i></a></div>
+        <ol class="steps">
+          <li>위 단추를 눌러 <b>Chrome에 추가</b>합니다.</li>
+          <li>클로드 계정으로 로그인합니다.</li>
+          <li>일을 시킬 페이지를 열어 두고, 확장 아이콘을 눌러 <b>이 페이지에서 쓰기</b>를 허용합니다.</li>
+          <li>평소처럼 말로 시킵니다.</li>
+        </ol>
+        <div class="prompt mini">
+          <div class="ph"><span class="pl">이런 식으로 씁니다</span><button class="copy" type="button">복사</button></div>
+<pre>이 페이지에 있는 표를 읽어서 엑셀로 정리해 줘.
+
+이 설문 응답을 항목별로 요약하고, 많이 나온 의견 순서로 정리해 줘.
+
+이 페이지의 안내문을 학부모가 읽기 쉬운 말로 다시 써 줘.</pre>
+        </div>
+        <div class="note"><b>제일 편한 순간</b> — <b>복사가 안 되는 화면</b>입니다. 표가 이미지로 박혀 있거나, 드래그가 막혀 있거나, 페이지를 넘겨가며 봐야 하는 화면이요. 캡처해서 올리는 것보다 빠릅니다.</div>
+        <div class="warnbox"><b>내 계정으로 로그인된 브라우저에서 움직입니다.</b> 그래서 지킬 것이 있습니다.<br>
+          <b>페이지마다 허용을 따로 주세요.</b> 한 번에 다 허용하지 마시고, 그 일에 필요한 페이지만.<br>
+          <b>나이스·업무포털처럼 학생 정보가 있는 화면에서는 쓰지 마세요.</b> 공공기관 시스템은 외부 프로그램의 자동 조작을 허용하지 않는 경우가 있습니다.<br>
+          <b>결제·본인인증 화면에서는 쓰지 마세요.</b></div>
+
+
+  
+      </div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="p-more">
+    <h2 class="s-title disp">더 알아보기</h2>
+    <p class="s-sub">처음부터 읽지 않으셔도 됩니다. 막히실 때 그 자리만 펼쳐 보세요.</p>
+    <div class="s-meta">
+      <span>방식 <b>교안으로만</b></span><span class="bd bd-show">찾아보는 곳</span>
+    </div>
+
+    <div class="note"><b>순서대로 읽는 곳이 아닙니다.</b> 필요한 칸만 펼치세요.</div>
+
+    <div class="warnbox" style="margin:18px 0 26px">
+      <b>학생 정보를 다룰 때 — 오늘 내내 지킨 네 가지</b>
+        <ul class="steps">
+          <li><b>본인 컴퓨터에서만</b> 하세요. 공용 PC나 남의 계정에서 하지 않습니다.</li>
+          <li><b>결과를 링크(아티팩트)로 만들지 마세요.</b> 학생 이름·사진·연락처가 든 페이지는 링크가 되면 주소를 아는 사람이 볼 수 있습니다.</li>
+          <li><b>지우라고 시키지 않습니다.</b> ‘버릴것’ 폴더에 모아만 두게 하고, 지우는 건 사람이 봅니다.</li>
+          <li><b>폴더 하나만</b> 맡기세요. 바탕화면이나 내 문서를 통째로 맡기지 않습니다.</li>
+        </ul>
+      영수증·명부 사진에는 카드번호나 연락처가 찍혀 있을 수 있습니다. <b>올리시기 전에 가리고 찍어 주세요.</b>
+    </div>
+
+    <div class="mega" id="mo-1">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">1</span>
+        <span class="mt"><b>막힐 때</b><i>한글 파일 · 사용량 · 스킬 · 화면이 낯설 때</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <div class="block">
       <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">1</span><span class="block-t">모으기 — 누가 아직 안 냈지</span><span class="chev">⌄</span>
+        <span class="block-n">＋</span><span class="block-t">한글 파일이 말썽입니다 — 왜 한글만 유독 까다로운가</span><span class="chev">⌄</span>
       </div>
       <div class="block-body">
-        <p><b>방금 코워크 시간에 직접 해 보신 그 장면입니다.</b> 동의서 열 장을 읽고 명렬표와 대조해 <b>안 낸 사람을 찾아낸</b> 일이 <b>한 바퀴의 첫 칸</b>입니다.</p>
-        <div class="lgal">
-          <button class="lc" type="button" onclick="jump('cowork','c-consent')">
-            <span class="e">📋</span><b>그때 쓴 프롬프트</b><i>동의서 대조하기</i><span class="go">코워크 탭으로 →</span>
-          </button>
+        <p>클로드에 기본으로 들어 있는 문서 기능은 <b>워드 · 엑셀 · PPT · PDF</b>입니다. <b>한글(hwp)은 없습니다.</b> 우리나라에서만 쓰는 형식이라서요.</p>
+        <div class="files">
+          <div class="file"><b>.hwp</b><span>옛 형식. <b>읽는 것도 잘 안 됩니다.</b><br>한글에서 열어 <b>다른 이름으로 저장 → hwpx</b>로 바꿔 주세요</span></div>
+          <div class="file"><b>.hwpx</b><span>새 형식. <b>읽고 쓰는 게 됩니다.</b><br>오늘 드린 한글 양식 스킬이 이걸로 만듭니다</span></div>
         </div>
-        <div class="note"><b>첫 칸이 제일 중요합니다.</b> 여기서 잘못 읽은 값은 뒤 단계에 <b>그대로 쌓입니다.</b> 그래서 1단계는 <b>사람이 한 번 보고</b> 넘어갑니다.</div>
+        <div class="warnbox"><b>그래도 안 되면</b> — <b>“내용을 화면에 보여 줘”</b> 또는 <b>“워드 파일로 만들어 줘”</b>라고 하세요. 한글에 붙여넣으시면 됩니다. 서식만 한 번 잡으시면 되니까요.</div>
+        
       </div>
     </div>
-
-    <div class="block" id="b-2">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">2</span><span class="block-t">만들기 — 앞에서 하신 그 안내장입니다</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p><b>이건 직접 해보셨습니다.</b> 스킬 시간에 한글 양식 스킬로 만드신 그 안내장이 <b>한 바퀴의 두 번째 칸</b>에 들어갑니다.</p>
-        <div class="note"><b>여기서 볼 것은 하나입니다</b> — 아까는 <b>안내장 한 장을 만든 것</b>이었지만, 지금은 <b>동의서를 걷고 → 안내장을 쓰고 → 점검하는</b> 한 줄기 안에 들어가 있습니다. <b>같은 일도 어디에 놓이느냐에 따라 값어치가 다릅니다.</b></div>
-        <div class="lgal">
-          <button class="lc" type="button" onclick="jump('skill','s-6')">
-            <span class="e">✉️</span><b>그때 쓰신 프롬프트</b><i>메모만 주고 가정통신문</i><span class="go">스킬 탭으로 →</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="block" id="b-3">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">3</span><span class="block-t">점검하기 — 보내기 전에 한 번 더</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p>가장 건너뛰기 쉬운 단계이고, <b>가장 중요한 단계</b>입니다. 학부모께 나가는 문서는 틀리면 전화가 옵니다.</p>
-        <div class="prompt">
-          <div class="ph"><span class="pl">시연 프롬프트</span><button class="copy" type="button">복사</button></div>
-<pre>방금 만든 안내장을 원본 메모와 하나씩 대조해서 검증을 한 번 더 해 줘.
-
-- 날짜, 요일, 시각, 금액, 신청 기한이 메모와 같은지
-- 메모에 없는데 지어낸 문장이 있는지
-- [확인 필요]로 남겨야 할 곳을 채워 넣지는 않았는지
-- 학부모가 읽기에 어려운 공문 말투가 남아 있는지
-
-고칠 곳은 이유와 함께 알려 주고, 최종 판단은 내가 한다는 전제로 정리해 줘.</pre>
-        </div>
-        <div class="note"><b>마지막 줄을 꼭 넣으세요</b> — <b>“최종 판단은 내가 한다는 전제로.”</b> 이게 없으면 제멋대로 고쳐 버립니다. 고칠 곳을 <b>알려만 주게</b> 하고 결정은 사람이 합니다.</div>
-        <div class="warnbox"><b>그래도 눈으로 한 번 보셔야 합니다.</b> 날짜·시각·금액·기한은 <b>직접</b> 대조해 주세요. AI가 확인했다는 말을 믿고 보내시면 안 됩니다.</div>
-      </div>
-    </div>
-
-    <div class="part"><b>또 하나의 한 바퀴 — 영수증 정산</b><span>학교에서 해보세요. 오늘은 프롬프트만 남깁니다</span></div>
-    <p>행사가 끝나면 영수증이 남습니다. 같은 셋으로 돕니다.</p>
 
     <div class="block">
       <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">모으기 → 만들기 → 점검하기</span><span class="chev">⌄</span>
+        <span class="block-n">＋</span><span class="block-t">사용량 한도에 걸렸습니다 — 계정이 잠긴 게 아닙니다</span><span class="chev">⌄</span>
       </div>
       <div class="block-body">
+        <p><b>몇 시간 뒤에 저절로 풀립니다.</b> 잘못하신 게 아니고, 계정이 잠긴 것도 아닙니다.</p>
+        <div class="files">
+          <div class="file"><b>사용량을 많이 쓰는 일</b><span>사진 여러 장 읽기 · 코워크로 여러 단계 · 서브 에이전트 병렬</span></div>
+          <div class="file"><b>적게 쓰는 일</b><span>채팅으로 글 쓰기 · 스킬 만들기 · 아티팩트로 문서 만들기</span></div>
+        </div>
+        <div class="note"><b>모델을 확인하세요.</b> <b>소네트(Sonnet)</b>로 두시면 훨씬 오래 쓰십니다. 옵스(Opus)는 어려운 일에만 쓰세요.</div>
+        <div class="note"><b>간단한 건 채팅에서</b> 하세요. 코워크는 계획·실행·점검을 반복하느라 같은 일도 훨씬 많이 씁니다.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">스킬이 안 켜집니다 — 부르는 말을 바꾸거나, 직접 고르세요</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <p>스킬은 <b>설명에 적힌 상황과 내 말이 맞을 때</b> 켜집니다. 그래서 <b>말을 조금 바꾸면</b> 켜지는 경우가 많습니다.</p>
+        <ol class="steps">
+          <li>만들 때 정한 <b>다른 문구</b>로 다시 말해 보세요.</li>
+          <li>그래도 안 되면 <b>대화창 ＋ → 스킬</b>에서 <b>직접 고르세요.</b> 고르면 반드시 켜집니다.</li>
+          <li>계속 안 켜지면 <b>설명 줄을 고치세요</b> — “이 스킬 설명을 ○○할 때도 켜지게 고쳐 줘.”</li>
+        </ol>
+        <div class="note"><b>새 대화창에서 해 보세요.</b> 같은 창에서 계속하면 앞의 내용에 끌려가 헷갈립니다.</div>
+        <div class="warnbox"><b>스킬 메뉴가 아예 안 보인다면</b> <b>설정 → 기능 → ‘코드 실행 및 파일 생성’</b>이 꺼져 있는 것입니다.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">엉뚱한 형식으로 나옵니다 — Output이 고정돼 있는지 보세요</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <p>한글 파일을 시켰는데 <b>슬라이드나 문서로</b> 나온다면, 입력창 아래 <b>Output</b>이 어딘가에 고정돼 있는 것입니다.</p>
+        <figure class="sld nofold"><img src="img/707d238fca8f.jpg" alt="Output 고르는 화면" loading="lazy"><figcaption>맨 아래 <b>Artifact — Let Claude pick the format</b>이 기본값입니다.</figcaption></figure>
+        <div class="note"><b>건드리지 않으셨으면 알아서 고릅니다.</b> <b>Docs · Slides · Design</b>을 고르는 건 “이 형식으로만 만들어라”고 못 박는 것입니다. 되돌리시려면 <b>Artifact</b>를 고르세요.</div>
+        <div class="note"><b>한글은 이 목록에 없습니다.</b> 한글 파일은 <b>스킬이 만들어 주는 것</b>이라 이 설정과 상관이 없습니다.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">화면이 낯섭니다 — 입력창 아래 네 자리</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+    <p>화면이 자꾸 바뀌어서 낯설게 느껴지실 수 있습니다. <b>입력창 아래 한 줄만</b> 읽으실 줄 알면 됩니다.</p>
+    <div class="qa">
+      <div class="qa-h">왼쪽부터 오른쪽으로</div>
+      <div class="qa-r">
+        <div class="qa-q">프로젝트 <br>또는 폴더</div>
+        <div class="qa-a"><b>어디서 일할까.</b> 내 컴퓨터 폴더를 맡기거나, 프로젝트 방 안에서 하실 때 고릅니다. 안 고르시면 그냥 대화입니다.</div>
+      </div>
+      <div class="qa-r">
+        <div class="qa-q">Output</div>
+        <div class="qa-a"><b>어떤 형태로 만들까.</b> 그냥 두시면 <b>클로드가 알아서</b> 고릅니다. 위의 ‘엉뚱한 형식으로 나옵니다’를 보세요.</div>
+      </div>
+      <div class="qa-r">
+        <div class="qa-q">모델</div>
+        <div class="qa-a"><b>어느 머리를 쓸까.</b> <b>Sonnet</b>이면 충분하고 오래 씁니다. Opus는 어려운 일에만. 🛠️ 시작 전 세팅 6번에 화면이 있습니다.</div>
+      </div>
+      <div class="qa-r">
+        <div class="qa-q">수동 / 자동</div>
+        <div class="qa-a"><b>물어보고 할까.</b> <b>수동</b>이면 새 일을 하기 전에 매번 확인을 받습니다. 🤝 코워크 탭에 자세히 적어 뒀습니다.</div>
+      </div>
+    </div>
+    <div class="note"><b>넷 다 안 건드리셔도 됩니다.</b> 기본값이 가장 무난합니다. <b>무언가 이상할 때 여기를 보시면</b> 대개 답이 있습니다.</div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div class="mega" id="mo-2">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">2</span>
+        <span class="mt"><b>코워크로 더 해 보기</b><i>오늘 못 다룬 시연 셋 · 자료와 프롬프트 그대로</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <p>연수 시간에는 다루지 않은 것들입니다. <b>자료와 프롬프트가 다 있으니</b> 학교에서 필요한 것 하나만 해 보세요.</p>
+    <div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zRcpt','1_영수증.zip')"><b>⬇ 영수증 사진 20장</b><i>여섯 장이 일부러 망가져 있습니다</i></button></div><div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zPerf','8_수행평가사진.zip')"><b>⬇ 수행평가 사진 15장</b><i>셋이 일부러 망가져 있습니다 — 흔들림·이름칸 빈 것·어두운 것</i></button></div>
+    <div class="block" id="c-ocr">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">영수증 스무 장이 엑셀 한 장으로</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <div class="prompt">
+          <div class="ph"><span class="pl">시연 프롬프트</span><button class="copy" type="button">복사</button></div>
+<pre>이 폴더의 영수증 사진을 모두 읽고
+날짜 / 상호 / 품목 / 금액으로 표를 만들어 줘.
+읽기 어려운 건 [확인 필요]로 표시하고, 합계도 내 줘.
+엑셀 파일로 저장해 줘.</pre>
+        </div>
+        <div class="note"><b>여기서 짚기</b> 스무 장 중 <b>여섯 장이 일부러 망가져 있습니다.</b> 흐릿한 것, 어두운 것, 아래가 잘린 것. 클로드가 <b>없는 금액을 지어내는지, <code>[확인 필요]</code>로 남기는지</b> 보세요. <b>오늘 내내 확인할 지점입니다.</b></div>
+        <div class="warnbox"><b>실제 영수증에는 카드번호 뒷자리와 승인번호가 찍혀 있습니다.</b> 올리실 때는 그 부분을 가리고 찍어 주세요.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">이어서 — 영수증 정산 한 바퀴 (모으기 → 만들기 → 점검하기)</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <p>행사가 끝나면 영수증이 남습니다. 모으기 → 만들기 → 점검하기, 세 번 이어서 시키면 됩니다.</p>
         <div class="prompt">
           <div class="ph"><span class="pl">① 모으기</span><button class="copy" type="button">복사</button></div>
 <pre>이 폴더의 영수증 사진을 모두 읽고
@@ -2631,293 +3033,144 @@ index.html에서 그 파일들을 불러오게 해 줘.</pre>
       </div>
     </div>
 
-    <div class="part"><b>플러그인 — 셋을 한 줄로</b><span>참고만 하세요. 오늘은 하지 않습니다</span></div>
-    <div class="block">
+    <div class="block" id="c-rename">
       <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">세 단계를 하나로 묶어 두는 기능</span><span class="chev">⌄</span>
+        <span class="block-n">＋</span><span class="block-t">사진 이름이 학생 이름으로 바뀌는 장면</span><span class="chev">⌄</span>
       </div>
       <div class="block-body">
-        <p>방금 셋을 매번 차례로 시키는 대신, <b>하나로 묶어</b> 두는 기능이 있습니다. 다음부터는 폴더에 자료만 넣고 <b>한 줄이면</b> 셋이 다 돕니다.</p>
+        <p>수행평가 결과물을 찍어 두면 파일 이름은 전부 <code>IMG_3412</code>입니다. 나중에 찾으려면 하나씩 열어봐야 합니다.</p>
         <div class="prompt">
-          <div class="ph"><span class="pl">셋을 다 한 뒤, 같은 대화창 끝에</span><button class="copy" type="button">복사</button></div>
+          <div class="ph"><span class="pl">시연 프롬프트</span><button class="copy" type="button">복사</button></div>
+<pre>이 폴더의 사진을 모두 읽고, 사진에 적힌 학생 이름을 찾아
+파일 이름을 [학년반_번호_이름] 형식으로 바꿔 줘.
+
+- 이름이 안 보이거나 흐릿한 건 바꾸지 말고 '확인필요' 폴더에 따로 모아 줘
+- 원본은 지우지 말 것
+- 바꾸기 전에 어떻게 바꿀 건지 표로 먼저 보여 줘</pre>
+        </div>
+        <div class="note"><b>마지막 줄이 중요합니다.</b> <b>바꾸기 전에 목록을 먼저 보여달라</b>고 하세요. 200장을 잘못 바꾸면 되돌리기 어렵습니다. 보고 나서 “그대로 해 줘” 하시면 됩니다.</div>
+        <div class="note"><b>결과가 채팅창이 아니라 탐색기 안에서 보입니다.</b> <code>IMG_3412.jpg</code> 가 <code>30201_김서연.jpg</code> 로 촤르륵 바뀝니다.</div>
+        <div class="warnbox"><b>본인 컴퓨터에서만 하세요.</b> 학생 이름이 들어가는 일입니다. 그리고 <b>결과를 링크(아티팩트)로 만들지 마세요.</b></div>
+      </div>
+    </div>
+
+    <div class="block" id="c-lead">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">선도학교 계획서·보고서 — 엑셀 아홉 개가 표 한 장으로</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <div class="warnbox"><b>이건 따라 하지 마세요. 보기만 하십니다.</b> 폴더 안에 <b>양식 2 · 작년 계획서 1 · 엑셀 9 · 워드 5</b>가 들어 있습니다. 한 번 돌리는 데 <b>5~10분</b>이고 사용량도 큽니다. 다 같이 돌리면 한도에 걸리는 분이 나옵니다.</div>
+        <p>담당 선생님이라면 아시는 그 일입니다. <b>실적 엑셀을 하나씩 열어 숫자를 옮겨 적고</b>, 양식 표에 채우고, 마지막에 합계가 맞나 계산기로 다시 두드리는 일이요.</p>
+        <div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zPlan','5_선도학교_계획서.zip')"><b>⬇ 계획서 쓸 때 폴더</b><i>양식 · 작년 계획서 · 학교 현황 엑셀 5개</i></button></div><div class="dls"><button class="dlbtn" type="button" onclick="dl(this,'zRep','5_선도학교_보고서.zip')"><b>⬇ 보고서 쓸 때 폴더</b><i>양식 · 운영 실적 엑셀 9개 · 성과보고 자료</i></button></div>
+        <div class="prompt">
+          <div class="ph"><span class="pl">① 계획서 — 연초에 쓰는 것</span><button class="copy" type="button">복사</button></div>
+<pre>이 폴더 보고 2026년 AI·디지털 활용 선도학교 운영 계획서를 써 줘.
+
+01_학교제공_양식의 계획서 양식을 그대로 쓰고,
+02_작년계획서의 구성과 말투를 따라 줘.
+03_가상자료_학교현황의 숫자를 근거로 삼아 줘.
+
+- 자료에 없는 숫자는 지어내지 말고 [확인 필요]로 남겨 줘
+- 예산은 예산편성지침 요약의 기준을 넘지 않게
+- 새 한글 파일로 '결과물' 폴더에 저장해 줘. 원본은 건드리지 마
+
+바로 하지 말고, 어떤 순서로 할 건지 계획을 먼저 보여 줘.</pre>
+        </div>
+        <div class="prompt">
+          <div class="ph"><span class="pl">② 보고서 — 연말에 쓰는 것</span><button class="copy" type="button">복사</button></div>
+<pre>같은 폴더에서 이번엔 운영보고서 및 정산서를 써 줘.
+
+04_가상자료_운영실적의 엑셀을 전부 읽고 실적 표를 채워 줘.
+예산집행내역의 합계가 정산서 총계와 맞는지 확인해서 알려 줘.
+안 맞으면 어디가 얼마나 다른지 짚어 줘.
+
+근거가 없는 칸은 [확인 필요]로 남기고, 마지막에 그 목록을 따로 보여 줘.</pre>
+        </div>
+        <div class="note"><b>여기서 짚기</b> — 글을 잘 쓰는 게 아니라 <b>엑셀 아홉 개를 다 읽고, 숫자를 옮기고, 합계를 검산한 것</b>입니다. 손으로 하면 반나절이고, <b>틀리면 정산에서 걸립니다.</b></div>
+        <div class="note"><b>폴더 안에 <code>00_작업규칙(클로드용).md</code>가 있습니다.</b> 문체·숫자·개인정보 규칙이 적혀 있어 매번 시키지 않아도 먼저 읽고 지킵니다. <b>담당 업무마다 이 파일 하나씩</b> 만들어 두시면, 내년 담당 선생님께 <b>폴더째로</b> 넘어갑니다.</div>
+        <div class="warnbox"><b>숫자는 반드시 눈으로 대조하세요.</b> 정산은 틀리면 돌아옵니다. <b>“최종 판단은 내가 한다는 전제로”</b>를 붙이시고, 합계는 직접 한 번 더 보셔야 합니다.</div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div class="mega" id="mo-3">
+      <div class="mega-h" onclick="toggleMega(this)" role="button" tabindex="0">
+        <span class="mn">3</span>
+        <span class="mt"><b>한 단계 더</b><i>루틴 · 플러그인 · 다섯 칸</i></span>
+        <span class="mc">⌄</span>
+      </div>
+      <div class="mega-b">
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">🔥</span><span class="block-t">루틴과 플러그인 — 요즘 가장 많이 묻는 것</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <div class="warnbox"><b>둘 다 유료 계정(Pro 이상)에서만 됩니다.</b> 무료 계정에서는 메뉴가 보이지 않습니다.</div>
+        <p><b>루틴</b> — 정해 둔 때가 되면 <b>저절로</b> 돕니다. 한 번 말해 두면 매주 같은 요일, 같은 시각에 알아서 합니다. 만들어 둔 것은 <b>‘예정됨’</b>에서 확인하고 끌 수 있습니다.</p>
+        <div class="prompt">
+          <div class="ph"><span class="pl">예시 — 루틴으로 맡기기</span><button class="copy" type="button">복사</button></div>
+<pre>매주 금요일 오후 4시에, 이 폴더의 다음 주 행사 메모를 읽고
+주간학습안내 초안을 한글 파일로 만들어 줘.
+메모에 없는 내용은 [확인 필요]로 남겨 줘.</pre>
+        </div>
+        <p><b>플러그인</b> — 2번의 영수증 정산처럼 셋을 매번 차례로 시키는 대신, <b>하나로 묶어</b> 두는 기능이 있습니다. 다음부터는 폴더에 자료만 넣고 <b>한 줄이면</b> 셋이 다 돕니다.</p>
+        <div class="prompt">
+          <div class="ph"><span class="pl">영수증 정산 한 바퀴를 다 한 뒤, 같은 대화창 끝에</span><button class="copy" type="button">복사</button></div>
 <pre>지금 사용한 세 단계를 하나의 플러그인으로 묶어 줘.
-이름은 '체험학습 한 바퀴'로 하고,
+이름은 '영수증 정산 한 바퀴'로 하고,
 실행하면 모으기 → 만들기 → 점검하기가 순서대로 이어지게 만들어 줘.</pre>
         </div>
         <div class="note"><b>스킬이 낱개라면 플러그인은 묶음입니다.</b> 스킬 여러 개와 연결해 둔 서비스, 저장 위치까지 한 덩어리로 묶입니다. <b>설정 → 사용자 지정 → 플러그인</b>에 저장되고, 스킬처럼 파일로 내려받아 나눌 수도 있습니다.</div>
-        <div class="warnbox"><b>오늘은 하지 않습니다.</b> 여기까지 가려면 앞의 셋이 각각 잘 돌아야 합니다. <b>스킬 하나를 제대로 만드는 것이 먼저</b>입니다. 이건 방학 때 천천히 해 보세요.</div>
-      </div>
-    </div>
-
-    <h3 class="blk disp">묶기 전에 알아 두실 것 셋</h3>
-    <div class="warn3">
-      <div class="w3"><span class="n">하나</span><b>자료가 부실하면 결과도 무의미합니다</b><p>흐릿한 사진에서 잘못 읽은 값으로 표를 만들면, 그 뒤 단계는 <b>전부 틀린 것 위에 쌓입니다.</b> 그래서 <b>1단계(모으기)는 사람이 한 번 보고</b> 넘어가야 합니다. 묶는 건 2·3단계부터가 안전합니다.</p></div>
-      <div class="w3"><span class="n">둘</span><b>남의 스킬만 쓰면 다 똑같아집니다</b><p>제가 드린 스킬을 그대로만 쓰시면 <b>학교마다 반마다 같은 문장</b>이 나옵니다. 오늘 공문 스킬을 직접 만들어 보신 이유가 이것입니다. <b>내 말투와 내 순서로 고쳐서</b> 쓰세요.</p></div>
-      <div class="w3"><span class="n">셋</span><b>판단은 사람이 합니다</b><p>자동화의 목적은 <b>선생님의 판단을 없애는 게 아니라, 선생님의 기준을 더 일관되게 적용하는 것</b>입니다. 결과를 보고 고칠 곳을 정하는 건 끝까지 사람 몫입니다.</p></div>
-    </div>
-
-    <div class="tip">
-      <span class="lab">그래서 아낀 시간은</span>
-      <p>문서와 파일에 쓰던 시간을 줄여서 <b>아이들과 눈 마주치는 시간</b>으로 돌리자는 것이 오늘의 전부입니다.</p>
-      <p><b>좋은 자료는 좋은 수업과 꾸준한 관찰에서 나옵니다.</b> 그건 아무도 대신 못 합니다.</p>
-    </div>
-
-    <div class="tnote"><span class="tag">강사</span>
-      <b>10분입니다. 새로 보여드릴 건 3번(점검하기) 하나뿐입니다.</b> 다섯 칸 표 한 장 보여주시고, ①②는 <b>“아까 하신 그거예요”</b>로 되짚기만 하세요.<br><br>
-      <b>3번(점검하기)에 시간을 쓰세요.</b> <b>“최종 판단은 내가 한다는 전제로”</b> 이 한 줄이 오늘 마지막으로 남길 말입니다. 학부모께 나가는 문서라 틀리면 전화가 온다는 걸 같이 말씀하시면 와닿습니다.<br><br>
-      <b>플러그인은 “이런 게 있습니다” 정도로</b>. 30초 이상 쓰지 마세요. 여기서 욕심내면 마무리 10분이 날아갑니다.<br><br>
-      <b>마지막 셋(알아 두실 것)은 꼭 읽어 주세요.</b> 특히 <b>“판단은 사람이 합니다”</b>. 이 한마디가 있어야 선생님들이 안심하고 쓰십니다.<br><br>
-      <b>시간이 밀리면 이 탭을 통째로 건너뛰세요.</b> “교안에 있습니다”로 넘기고 마무리로 가시면 됩니다.
-    </div>
-  </section>
-
-  <section class="panel" id="p-bonus">
-    <h2 class="s-title disp">선물</h2>
-    <p class="s-sub">오늘 연수에서는 다루지 않습니다. 그런데 쓰시면 제일 자주 쓰시게 될 것들입니다.</p>
-    <div class="s-meta">
-      <span>방식 <b>교안으로만</b></span><span class="bd bd-show">가져가시는 것</span>
-    </div>
-
-    <div class="note"><b>여기는 읽을거리입니다.</b> 연수 중에는 제가 이름만 말씀드리고 넘어갑니다. <b>학교에 돌아가셔서 하나씩</b> 열어 보세요. 둘 다 하실 필요 없습니다. <b>지금 당장 아쉬운 것 하나만</b> 고르시면 됩니다.</div>
-
-    <h3 class="blk disp">집에 가셔서 — 무료 계정에서 되는 것</h3>
-    <div class="cmp">
-      <table>
-        <thead><tr><th>기능</th><th>무료</th><th>Pro 이상</th></tr></thead>
-        <tbody>
-          <tr><td><b>스킬 만들기 · 쓰기 · 올리기</b></td><td><b class="hot">○</b></td><td>○</td></tr>
-          <tr><td>채팅에서 파일 올려 작업</td><td>○</td><td>○</td></tr>
-          <tr><td>아티팩트(문서·웹페이지 만들기)</td><td>○</td><td>○</td></tr>
-          <tr><td><b>프로젝트</b>(업무별 방 만들기)</td><td><b class="hot">○</b> 5개까지</td><td>○ 제한 없음</td></tr>
-          <tr><td>코워크 — 폴더 연결</td><td>✕</td><td>○</td></tr>
-          <tr><td>루틴(예약 실행) · 플러그인</td><td>✕</td><td>○</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="note"><b>오늘의 중심인 스킬은 무료에서 다 됩니다.</b> 구독을 안 하셔도 <b>오늘 만드신 스킬은 계속 쓰실 수 있습니다.</b> 프로젝트도 다섯 개까지 됩니다.</div>
-    <div class="note"><b>무료에서 막히는 건 하나입니다</b> — <b>내 컴퓨터 폴더를 통째로 맡기는 것.</b> 나머지는 다 하실 수 있습니다.</div>
-
-
-    <h3 class="blk disp">하나 — 화면을 통째로 찍는 법</h3>
-    <p>클로드에게 화면을 보여드려야 할 때가 많습니다. 그런데 <b>화면에 다 안 들어가는 긴 표</b>가 문제입니다. 나이스 명단, 긴 공문, 스크롤을 내려야 끝이 보이는 웹페이지요.</p>
-    <div class="note"><b>윈도우 기본 캡처(<code>Win</code>+<code>Shift</code>+<code>S</code>)로는 보이는 만큼만 찍힙니다.</b> 스크롤을 내리면서 이어 붙이려면 <b>스크롤 캡처</b>가 되는 프로그램이 필요합니다.</p></div>
-
-    <div class="block open" id="g-picpick">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">📸</span><span class="block-t">픽픽(PicPick) — 스크롤 캡처</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <div class="dls"><a class="dlbtn" href="https://picpick.app/ko/download/" target="_blank" rel="noopener">
-          <b>⬇ 픽픽 내려받기 — 한국어판</b><i>picpick.app/ko/download · 새 창에서 열립니다</i></a></div>
-        <ol class="steps">
-          <li>위 단추로 <b>한국어판</b>을 내려받아 설치합니다.</li>
-          <li>실행하면 작은 창이 뜹니다. <b>‘스크롤 윈도우’</b>를 고릅니다.</li>
-          <li>찍을 창을 한 번 누르면 <b>저절로 스크롤하며</b> 끝까지 찍습니다.</li>
-          <li>저장하고, 그 그림을 <b>클로드 대화창에 끌어다 놓습니다.</b></li>
-        </ol>
-        <div class="prompt mini">
-          <div class="ph"><span class="pl">찍은 그림을 올리고 이렇게</span><button class="copy" type="button">복사</button></div>
-<pre>이 화면에 있는 표를 그대로 엑셀로 만들어 줘.
-흐릿해서 못 읽은 칸은 [확인 필요]로 남겨 줘.</pre>
-        </div>
-        <div class="warnbox"><b>반드시 한국 사이트에서 받으세요.</b> <b>한국어판은 개인·기관·상업 사용 모두 무료</b>로 배포됩니다. 영문판은 비상업용만 무료라 조건이 다릅니다.<br>
-          <b>학교 업무용 컴퓨터</b>에 설치하실 때는 전산 담당 선생님께 한 번 여쭤보시는 게 좋습니다. 프로그램 설치를 막아 둔 학교가 있습니다.</div>
-        <div class="note"><b>이게 왜 선물이냐면</b> — 클로드에 <b>무엇을 줄 수 있는지</b>가 넓어집니다. 파일이 없어도, 복사가 안 되는 화면이어도, <b>찍어서 주면 됩니다.</b></div>
-      </div>
-    </div>
-
-    <h3 class="blk disp">둘 — 크롬 브라우저 안으로 클로드를 불러들이기</h3>
-    <p>지금까지는 <b>내 폴더</b>를 맡겼습니다. 이번엔 <b>내가 열어 둔 웹페이지</b>를 맡기는 이야기입니다.</p>
-    <p>로그인해 둔 사이트를 <b>클로드가 같이 보고, 대신 눌러 줍니다.</b> 화면을 캡처해 올릴 필요도, 내용을 복사해 붙여넣을 필요도 없습니다. <b>보고 있는 그 페이지 그대로</b> 일을 시킵니다.</p>
-
-    <div class="block" id="g-chrome">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">🌐</span><span class="block-t">Claude in Chrome — 크롬 확장 프로그램</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <div class="warnbox"><b>먼저 확인하실 것 — 유료 플랜에서만 됩니다.</b> Pro·Max·Team·Enterprise에서 열립니다. <b>무료 계정에서는 안 됩니다.</b> 그리고 <b>크롬에서만</b> 됩니다. 엣지나 웨일에서는 안 됩니다.</div>
-        <div class="dls"><a class="dlbtn" href="https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn" target="_blank" rel="noopener">
-          <b>⬇ Claude 크롬 확장 설치하기</b><i>크롬 웹스토어 · 새 창에서 열립니다 · 크롬에서 눌러 주세요</i></a></div>
-        <ol class="steps">
-          <li>위 단추를 눌러 <b>Chrome에 추가</b>합니다.</li>
-          <li>클로드 계정으로 로그인합니다.</li>
-          <li>일을 시킬 페이지를 열어 두고, 확장 아이콘을 눌러 <b>이 페이지에서 쓰기</b>를 허용합니다.</li>
-          <li>평소처럼 말로 시킵니다.</li>
-        </ol>
-        <div class="prompt mini">
-          <div class="ph"><span class="pl">이런 식으로 씁니다</span><button class="copy" type="button">복사</button></div>
-<pre>이 페이지에 있는 표를 읽어서 엑셀로 정리해 줘.
-
-이 설문 응답을 항목별로 요약하고, 많이 나온 의견 순서로 정리해 줘.
-
-이 페이지의 안내문을 학부모가 읽기 쉬운 말로 다시 써 줘.</pre>
-        </div>
-        <div class="note"><b>제일 편한 순간</b> — <b>복사가 안 되는 화면</b>입니다. 표가 이미지로 박혀 있거나, 드래그가 막혀 있거나, 페이지를 넘겨가며 봐야 하는 화면이요. 캡처해서 올리는 것보다 빠릅니다.</div>
-        <div class="warnbox"><b>내 계정으로 로그인된 브라우저에서 움직입니다.</b> 그래서 지킬 것이 있습니다.<br>
-          <b>페이지마다 허용을 따로 주세요.</b> 한 번에 다 허용하지 마시고, 그 일에 필요한 페이지만.<br>
-          <b>나이스·업무포털처럼 학생 정보가 있는 화면에서는 쓰지 마세요.</b> 공공기관 시스템은 외부 프로그램의 자동 조작을 허용하지 않는 경우가 있습니다.<br>
-          <b>결제·본인인증 화면에서는 쓰지 마세요.</b></div>
-      </div>
-    </div>
-
-    <div class="tnote"><span class="tag">강사</span>
-      <b>이 탭은 연수 시간 0분입니다.</b> 마무리에서 <b>“선물 탭에 둘 넣어 뒀습니다”</b> 한마디만 하고 넘어가세요. 열어서 보여주지 마세요. 한 번 열면 10분 갑니다.<br><br>
-      <b>시간이 남으면 픽픽 하나만</b> 보여주세요. 30초면 되고, 반응이 제일 좋습니다. 나이스 화면을 스크롤 캡처해서 클로드에 던지는 장면 한 번이면 충분합니다.<br><br>
-      <b>크롬 확장은 유료 플랜에서만 됩니다.</b> 연수용 계정으로 “해보세요”라고 하시면 안 되는 분이 나옵니다. <b>“개인 계정이 프로 이상이신 분만”</b>이라고 조건을 먼저 붙여 말씀하세요.<br><br>
-      <b>웹페이지 만드는 이야기는 🎨 아티팩트 탭으로 옮겼습니다.</b> 거기도 연수 시간 0분입니다.
-    </div>
-  </section>
-
-  <section class="panel" id="p-more">
-    <h2 class="s-title disp">더 알아보기</h2>
-    <p class="s-sub">처음부터 읽지 않으셔도 됩니다. 막히실 때 그 자리만 펼쳐 보세요.</p>
-    <div class="s-meta">
-      <span>방식 <b>교안으로만</b></span><span class="bd bd-show">찾아보는 곳</span>
-    </div>
-
-    <div class="note"><b>순서대로 읽는 곳이 아닙니다.</b> 아래 제목만 훑어보시고, <b>지금 내 얘기다 싶은 것만</b> 누르세요.</div>
-
-    <div class="qa">
-      <div class="qa-h">무엇이 필요하십니까</div>
-      <div class="qa-r"><div class="qa-q">뭔가 안 됩니다</div><div class="qa-a"><b>하나 — 막히실 때</b>로 가세요. 한글 파일, 사용량, 스킬이 안 켜질 때.</div></div>
-      <div class="qa-r"><div class="qa-q">화면이 낯섭니다</div><div class="qa-a"><b>둘 — 입력창 아래 줄</b>. 프로젝트·Output·모델·권한 네 자리를 읽는 법.</div></div>
-      <div class="qa-r"><div class="qa-q">써도 되나 걱정됩니다</div><div class="qa-a"><b>셋 — 학생 정보를 다룰 때</b>. 지켜야 할 네 가지.</div></div>
-      <div class="qa-r"><div class="qa-q">더 해보고 싶습니다</div><div class="qa-a"><b>넷 — 오늘 안 한 것들</b>. 무엇부터 손대면 되는지 순서까지.</div></div>
-    </div>
-
-
-    <div class="part"><b>하나 — 막히실 때</b><span>학교에서 제일 자주 나오는 넷</span></div>
-
-    <h3 class="blk disp">한글 파일이 말썽입니다</h3>
-    <div class="block">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">왜 한글만 유독 까다로운가</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p>클로드에 기본으로 들어 있는 문서 기능은 <b>워드 · 엑셀 · PPT · PDF</b>입니다. <b>한글(hwp)은 없습니다.</b> 우리나라에서만 쓰는 형식이라서요.</p>
-        <div class="files">
-          <div class="file"><b>.hwp</b><span>옛 형식. <b>읽는 것도 잘 안 됩니다.</b><br>한글에서 열어 <b>다른 이름으로 저장 → hwpx</b>로 바꿔 주세요</span></div>
-          <div class="file"><b>.hwpx</b><span>새 형식. <b>읽고 쓰는 게 됩니다.</b><br>오늘 드린 한글 양식 스킬이 이걸로 만듭니다</span></div>
-        </div>
-        <div class="warnbox"><b>그래도 안 되면</b> — <b>“내용을 화면에 보여 줘”</b> 또는 <b>“워드 파일로 만들어 줘”</b>라고 하세요. 한글에 붙여넣으시면 됩니다. 서식만 한 번 잡으시면 되니까요.</div>
-        <div class="note"><b>.hwp를 못 읽을 때</b>는 실습자료의 <code>참고_텍스트추출본</code> 폴더 안 <code>.txt</code>를 쓰시면 됩니다.</div>
-      </div>
-    </div>
-
-    <h3 class="blk disp">사용량 한도에 걸렸습니다</h3>
-    <div class="block">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">계정이 잠긴 게 아닙니다</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p><b>몇 시간 뒤에 저절로 풀립니다.</b> 잘못하신 게 아니고, 계정이 잠긴 것도 아닙니다.</p>
-        <div class="files">
-          <div class="file"><b>사용량을 많이 쓰는 일</b><span>사진 여러 장 읽기 · 코워크로 여러 단계 · 서브 에이전트 병렬</span></div>
-          <div class="file"><b>적게 쓰는 일</b><span>채팅으로 글 쓰기 · 스킬 만들기 · 아티팩트로 문서 만들기</span></div>
-        </div>
-        <div class="note"><b>모델을 확인하세요.</b> <b>소네트(Sonnet)</b>로 두시면 훨씬 오래 쓰십니다. 옵스(Opus)는 어려운 일에만 쓰세요.</div>
-        <div class="note"><b>간단한 건 채팅에서</b> 하세요. 코워크는 계획·실행·점검을 반복하느라 같은 일도 훨씬 많이 씁니다.</div>
-      </div>
-    </div>
-
-    <h3 class="blk disp">스킬이 안 켜집니다</h3>
-    <div class="block">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">부르는 말을 바꾸거나, 직접 고르세요</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p>스킬은 <b>설명에 적힌 상황과 내 말이 맞을 때</b> 켜집니다. 그래서 <b>말을 조금 바꾸면</b> 켜지는 경우가 많습니다.</p>
-        <ol class="steps">
-          <li>만들 때 정한 <b>다른 문구</b>로 다시 말해 보세요.</li>
-          <li>그래도 안 되면 <b>대화창 ＋ → 스킬</b>에서 <b>직접 고르세요.</b> 고르면 반드시 켜집니다.</li>
-          <li>계속 안 켜지면 <b>설명 줄을 고치세요</b> — “이 스킬 설명을 ○○할 때도 켜지게 고쳐 줘.”</li>
-        </ol>
-        <div class="note"><b>새 대화창에서 해 보세요.</b> 같은 창에서 계속하면 앞의 내용에 끌려가 헷갈립니다.</div>
-        <div class="warnbox"><b>스킬 메뉴가 아예 안 보인다면</b> <b>설정 → 기능 → ‘코드 실행 및 파일 생성’</b>이 꺼져 있는 것입니다.</div>
-      </div>
-    </div>
-
-    <h3 class="blk disp">엉뚱한 형식으로 나옵니다</h3>
-    <div class="block open">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">Output이 고정돼 있는지 보세요</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <p>한글 파일을 시켰는데 <b>슬라이드나 문서로</b> 나온다면, 입력창 아래 <b>Output</b>이 어딘가에 고정돼 있는 것입니다.</p>
-        <figure class="sld nofold"><img src="img/707d238fca8f.jpg" alt="Output 고르는 화면" loading="lazy"><figcaption>맨 아래 <b>Artifact — Let Claude pick the format</b>이 기본값입니다.</figcaption></figure>
-        <div class="note"><b>건드리지 않으셨으면 알아서 고릅니다.</b> <b>Docs · Slides · Design</b>을 고르는 건 “이 형식으로만 만들어라”고 못 박는 것입니다. 되돌리시려면 <b>Artifact</b>를 고르세요.</div>
-        <div class="note"><b>한글은 이 목록에 없습니다.</b> 한글 파일은 <b>스킬이 만들어 주는 것</b>이라 이 설정과 상관이 없습니다.</div>
-      </div>
-    </div>
-
-
-    <div class="part"><b>둘 — 입력창 아래 줄</b><span>네 자리가 무엇을 고르는 자리인가</span></div>
-    <p>화면이 자꾸 바뀌어서 낯설게 느껴지실 수 있습니다. <b>입력창 아래 한 줄만</b> 읽으실 줄 알면 됩니다.</p>
-    <div class="qa">
-      <div class="qa-h">왼쪽부터 오른쪽으로</div>
-      <div class="qa-r">
-        <div class="qa-q">프로젝트 <br>또는 폴더</div>
-        <div class="qa-a"><b>어디서 일할까.</b> 내 컴퓨터 폴더를 맡기거나, 프로젝트 방 안에서 하실 때 고릅니다. 안 고르시면 그냥 대화입니다.</div>
-      </div>
-      <div class="qa-r">
-        <div class="qa-q">Output</div>
-        <div class="qa-a"><b>어떤 형태로 만들까.</b> 그냥 두시면 <b>클로드가 알아서</b> 고릅니다. 위의 ‘엉뚱한 형식으로 나옵니다’를 보세요.</div>
-      </div>
-      <div class="qa-r">
-        <div class="qa-q">모델</div>
-        <div class="qa-a"><b>어느 머리를 쓸까.</b> <b>Sonnet</b>이면 충분하고 오래 씁니다. Opus는 어려운 일에만. 🛠️ 시작 전 세팅 6번에 화면이 있습니다.</div>
-      </div>
-      <div class="qa-r">
-        <div class="qa-q">수동 / 자동</div>
-        <div class="qa-a"><b>물어보고 할까.</b> <b>수동</b>이면 새 일을 하기 전에 매번 확인을 받습니다. 🤝 코워크 탭에 자세히 적어 뒀습니다.</div>
-      </div>
-    </div>
-    <div class="note"><b>넷 다 안 건드리셔도 됩니다.</b> 기본값이 가장 무난합니다. <b>무언가 이상할 때 여기를 보시면</b> 대개 답이 있습니다.</div>
-
-
-    <div class="part"><b>셋 — 학생 정보를 다룰 때</b><span>오늘 내내 지킨 것</span></div>
-    <div class="block open">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">오늘 내내 지킨 네 가지</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <ul class="steps">
-          <li><b>본인 컴퓨터에서만</b> 하세요. 공용 PC나 남의 계정에서 하지 않습니다.</li>
-          <li><b>결과를 링크(아티팩트)로 만들지 마세요.</b> 학생 이름·사진·연락처가 든 페이지는 링크가 되면 주소를 아는 사람이 볼 수 있습니다.</li>
-          <li><b>지우라고 시키지 않습니다.</b> ‘버릴것’ 폴더에 모아만 두게 하고, 지우는 건 사람이 봅니다.</li>
-          <li><b>폴더 하나만</b> 맡기세요. 바탕화면이나 내 문서를 통째로 맡기지 않습니다.</li>
-        </ul>
-        <div class="warnbox"><b>영수증·명부 사진에는 카드번호나 연락처가 찍혀 있을 수 있습니다.</b> 올리시기 전에 가리고 찍어 주세요.</div>
-      </div>
-    </div>
-
-    <div class="part"><b>넷 — 오늘 안 한 것들</b><span>무엇부터 손대면 되는지</span></div>
-    <figure class="sld slide"><img src="img/7cf3973325f7.jpg" alt="어디까지 되나 — 행정 · 평가 · 수업 · 생활지도 · 연수·연구 · 개인 업무. 오늘 한 건 이 중 두 칸입니다" loading="lazy"><figcaption>어디까지 되나 — 행정 · 평가 · 수업 · 생활지도 · 연수·연구 · 개인 업무. 오늘 한 건 이 중 두 칸입니다</figcaption></figure>
-    <div class="block">
-      <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">루틴 · 커넥터 · 클로드 코드</span><span class="chev">⌄</span>
-      </div>
-      <div class="block-body">
-        <div class="files">
-          <div class="file"><b>루틴(예정됨)</b><span>“매주 월요일 아침 9시에 해 줘”<br>그때마다 저절로 돕니다. <b>‘예정됨’ 탭</b>에서 확인</span></div>
-          <div class="file"><b>커넥터</b><span>드라이브·지메일·캘린더 등과 연결<br><b>＋ → 커넥터 → 둘러보기</b></span></div>
-          <div class="file"><b>클로드 코드</b><span>만드는 일에 맞춘 개발자 버전<br>코워크가 사무 쪽이라면 이쪽은 제작 쪽입니다</span></div>
-          <div class="file"><b>플러그인</b><span>여러 스킬과 연결·저장까지 한 덩어리로<br>스킬 하나를 제대로 만드신 뒤에</span></div>
-        </div>
         <div class="note"><b>순서가 있습니다.</b> 스킬 하나 → 코워크로 폴더 하나 → 그다음이 루틴과 플러그인입니다. <b>한꺼번에 하려 하지 마세요.</b></div>
       </div>
     </div>
 
-    <div class="part"><b>다섯 — 이 교안은</b><span>연수가 끝난 뒤</span></div>
     <div class="block">
       <div class="block-head" onclick="toggle(this)">
-        <span class="block-n">＋</span><span class="block-t">연수가 끝나도 남습니다</span><span class="chev">⌄</span>
+        <span class="block-n">＋</span><span class="block-t">일을 시키기 전에 — 다섯 칸</span><span class="chev">⌄</span>
       </div>
       <div class="block-body">
-        <p>이 페이지는 <b>연수가 끝난 뒤에도 그대로</b> 열립니다. 프롬프트도 실습자료도 전부 여기 있습니다.</p>
-        <div class="note"><b>학교 단톡방에 링크를 올려 두세요.</b> 오늘 못 오신 분도 보실 수 있습니다. 암호는 <b>연수에서 안내드린 네 자리 + 네 자리</b>입니다.</div>
-        <div class="note"><b>궁금한 게 생기시면</b> — 그냥 클로드에게 물어보세요. <b>“내가 가지고 있는 스킬이 뭐니?”</b>, <b>“이 스킬 어떻게 고쳐?”</b> 대부분 그 자리에서 답이 나옵니다.</div>
+        <p>일을 시키기 전에 <b>다섯 칸만 채워 보시면</b> 프롬프트가 저절로 나옵니다.</p>
+        <div class="five">
+          <div class="fc"><span class="n">01 입력</span><b>어디서 가져올까</b><p>내 폴더 · 드라이브<br>메일 · 웹 검색</p></div>
+          <div class="fc"><span class="n">02 처리</span><b>무엇을 시킬까</b><p>정리 · 요약 · 비교<br>분류 · 점검</p></div>
+          <div class="fc"><span class="n">03 출력</span><b>어떤 형태로</b><p>한글 · 엑셀 · PPT<br>워드 · 웹페이지</p></div>
+          <div class="fc"><span class="n">04 저장</span><b>어디에 둘까</b><p>내 폴더 · 드라이브<br>메일 초안</p></div>
+          <div class="fc"><span class="n">05 시점</span><b>언제 실행할까</b><p>지금 · 파일을 넣으면<br>매주 월요일</p></div>
+        </div>
+        <div class="note"><b>05 시점</b>이 잘 안 알려진 칸입니다. <b>“매주 월요일 아침 9시에 해 줘”</b>라고 하면 그때마다 저절로 돕니다. 예정된 일은 <b>‘예정됨’ 탭</b>에서 확인하실 수 있습니다.</div>
       </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">어디까지 되나 — 여섯 영역</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+    <figure class="sld nofold"><img src="img/7cf3973325f7.jpg" alt="어디까지 되나 — 행정 · 평가 · 수업 · 생활지도 · 연수·연구 · 개인 업무. 오늘 한 건 이 중 두 칸입니다" loading="lazy"><figcaption>어디까지 되나 — 행정 · 평가 · 수업 · 생활지도 · 연수·연구 · 개인 업무. 오늘 한 건 이 중 두 칸입니다</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head" onclick="toggle(this)">
+        <span class="block-n">＋</span><span class="block-t">커넥터 · 클로드 코드</span><span class="chev">⌄</span>
+      </div>
+      <div class="block-body">
+        <div class="files">
+          <div class="file"><b>커넥터</b><span>드라이브·지메일·캘린더 등과 연결<br><b>＋ → 커넥터 → 둘러보기</b></span></div>
+          <div class="file"><b>클로드 코드</b><span>만드는 일에 맞춘 개발자 버전<br>코워크가 사무 쪽이라면 이쪽은 제작 쪽입니다</span></div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="lab">이 교안은</span>
+        <p>이 페이지는 <b>연수가 끝난 뒤에도 그대로</b> 열립니다. 프롬프트도 실습자료도 전부 여기 있습니다.</p>
+        <p><b>학교 단톡방에 링크를 올려 두세요.</b> 오늘 못 오신 분도 보실 수 있습니다. 암호는 <b>20262026</b>입니다.</p>
+        <p><b>궁금한 게 생기시면</b> — 그냥 클로드에게 물어보세요. <b>“내가 가지고 있는 스킬이 뭐니?”</b>, <b>“이 스킬 어떻게 고쳐?”</b> 대부분 그 자리에서 답이 나옵니다.</p>
     </div>
   </section>
 </main>
@@ -2938,6 +3191,13 @@ index.html에서 그 파일들을 불러오게 해 줘.</pre>
 
 <script>
 var PW = "20262026";
+var TPWH = 2088544379; /* 강사 암호의 해시 — 암호 자체는 적지 않음 */
+function tph(s){var x=5381;for(var k=0;k<s.length;k++){x=((x<<5)+x+s.charCodeAt(k))|0;}return x;}
+function setTeacher(){
+  document.body.classList.add('tch','tmode');
+  var b=document.getElementById('tbtn'); if(b) b.textContent='강사 메모 숨기기';
+  try{ sessionStorage.setItem('yj_t','1'); }catch(e){}
+}
 var want = null;
 function go(id){
   if(document.body.classList.contains('unl')){ showTab(id); return; }
@@ -2950,8 +3210,10 @@ function unlock(e){
   if(e&&e.preventDefault) e.preventDefault();
   var i = document.getElementById('pwin');
   var err = document.getElementById('pwerr');
-  if((i.value||'').trim() === PW){
+  var v=(i.value||'').trim(), isT=(tph(v)===TPWH);
+  if(v === PW || isT){
     document.body.classList.add('unl'); try{buildToc();}catch(e){}
+    if(isT){ setTeacher(); }
     closeMdl();
     var g = document.getElementById('gmsg'); if(g) g.remove();
     if(want) showTab(want);
@@ -2974,7 +3236,7 @@ function showTab(id){
 function toggle(el){ el.parentElement.classList.toggle('open'); }
 
 function dl(btn,id,name){
-  var map={"zAll": "여주초_연수실습자료.zip", "z10": "시연용_어질러진_다운로드폴더.zip", "zRcpt": "1_영수증.zip", "zCons": "2_체험학습동의서_한반.zip", "zPaper": "6_종이명단.zip", "zPerf": "8_수행평가사진.zip", "zField": "9_체험학습사진.zip", "zGong": "3_공문안내.zip", "zLtr": "4_가정통신문.zip", "zPlan": "5_계획서.zip", "zRep": "5_보고서.zip", "zXls": "1_교원_수요조사_결과.xlsx", "zSkA": "여주초_공문안내메시지_스킬.zip", "zSkC": "여주초_선도학교문서_스킬.zip", "zG2": "교육과-13006_수업공개_참관신청_안내.pdf", "zG1": "교육과-11731_수업나눔한마당_운영계획_안내.pdf", "zHwp": "여주초_한글양식_스킬.zip", "zSample": "여주초_교수학습과정안.hwpx", "zLtrForm": "여주초_한글양식.hwpx", "zStd12": "성취수준_1-2학년군.pdf", "zStd34": "성취수준_3-4학년군.pdf", "zStd56": "성취수준_5-6학년군.pdf"};
+  var map={"zAll": "여주초_연수실습자료.zip", "z10": "시연용_어질러진_다운로드폴더.zip", "zRcpt": "1_영수증.zip", "zCons": "2_체험학습동의서_한반.zip", "zPaper": "6_종이명단.zip", "zPerf": "8_수행평가사진.zip", "zField": "9_체험학습사진.zip", "zGong": "3_공문안내.zip", "zLtr": "4_가정통신문.zip", "zPlan": "5_계획서.zip", "zRep": "5_보고서.zip", "zXls": "1_교원_수요조사_결과.xlsx", "zSkA": "여주초_공문안내메시지_스킬.zip", "zSkC": "여주초_선도학교문서_스킬.zip", "zG2": "교육과-13006_수업공개_참관신청_안내.pdf", "zG1": "교육과-11731_수업나눔한마당_운영계획_안내.pdf", "zHwp": "여주초_한글양식_스킬.zip", "zSample": "여주초_교수학습과정안.hwpx", "zLtrForm": "여주초_한글양식.hwpx", "zStd12": "성취수준_1-2학년군.pdf", "zStd34": "성취수준_3-4학년군.pdf", "zStd56": "성취수준_5-6학년군.pdf", "zStd34soc": "성취수준_3-4학년군_사회만.pdf"};
   var f=map[id]; if(!f){return;}
   var b=btn.querySelector('b'), orig=b.textContent;
   var a=document.createElement('a');
@@ -3029,6 +3291,11 @@ function buildToc(){
   }
 }
 
+(function(){ try{ if(sessionStorage.getItem('yj_t')==='1'){ document.body.classList.add('unl','tch','tmode'); var b=document.getElementById('tbtn'); if(b) b.textContent='강사 메모 숨기기'; var g=document.getElementById('gmsg'); if(g) g.remove(); } }catch(e){} })();
+document.querySelectorAll('details.tlock').forEach(function(d){
+  d.addEventListener('toggle',function(){ if(d.open && !document.body.classList.contains('tch')) d.open=false; });
+  d.querySelector('summary').addEventListener('click',function(e){ if(!document.body.classList.contains('tch')) e.preventDefault(); });
+});
 function toggleTeacher(){
   document.body.classList.toggle('tmode');
   document.getElementById('tbtn').textContent =
@@ -3160,7 +3427,7 @@ function toggleMega(h){
 })();
 
 /* ── 스킬 탭은 처음에 전부 접어 둡니다 ── */
-['p-skill','p-cowork','p-project'].forEach(function(pid){ (function foldSkill(){
+['p-skill','p-cowork','p-project','p-artifact','p-more','p-bonus'].forEach(function(pid){ (function foldSkill(){
   var pn = document.getElementById(pid);
   if(!pn) return;
   var add = function(sel, cls){

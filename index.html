@@ -833,6 +833,53 @@ body:not(.unl) .tgrp{opacity:.5}
 .block.gold>.block-head{background:linear-gradient(160deg,#FCEFC2 0%,#F3DC96 50%,#EBD17E 100%)!important;border-bottom-color:#C9A544}
 .block.gold>.block-head .block-n{background:#A8841F}
 .block.gold>.block-head .block-t{color:#3a2a05}
+
+/* 9. 왼쪽 사이드바 (스킬·코워크·프로젝트·아티팩트) */
+.sidenav{display:none}
+body.side-on .sidenav{display:block}
+.sn-h{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:var(--muted);margin:2px 4px 10px}
+.sn-toggle{display:none}
+.sn-list{list-style:none;margin:0;padding:0}
+.sn-list li{margin:0 0 6px}
+.sn-a{display:flex;gap:8px;align-items:flex-start;width:100%;text-align:left;font:inherit;font-size:14.5px;line-height:1.4;font-weight:700;
+  color:var(--ink);background:transparent;border:1px solid transparent;border-radius:10px;padding:8px 10px;cursor:pointer}
+.sn-a:hover{background:var(--clay-soft)}
+.sn-a .sn-n{flex:none;min-width:20px;height:20px;border-radius:999px;background:var(--clay);color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.sn-a.gold{background:linear-gradient(160deg,#FFF8E1,#FCEFC2);border-color:#C9A544;color:#4A3708}
+.sn-a.gold .sn-n{background:#A8841F}
+.sn-a .sn-star{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:#B8841F;border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:1px;white-space:nowrap}
+.sn-sub{list-style:none;margin:4px 0 8px 18px;padding:0 0 0 10px;border-left:2px solid #E2CB83}
+.sn-sub .sn-a{font-size:13.5px;font-weight:600;padding:5px 8px;color:var(--ink-3)}
+.sn-sub .sn-a .sn-n{background:transparent;color:#A8841F;border:1.5px solid #C9A544;min-width:18px;height:18px;font-size:11px}
+.sn-a.end{font-weight:600;color:var(--muted)}
+.sn-a.end .sn-n{background:var(--line);color:var(--ink-3)}
+.sn-a.cur{outline:2px solid var(--clay);outline-offset:-2px;background:var(--paper)}
+.sn-a.gold.cur{outline-color:#8A6A12;background:linear-gradient(160deg,#FFF3C8,#F7E2A0)}
+@media (min-width:1100px){
+  body.side-on main.wrap{max-width:1290px;display:grid;grid-template-columns:250px minmax(0,1fr);column-gap:26px}
+  body.side-on main.wrap > *{grid-column:1 / -1}
+  body.side-on main.wrap > .panel{grid-column:2}
+  body.side-on main.wrap > .sidenav{grid-column:1;grid-row:2 / span 30;align-self:start;position:sticky;top:calc(var(--tabsH,90px) + 12px);
+    max-height:calc(100vh - var(--tabsH,90px) - 28px);overflow:auto;padding:14px 10px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
+  body.side-on main.wrap > .panel.on{grid-row:2}
+  body.side-on header.top .inner{max-width:1290px;padding-left:294px}
+}
+@media (max-width:1099.98px){
+  body.side-on .sidenav{margin:-8px 0 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper);padding:6px 8px}
+  .sn-toggle{display:flex;justify-content:space-between;width:100%;font:inherit;font-weight:800;font-size:15px;color:var(--ink);background:none;border:0;padding:8px 6px;cursor:pointer}
+  .sidenav .sn-h{display:none}
+  .sidenav .sn-list{display:none;padding:4px 0 6px}
+  .sidenav.open .sn-list{display:block}
+  .sidenav.open .sn-toggle span{transform:rotate(180deg);display:inline-block}
+}
+
+/* 10. 실습 단계 머리 (사이드바 번호와 짝) */
+h4.pnum.stephead{display:flex;align-items:center;gap:12px;margin:3.4em 0 16px;padding:13px 18px;border:1.5px solid #C9A544;border-left:1.5px solid #C9A544;
+  border-radius:12px;background:linear-gradient(160deg,#FFF8E1,#FCEFC2);color:#4A3708;font-size:19px;line-height:1.35}
+h4.pnum.stephead::before{content:attr(data-n);flex:none;width:30px;height:30px;border-radius:50%;background:#A8841F;color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;position:static;margin:0;border:0}
+h4.pnum.stephead::after{content:"단계 " attr(data-n) " / 4";margin-left:auto;font-size:12.5px;font-weight:700;color:#8A6A12;white-space:nowrap;position:static;background:none;width:auto;height:auto}
+h4#pj-s1.stephead{margin-top:1.6em}
 </style>
 </head>
 <body>
@@ -860,6 +907,11 @@ body:not(.unl) .tgrp{opacity:.5}
     <button class="tab" data-tab="bonus" onclick="go('bonus')">🎁 선물</button>
     <button class="tab" data-tab="more" onclick="go('more')">📖 더 알아보기</button>
   </nav>
+  <aside class="sidenav" id="sidenav" aria-label="이 탭 목차">
+    <button type="button" class="sn-toggle" onclick="document.getElementById('sidenav').classList.toggle('open')">이 탭 목차 <span>▾</span></button>
+    <div class="sn-h">이 탭 목차</div>
+    <ol class="sn-list" id="sn-list"></ol>
+  </aside>
 
   <section class="panel on" id="p-home">
     <div class="instructor"><div class="ins-banner"><div class="ins-kicker">INSTRUCTOR · 강사</div><div class="ins-name">이애진 <span>Lee Ae-jin</span></div><div class="ins-chips"><span class="ins-chip">구글 공식 PD 파트너사 · <b>FlowDX 대표</b></span><span class="ins-chip">구글 공식 트레이너 (Google Certified Trainer)</span><span class="ins-chip">🎓 서울대학교 정보문화학(ICT)</span></div><div class="ins-div"></div><div class="ins-contact"><a class="ins-pill" href="https://flowdx.kr" target="_blank" rel="noopener">🌐 flowdx.kr</a><a class="ins-pill" href="mailto:ai@flowdx.kr">✉ ai@flowdx.kr</a><a class="ins-pill" href="tel:01023198419">☎ 010-2319-8419</a><a class="ins-pill ins-cta" href="https://capable-tarsier-97affe.netlify.app/" target="_blank" rel="noopener">🔗 프로필 보기</a></div></div><button class="ins-toggle" onclick="this.closest('.instructor').classList.toggle('open')"><span class="ins-plus">+</span> 강사 상세 이력 보기<span class="ins-tag">학력 · 경력 · 저서</span></button><div class="ins-more"><div class="ins-grid"><div class="ins-col"><h4>🎓 학력 · 자격</h4><ul><li>서울대학교 정보문화학(ICT)</li><li><b>구글 공식 PD 파트너사</b> (Google PD Partner)</li><li>Google Certified Trainer (구글 공식 트레이너)</li><li>Gemini Certified Educator (제미나이 에듀케이터)</li><li>ADsP · 데이터 분석 준전문가</li></ul></div><div class="ins-col"><h4>📰 언론 보도 · 공식 성과</h4><ul><li>중앙뉴스타임스(2025.11) · 인천시교육청 교육연수원 직무연수</li><li>인천광역시교육청(2025.12) · 초·중등 교실수업혁명 직무연수 운영</li><li>미디어투데이(2025.07) · 파주교육지원청 AI 소통 역량 강화·실무 적용</li></ul></div><div class="ins-col ins-wide"><h4>🏫 교육 · 행정 혁신 주요 경력</h4><ul><li>구글 코리아 <b>제미나이 아카데미 주강사</b></li><li>전국 학교장·교감 교원 대상 <b>AI 리터러시 리더십 연수 200회+</b></li><li>대학 교직원·교수·학생 대상 AI 행정 혁신 연수</li><li><b>고려대·성균관대·숙명여대·한양대</b> 등 대학 연수</li><li><b>용인·이천교육지원청</b> AI 연수</li><li><b>경기도교육연구원 박사급 연구원</b> 대상 정책연구 AI 활용 연수</li><li>5~9급 교육행정직 공무원 <b>AI 정책보고서 연수</b></li><li>한국과학창의재단 ‘찾아가는 학교컨설팅’ 코디네이터·주강사</li><li>대원외고 등 특목고 AI 연수 및 영재교육연구소 강사 양성 연수</li></ul></div><div class="ins-col"><h4>💼 산업 현장 실무</h4><ul><li><b>FlowDX 대표</b> — AI 비즈니스 모델링·공공기관 DX 전환 컨설팅 총괄</li><li>Ebay·G마켓·옥션 해외 플랫폼 개발 프로젝트 기획 참여</li><li>Nexon·Ebay 등 글로벌 기업 주요 프로젝트 기획·개발</li></ul></div><div class="ins-col"><h4>📚 주요 저서</h4><ul><li>『HTML, CSS, JavaScript를 배우는 마법코딩학교』</li><li>『AI시대, 보고서가 당신의 무기가 된다』</li><li>『AI 기반 문화콘텐츠 기획』</li></ul></div></div></div></div>
@@ -1788,7 +1840,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
     
     <div class="sp2"></div>
 
-    <div class="tabend">
+    <div class="tabend" id="sk-end">
       <div class="tabend-h">스킬 마무리 — 진짜 업무로 한 번</div>
       <p><b>연습 말고 진짜 업무로, 이번 주 안에 한 번.</b> <b>이번 주에 두 번 이상 하신 일</b>을 하나 골라, 클로드와 한 번 제대로 해 보고 끝에 이 한 줄을 붙이세요.</p>
       <div class="prompt">
@@ -1952,9 +2004,14 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
           <div class="ph"><span class="pl">복사해서 붙여넣으세요</span><button class="copy" type="button">복사</button></div>
 <pre>이 다운로드 폴더 정리해줘.</pre>
         </div>
+        <div class="prompt" style="margin-top:10px">
+          <div class="ph"><span class="pl">더 꼼꼼하게 하려면 — 이 두 줄로</span><button class="copy" type="button">복사</button></div>
+<pre>이 다운로드 폴더 정리해 줘.
+이름만 보지 말고, 애매한 건 열어 보고 판단해 줘.</pre>
+        </div>
         <div class="note"><b>한 줄이면 됩니다.</b> 붙여넣기 전에 <b>탐색기를 화면 반쪽에 띄워 두세요.</b> 채팅창의 글자가 아니라 <b>내 폴더에서 파일이 실제로 움직이는 것</b>이 코워크입니다.</div>
 
-        <h4 class="pnum">이렇게 나옵니다</h4>
+        <h4 id="c-first-res" class="pnum">이렇게 나옵니다</h4>
         <div class="note"><b>한 줄만 줬는데</b> 파일 35개를 <b>업무별 폴더 9개</b>로 나누고, 이름만으로는 알 수 없던 <b>13개는 열어 보고 이름을 바꿨습니다.</b> <b>지운 파일은 없습니다.</b></div>
 
         <details class="ex keep">
@@ -2064,7 +2121,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
           </div>
         </details>
         <div class="note">계획이 나오면 <b>“진행”</b>이라고 하시면 됩니다. 되묻는 게 있으면 답하시고, 없으면 그냥 진행하세요.</div>
-        <h4 class="pnum">이렇게 나옵니다</h4>
+        <h4 id="c-consent-res" class="pnum">이렇게 나옵니다</h4>
         <div class="files">
           <div class="file"><b>제출 9명</b><span>동의서 사진으로 확인</span></div>
           <div class="file"><b>미제출 11명</b><span>명렬표에는 있고 사진은 없음</span></div>
@@ -2381,21 +2438,19 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
           </div>
         </details>
 
-        <h4 class="pnum">먼저 자료 폴더를 준비합니다 — 오늘은 4학년 사회</h4>
+        <h4 id="pj-s1" class="pnum stephead" data-n="1">먼저 자료 폴더를 준비합니다 — 오늘은 4학년 사회</h4>
         <div class="dls">
-          <button class="dlbtn" type="button" onclick="dl(this,'zStd34','성취수준_3-4학년군.pdf')"><b>⬇ ① 3~4학년군 성취수준</b><i>PDF · 6MB · 오늘은 이것</i></button>
-          <button class="dlbtn" type="button" onclick="dl(this,'zSample','여주초_교수학습과정안.hwpx')"><b>⬇ ② 과정안 본보기 — 여주초 서식</b><i>한글 · 1학년 수학 한 장</i></button>
+          <button class="dlbtn" type="button" onclick="dl(this,'zPlanSet','교수학습과정안.zip')"><b>⬇ 교수학습과정안 폴더 받기</b><i>성취수준(3~4학년군) + 과정안 본보기 · 5MB — 압축 풀어 바탕화면에 두세요</i></button>
         </div>
-        <span class="pair-l" style="margin-top:10px">바탕화면에 <b>교수학습과정안_자료</b> 폴더를 만들고, 받은 두 파일을 넣으면 이렇게 됩니다</span>
-        <figure class="sld nofold"><img src="img/project_folder.jpg" alt="교수학습과정안 자료 폴더 — 성취수준 3-4학년군 PDF와 여주초 교수학습과정안 한글 파일" loading="lazy" style="max-width:480px;margin:0 0 10px"></figure>
+        <span class="pair-l" style="margin-top:10px">압축을 풀면 <b>‘교수학습과정안’</b> 폴더 안에 두 파일이 들어 있습니다. 이 폴더를 방에 연결합니다</span>
+        <figure class="sld nofold"><img src="img/project_folder.jpg" alt="교수학습과정안 폴더 — 성취수준 3-4학년군 PDF와 여주초 교수학습과정안 한글 파일" loading="lazy" style="max-width:480px;margin:0 0 10px"></figure>
         <details class="ex keep" style="margin:6px 0 18px">
-          <summary>순서대로 보기 — 세 단계</summary>
+          <summary>따로 받기 — 한 파일씩 필요할 때</summary>
           <div class="exb">
-            <ol class="steps">
-          <li><b>바탕화면에 새 폴더</b>를 만듭니다. 바탕화면 빈 곳에서 <b>오른쪽 클릭 → 새로 만들기 → 폴더</b>. 이름은 <b>교수학습과정안_자료</b>.</li>
-          <li>아래 두 버튼을 눌러 <b>3~4학년군 성취수준</b>과 <b>과정안 본보기</b>를 받습니다.</li>
-          <li>받은 두 파일을 <b>방금 만든 폴더 안으로</b> 옮깁니다. <span class="mut">받은 파일은 보통 ‘다운로드’ 폴더에 있습니다. 끌어다 놓으시면 됩니다</span></li>
-        </ol>
+            <div class="dls" style="margin-top:0">
+              <button class="dlbtn" type="button" onclick="dl(this,'zStd34','성취수준_3-4학년군.pdf')"><b>⬇ 3~4학년군 성취수준</b><i>PDF · 6MB</i></button>
+              <button class="dlbtn" type="button" onclick="dl(this,'zSample','여주초_교수학습과정안.hwpx')"><b>⬇ 과정안 본보기 — 여주초 서식</b><i>한글 · 1학년 수학 한 장</i></button>
+            </div>
           </div>
         </details>
         <details class="qf pdfview" ontoggle="if(this.open){var f=this.querySelector('iframe');if(!f.src)f.src=f.dataset.src;}">
@@ -2418,7 +2473,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
           </div>
         </details>
 
-        <h4 class="pnum">방을 만듭니다</h4>
+        <h4 id="pj-s2" class="pnum stephead" data-n="2">방을 만듭니다</h4>
         <ol class="steps">
           <li>입력창 아래 <b>프로젝트 또는 폴더 → ＋ 새 프로젝트</b>.</li>
         </ol>
@@ -2429,7 +2484,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
             <ul style="margin:8px 0 0 0;padding-left:18px">
               <li><b>무엇을 작업 중이신가요?</b> → <b>교수학습과정안</b></li>
               <li><b>어떤 목표를 달성하려고 하시나요?</b> → 아래 지침을 붙여넣기</li>
-              <li><b>폴더 사용</b> → 위에서 받은 <b>두 파일을 넣어 둔 폴더</b>를 고르기</li>
+              <li><b>폴더 사용</b> → 바탕화면의 <b>‘교수학습과정안’ 폴더</b>를 고르기</li>
             </ul>
           </li>
           <li><b>프로젝트 생성</b>을 누릅니다.</li>
@@ -2470,7 +2525,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
         </details>
         <div class="note"><b>지침은 한 번만 적어 두면 됩니다.</b> 이 방 안에서 여는 대화에는 매번 저절로 적용됩니다.</div>
 
-        <h4 class="pnum">방 안에서 과정안을 시킵니다</h4>
+        <h4 id="pj-s3" class="pnum stephead" data-n="3">방 안에서 과정안을 시킵니다</h4>
         <ol class="steps" style="counter-reset:st 4">
           <li>방 안에서 <b>새 대화</b>를 엽니다. <span class="mut">방 밖의 대화창에서 하면 성취기준 파일을 못 봅니다</span></li>
           <li>아래를 붙여넣습니다.</li>
@@ -2492,7 +2547,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
         <div class="note">이게 지침 맨 끝 <b>“모르는 건 물어봐.”</b>가 하는 일입니다. 이 한 줄이 없으면 그럴듯하게 채워 넣습니다.</div>
         <div class="note">시간이 길게 표시돼도 괜찮습니다. <b>질문에 답하는 동안의 시간까지 함께 세어집니다.</b></div>
 
-        <h4 class="pnum">이렇게 나옵니다</h4>
+        <h4 id="pj-s4" class="pnum stephead" data-n="4">이렇게 나옵니다</h4>
         <div class="note"><b>여주초 서식 그대로, 새 한글 파일이 연결한 폴더에 저장됩니다.</b> 표의 칸과 줄 수는 본보기와 똑같고 글자만 바뀝니다. 대화창에 뜨는 다운로드 버튼은 같은 파일의 사본이라, 누르지 않으셔도 폴더에 이미 있습니다.</div>
         <div class="note"><b>폴더를 열어 보면</b> 본보기 옆에 <b>새 파일</b> <code>여주초_교수학습과정안_4학년사회_3차시.hwpx</code>가 생겼습니다(빨간 칸). 본보기 원본은 그대로입니다.</div>
         <figure class="sld nofold"><img src="img/project_folder_after.jpg" alt="자료 폴더에 새로 생긴 4학년 사회 과정안 한글 파일" loading="lazy" style="max-width:480px;margin:0 auto"></figure>
@@ -2620,7 +2675,7 @@ AI·디지털 활용 선도학교/ 경기 미래형 과학실/ Why Up 선도학�
     </div>
 
         <div class="secbreak"></div>
-    <div class="finbox">
+    <div class="finbox" id="pj-end">
     <h2 class="s-title disp">마무리 — 오늘 가져가실 세 줄</h2>
     <p class="s-sub">스킬에서도, 코워크에서도, 프로젝트에서도 같은 세 줄을 썼습니다.</p>
     <div class="prompt">
@@ -2873,6 +2928,7 @@ index.html에서 그 파일들을 불러오게 해 줘.</pre>
 <pre>/**
  * 오늘의 커피 담당자 — 구글 시트 연결용 앱스 스크립트
  * 룰렛 돌리기 · 새 접수 · 남의 주문 지우기는 아래 강사 암호가 있어야 됩니다.
+ * 룰렛은 한 번에 1~5명까지 뽑을 수 있습니다.
  */
 var HOST_KEY = '강사암호';   // ← 따옴표 안에 강사 암호를 넣으세요
 
@@ -2908,8 +2964,11 @@ function out_(o) {
 function view_() {
   var st = readState_();
   var list = orders_(st.round).map(function (o) { return { id: o.id, name: o.name, menu: o.menu }; });
-  var w = st.winnerId ? { id: String(st.winnerId), name: String(st.winnerName), menu: String(st.winnerMenu), at: String(st.spinAt) } : null;
-  return { ok: true, round: Number(st.round), orders: list, winner: w };
+  var ws = [];
+  if (st.winners) { try { ws = JSON.parse(st.winners); } catch (e) { ws = []; } }
+  else if (st.winnerId) { ws = [{ id: String(st.winnerId), name: String(st.winnerName), menu: String(st.winnerMenu) }]; }
+  var w = ws.length ? { id: ws[0].id, name: ws[0].name, menu: ws[0].menu, at: String(st.spinAt) } : null;
+  return { ok: true, round: Number(st.round), orders: list, winner: w, winners: ws };
 }
 function clean_(t, n) { return String(t || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, n); }
 
@@ -2944,9 +3003,11 @@ function doPost(e) {
       if (!isHost) return out_({ ok: false, error: '룰렛은 강사만 돌릴 수 있습니다.' });
       var list = orders_(st.round);
       if (list.length &lt; 2) return out_({ ok: false, error: '두 분 이상 등록해야 돌릴 수 있습니다.' });
-      var w = list[Math.floor(Math.random() * list.length)];
-      st.winnerId = w.id; st.winnerName = w.name; st.winnerMenu = w.menu; st.spinAt = String(Date.now());
-      writeState_(st);
+      var cnt = Math.max(1, Math.min(5, Number(b.count) || 1, list.length));
+      var pool = list.slice();
+      for (var i = pool.length - 1; i &gt; 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+      var picked = pool.slice(0, cnt).map(function (o) { return { id: o.id, name: o.name, menu: o.menu }; });
+      writeState_({ round: st.round, winners: JSON.stringify(picked), spinAt: String(Date.now()) });
     }
     else if (b.action === 'reset') {
       if (!isHost) return out_({ ok: false, error: '새 접수는 강사만 시작할 수 있습니다.' });
@@ -3565,7 +3626,7 @@ function showTab(id){
 function toggle(el){ el.parentElement.classList.toggle('open'); }
 
 function dl(btn,id,name){
-  var map={"zAll": "여주초_연수실습자료.zip", "z10": "시연용_어질러진_다운로드폴더.zip", "zRcpt": "1_영수증.zip", "zCons": "2_체험학습동의서_한반.zip", "zPaper": "6_종이명단.zip", "zPerf": "8_수행평가사진.zip", "zField": "9_체험학습사진.zip", "zGong": "3_공문안내.zip", "zLtr": "4_가정통신문.zip", "zPlan": "5_계획서.zip", "zRep": "5_보고서.zip", "zXls": "1_교원_수요조사_결과.xlsx", "zSkA": "여주초_공문안내메시지_스킬.zip", "zSkC": "여주초_선도학교문서_스킬.zip", "zG2": "교육과-13006_수업공개_참관신청_안내.pdf", "zG1": "교육과-11731_수업나눔한마당_운영계획_안내.pdf", "zHwp": "여주초_한글양식_스킬.zip", "zSample": "여주초_교수학습과정안.hwpx", "zLtrForm": "여주초_한글양식.hwpx", "zStd12": "성취수준_1-2학년군.pdf", "zStd34": "성취수준_3-4학년군.pdf", "zStd56": "성취수준_5-6학년군.pdf", "zStd34soc": "성취수준_3-4학년군_사회만.pdf"};
+  var map={"zAll": "여주초_연수실습자료.zip", "z10": "시연용_어질러진_다운로드폴더.zip", "zRcpt": "1_영수증.zip", "zCons": "2_체험학습동의서_한반.zip", "zPaper": "6_종이명단.zip", "zPerf": "8_수행평가사진.zip", "zField": "9_체험학습사진.zip", "zGong": "3_공문안내.zip", "zLtr": "4_가정통신문.zip", "zPlan": "5_계획서.zip", "zRep": "5_보고서.zip", "zXls": "1_교원_수요조사_결과.xlsx", "zSkA": "여주초_공문안내메시지_스킬.zip", "zSkC": "여주초_선도학교문서_스킬.zip", "zG2": "교육과-13006_수업공개_참관신청_안내.pdf", "zG1": "교육과-11731_수업나눔한마당_운영계획_안내.pdf", "zHwp": "여주초_한글양식_스킬.zip", "zSample": "여주초_교수학습과정안.hwpx", "zLtrForm": "여주초_한글양식.hwpx", "zStd12": "성취수준_1-2학년군.pdf", "zStd34": "성취수준_3-4학년군.pdf", "zStd56": "성취수준_5-6학년군.pdf", "zStd34soc": "성취수준_3-4학년군_사회만.pdf", "zPlanSet": "교수학습과정안.zip"};
   var f=map[id]; if(!f){return;}
   var b=btn.querySelector('b'), orig=b.textContent;
   var a=document.createElement('a');
@@ -3786,6 +3847,83 @@ function toggleMega(h){
       btn.textContent = on ? '◀ 변경 전 보기' : '변경 후 보기 ▶';
     });
   });
+})();
+
+/* ── 왼쪽 사이드바 ── */
+var SIDE={
+ skill:[
+  {n:'1',t:'먼저 시연 — 스킬이 무엇인가',id:'sk-1'},
+  {n:'2',t:'공문 스킬 직접 만들기',id:'sk-2',g:1,sub:[['한 줄로 만들기 (간단판)','s-simple'],['실제 공문과 내 메시지로','s-make'],['새 대화창에서 확인','s-run'],['고치고 나누기','s-fix']]},
+  {n:'3',t:'한글 스킬로 가정통신문',id:'sk-3',g:1,sub:[['스킬 올리기','s-5'],['가정통신문 써 보기','s-6']]},
+  {n:'—',t:'마무리: 진짜 업무로 한 번',id:'sk-end',e:1}],
+ cowork:[
+  {n:'1',t:'코워크가 뭔가요',id:'cw-1'},
+  {n:'2',t:'몸풀기 — 폴더 하나 맡기기',id:'cw-2',g:1,sub:[['폴더 연결하고 한 줄','c-first'],['이렇게 나옵니다','c-first-res']]},
+  {n:'3',t:'본 실습 — 안 낸 사람 찾기',id:'cw-3',g:1,sub:[['폴더 연결하고 프롬프트','c-consent'],['이렇게 나옵니다','c-consent-res']]},
+  {n:'4',t:'더 보기 — 사진 정리 · 세 마디',id:'cw-4'}],
+ project:[
+  {n:'1',t:'프로젝트가 뭔가요',id:'pj-1'},
+  {n:'2',t:'교수학습 과정안 프로젝트',id:'pj-2',g:1,sub:[['자료 폴더 준비','pj-s1'],['방 만들기','pj-s2'],['과정안 시키기','pj-s3'],['이렇게 나옵니다','pj-s4']]},
+  {n:'3',t:'집에 가서 — 내 업무 방',id:'pj-3'},
+  {n:'—',t:'마무리: 오늘 가져가실 세 줄',id:'pj-end',e:1}],
+ artifact:[
+  {n:'1',t:'아티팩트가 뭔가요',id:'ar-1'},
+  {n:'2',t:'이렇게 만들어 보세요',id:'ar-2',g:1,sub:[['안내 페이지','g-art1'],['수업 페이지','g-art2']]},
+  {n:'3',t:'크게 만들어 나누기',id:'ar-3'},
+  {n:'4',t:'체험해 보기 — 오늘의 커피 담당자',id:'ar-4',g:1}]
+};
+function sideSetH(){ var t=document.querySelector('.tabs'); if(t) document.documentElement.style.setProperty('--tabsH', t.offsetHeight+'px'); }
+function sideOpenTo(el){
+  if(el.classList && el.classList.contains('mega')) el.classList.remove('closed');
+  openSec(el);
+  var bl=(el.classList && el.classList.contains('block'))?el:(el.closest?el.closest('.block'):null);
+  if(bl) bl.classList.add('open');
+  var d=el.closest?el.closest('details'):null;
+  while(d){ d.open=true; d=d.parentElement?d.parentElement.closest('details'):null; }
+}
+function sideGo(id){
+  var el=document.getElementById(id); if(!el) return;
+  sideOpenTo(el);
+  var sn=document.getElementById('sidenav'); if(sn) sn.classList.remove('open');
+  setTimeout(function(){
+    var t=document.querySelector('.tabs'), off=(t?t.offsetHeight:90)+14;
+    var y=el.getBoundingClientRect().top+window.pageYOffset-off;
+    window.scrollTo({top:y,behavior:'smooth'});
+    el.classList.add('flash'); setTimeout(function(){ el.classList.remove('flash'); },1600);
+    setTimeout(function(){ var y2=el.getBoundingClientRect().top+window.pageYOffset-off; if(Math.abs(window.pageYOffset-y2)>30) window.scrollTo({top:y2,behavior:'smooth'}); },900);
+  },60);
+}
+function sideRender(tab){
+  var list=document.getElementById('sn-list'); if(!list) return;
+  var d=SIDE[tab];
+  document.body.classList.toggle('side-on', !!d);
+  if(!d){ list.innerHTML=''; return; }
+  var h='';
+  d.forEach(function(it){
+    h+='<li><button type="button" class="sn-a'+(it.g?' gold':'')+(it.e?' end':'')+'" data-id="'+it.id+'" onclick="sideGo(\''+it.id+'\')"><span class="sn-n">'+it.n+'</span><span>'+it.t+(it.g?' <span class="sn-star">★ 실습</span>':'')+'</span></button>';
+    if(it.sub){
+      h+='<ol class="sn-sub">';
+      it.sub.forEach(function(x,i){ h+='<li><button type="button" class="sn-a" data-id="'+x[1]+'" onclick="sideGo(\''+x[1]+'\')"><span class="sn-n">'+(i+1)+'</span><span>'+x[0]+'</span></button></li>'; });
+      h+='</ol>';
+    }
+    h+='</li>';
+  });
+  list.innerHTML=h;
+  sideSetH(); sideSpy();
+}
+function sideSpy(){
+  if(!document.body.classList.contains('side-on')) return;
+  var t=document.querySelector('.tabs'), lim=(t?t.offsetHeight:90)+40;
+  var btns=document.querySelectorAll('#sn-list .sn-a'), cur=null;
+  btns.forEach(function(b){ var e=document.getElementById(b.dataset.id); if(e && e.offsetParent!==null && e.getBoundingClientRect().top<=lim) cur=b; });
+  btns.forEach(function(b){ b.classList.toggle('cur', b===cur); });
+}
+(function(){
+  var _st=showTab;
+  showTab=function(id){ _st(id); sideRender(id); };
+  window.addEventListener('scroll',sideSpy,{passive:true});
+  window.addEventListener('resize',sideSetH);
+  var a=document.querySelector('.tab.active'); if(a) sideRender(a.dataset.tab);
 })();
 </script>
 </body>

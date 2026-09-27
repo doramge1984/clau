@@ -880,6 +880,10 @@ h4.pnum.stephead::before{content:attr(data-n);flex:none;width:30px;height:30px;b
   display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;position:static;margin:0;border:0}
 h4.pnum.stephead::after{content:"단계 " attr(data-n) " / 4";margin-left:auto;font-size:12.5px;font-weight:700;color:#8A6A12;white-space:nowrap;position:static;background:none;width:auto;height:auto}
 h4#pj-s1.stephead{margin-top:1.6em}
+.flowrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:26px 0 6px}
+.flowrow span{color:var(--muted);font-size:15px}
+.flowbtn{display:inline-block;background:var(--clay);color:#fff;font-weight:700;font-size:17px;padding:13px 26px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(181,92,56,.3);transition:transform .15s}
+.flowbtn:hover{transform:translateY(-1px)}
 </style>
 </head>
 <body>
@@ -917,6 +921,8 @@ h4#pj-s1.stephead{margin-top:1.6em}
     <div class="instructor"><div class="ins-banner"><div class="ins-kicker">INSTRUCTOR · 강사</div><div class="ins-name">이애진 <span>Lee Ae-jin</span></div><div class="ins-chips"><span class="ins-chip">구글 공식 PD 파트너사 · <b>FlowDX 대표</b></span><span class="ins-chip">구글 공식 트레이너 (Google Certified Trainer)</span><span class="ins-chip">🎓 서울대학교 정보문화학(ICT)</span></div><div class="ins-div"></div><div class="ins-contact"><a class="ins-pill" href="https://flowdx.kr" target="_blank" rel="noopener">🌐 flowdx.kr</a><a class="ins-pill" href="mailto:ai@flowdx.kr">✉ ai@flowdx.kr</a><a class="ins-pill" href="tel:01023198419">☎ 010-2319-8419</a><a class="ins-pill ins-cta" href="https://capable-tarsier-97affe.netlify.app/" target="_blank" rel="noopener">🔗 프로필 보기</a></div></div><button class="ins-toggle" onclick="this.closest('.instructor').classList.toggle('open')"><span class="ins-plus">+</span> 강사 상세 이력 보기<span class="ins-tag">학력 · 경력 · 저서</span></button><div class="ins-more"><div class="ins-grid"><div class="ins-col"><h4>🎓 학력 · 자격</h4><ul><li>서울대학교 정보문화학(ICT)</li><li><b>구글 공식 PD 파트너사</b> (Google PD Partner)</li><li>Google Certified Trainer (구글 공식 트레이너)</li><li>Gemini Certified Educator (제미나이 에듀케이터)</li><li>ADsP · 데이터 분석 준전문가</li></ul></div><div class="ins-col"><h4>📰 언론 보도 · 공식 성과</h4><ul><li>중앙뉴스타임스(2025.11) · 인천시교육청 교육연수원 직무연수</li><li>인천광역시교육청(2025.12) · 초·중등 교실수업혁명 직무연수 운영</li><li>미디어투데이(2025.07) · 파주교육지원청 AI 소통 역량 강화·실무 적용</li></ul></div><div class="ins-col ins-wide"><h4>🏫 교육 · 행정 혁신 주요 경력</h4><ul><li>구글 코리아 <b>제미나이 아카데미 주강사</b></li><li>전국 학교장·교감 교원 대상 <b>AI 리터러시 리더십 연수 200회+</b></li><li>대학 교직원·교수·학생 대상 AI 행정 혁신 연수</li><li><b>고려대·성균관대·숙명여대·한양대</b> 등 대학 연수</li><li><b>용인·이천교육지원청</b> AI 연수</li><li><b>경기도교육연구원 박사급 연구원</b> 대상 정책연구 AI 활용 연수</li><li>5~9급 교육행정직 공무원 <b>AI 정책보고서 연수</b></li><li>한국과학창의재단 ‘찾아가는 학교컨설팅’ 코디네이터·주강사</li><li>대원외고 등 특목고 AI 연수 및 영재교육연구소 강사 양성 연수</li></ul></div><div class="ins-col"><h4>💼 산업 현장 실무</h4><ul><li><b>FlowDX 대표</b> — AI 비즈니스 모델링·공공기관 DX 전환 컨설팅 총괄</li><li>Ebay·G마켓·옥션 해외 플랫폼 개발 프로젝트 기획 참여</li><li>Nexon·Ebay 등 글로벌 기업 주요 프로젝트 기획·개발</li></ul></div><div class="ins-col"><h4>📚 주요 저서</h4><ul><li>『HTML, CSS, JavaScript를 배우는 마법코딩학교』</li><li>『AI시대, 보고서가 당신의 무기가 된다』</li><li>『AI 기반 문화콘텐츠 기획』</li></ul></div></div></div></div>
 
     
+    <div class="flowrow"><a class="flowbtn" href="intro.html">▶ 오늘의 흐름 보기</a><span>오늘 무엇을 만들어 가시는지 먼저 한눈에</span></div>
+
     <h2 class="s-title disp">오늘 배울 것</h2>
     <p class="s-sub">카드를 누르면 열립니다. 연수에서 안내받은 암호가 필요합니다.</p>
 

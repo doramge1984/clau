@@ -3754,7 +3754,7 @@ function setTeacher(){
   var b=document.getElementById('tbtn'); if(b) b.textContent='강사 메모 숨기기';
   try{ sessionStorage.setItem('yj_t','1'); }catch(e){}
 }
-var want = null;
+var want = null, wantId = null;
 function go(id){
   if(document.body.classList.contains('unl')){ showTab(id); return; }
   want = id;
@@ -3772,8 +3772,9 @@ function unlock(e){
     if(isT){ setTeacher(); }
     closeMdl();
     var g = document.getElementById('gmsg'); if(g) g.remove();
-    if(want) showTab(want);
-    want = null;
+    try{ localStorage.setItem('yj_u','1'); }catch(e){}
+    if(want){ hashJump(want,wantId); }
+    want = null; wantId = null;
   } else {
     err.textContent = '암호가 맞지 않습니다.';
     i.value = ''; i.focus();
@@ -3848,6 +3849,20 @@ function buildToc(){
 }
 
 (function(){ try{ if(sessionStorage.getItem('yj_t')==='1'){ document.body.classList.add('unl','tch','tmode'); var b=document.getElementById('tbtn'); if(b) b.textContent='강사 메모 숨기기'; var g=document.getElementById('gmsg'); if(g) g.remove(); } }catch(e){} })();
+/* 슬라이드에서 바로 오기: 주소 끝 #탭/블록id (예: #skill/s-make) */
+(function(){ try{ if(localStorage.getItem('yj_u')==='1'){ document.body.classList.add('unl'); var g=document.getElementById('gmsg'); if(g) g.remove(); } }catch(e){} })();
+function hashJump(tab,id){ showTab(tab); if(id) setTimeout(function(){ sideGo(id); },150); }
+function hashGo(){
+  var h=''; try{ h=decodeURIComponent((location.hash||'').slice(1)); }catch(e){ return; }
+  if(!h) return;
+  var p=h.split('/'), tab=p[0], id=p[1]||null;
+  if(!document.querySelector('.tab[data-tab="'+tab+'"]')) return;
+  if(tab==='home'){ showTab('home'); return; }
+  if(document.body.classList.contains('unl')){ hashJump(tab,id); return; }
+  wantId=id; go(tab);
+}
+window.addEventListener('hashchange', hashGo);
+setTimeout(hashGo, 60);
 document.querySelectorAll('details.tlock').forEach(function(d){
   d.addEventListener('toggle',function(){ if(d.open && !document.body.classList.contains('tch')) d.open=false; });
   d.querySelector('summary').addEventListener('click',function(e){ if(!document.body.classList.contains('tch')) e.preventDefault(); });

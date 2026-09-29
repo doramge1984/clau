@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>여주초 클로드 연수 — 한 번 가르쳐 두고 계속 맡기기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#141210;--ink:#F3EDE3;--mut:#B8AC9E;--acc:#E0A27E;--panel:#1E1B18;--line:#3A342E}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;font-family:'Noto Sans KR',Arial,sans-serif}
+#stage{position:fixed;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.slide{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .35s ease}
+.slide h1,.slide h2,.slide h3,.slide p,.slide ul,.slide ol{margin:0}
+.slide h1{font-size:96px;font-weight:600;line-height:1.1}
+.slide h2{font-size:64px;font-weight:600;line-height:1.15}
+.slide h3{font-size:44px;font-weight:600;line-height:1.2}
+.slide p{font-size:32px;line-height:1.4}
+.slide ul,.slide ol{padding-left:1.3em}
+.slide li{margin:.15em 0}
+.slide img{display:block}
+.slide a{color:inherit;text-decoration:underline;text-underline-offset:4px}
+.slide table{border-collapse:collapse}
+.slide th,.slide td{padding:.35em .6em;border-bottom:1px solid rgba(0,0,0,.14);text-align:left;vertical-align:top}
+.slide svg.xarrow{display:block;flex:none}
+[data-build-in]{transition:opacity .45s ease,transform .45s ease}
+.bh{opacity:0!important}
+.bh.b-rise{transform:translateY(48px)}
+.bh.b-pop{transform:scale(.9)}
+/* controls */
+#bar{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:20;opacity:0;transition:opacity .3s}
+body.act #bar{opacity:.9}
+#bar button,#bar span{font:600 14px 'Noto Sans KR',sans-serif;color:var(--ink);background:rgba(30,27,24,.85);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+#bar span{cursor:default}
+body.idle{cursor:none}
+/* lock dialog */
+#lock{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:40}
+#lock.on{display:flex}
+#lock form{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:24px;width:min(320px,90vw);display:flex;flex-direction:column;gap:12px}
+#lock b{font-size:17px}
+#lock input{font:18px 'Noto Sans KR',sans-serif;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#12100E;color:var(--ink)}
+#lock .row{display:flex;gap:8px}
+#lock button{flex:1;font:600 15px 'Noto Sans KR',sans-serif;padding:10px;border-radius:10px;border:0;cursor:pointer}
+#lock .ok{background:var(--acc);color:#2A2622}
+#lock .no{background:#2E2A26;color:var(--ink)}
+#lock small{color:#FF9C8A;min-height:1.2em}
+/* notes mode */
+#notes{display:none}
+body.nm #notes{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;background:var(--panel);color:var(--ink);border-top:1px solid var(--line);z-index:10}
+#nhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mut)}
+#nhead b{color:var(--acc);font-size:15px}
+#ntitle{padding:10px 14px 0;font-weight:700;font-size:16px;color:var(--ink)}
+#nnext{padding:2px 14px 0;font-size:13px;color:var(--mut)}
+#nbody{flex:1;overflow:auto;padding:10px 14px 14px;font-size:18px;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+#nbody .w{color:#E0C177}
+#nnav{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+#nnav button{flex:1;font:700 17px 'Noto Sans KR',sans-serif;padding:14px 0;border-radius:12px;border:0;cursor:pointer}
+#nprev{background:#2E2A26;color:var(--ink)}
+#nnx{background:var(--acc);color:#2A2622}
+#nnav .sm{flex:0 0 auto;padding:14px 14px;background:#2E2A26;color:var(--mut);font-size:14px}
+body.nm #bar{display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+<section class="slide" id="cover" data-transition="fade" style="background:#2A2622; color:#F3EDE3; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:40px">
+<p style="font-size:28px; font-weight:700; color:#E0A27E; letter-spacing:3px">2026. 9. 30. · 여주초등학교 교원연수</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:112px; font-weight:400; line-height:1.15; color:#F3EDE3">한 번 가르쳐 두고,<br>계속 맡기기</h1>
+<p style="font-size:40px; color:#D9CFC2; line-height:1.4">클로드로 하는 학교 업무 — 스킬 · 코워크 · 프로젝트</p>
+<div style="display:flex; gap:16px; align-items:center">
+<p style="font-size:28px; color:#2A2622; background:#E0C177; padding:10px 24px; border-radius:999px; font-weight:700">강사 이애진</p>
+<p style="font-size:28px; color:#D9CFC2">FlowDX 대표 · 구글 공식 트레이너</p>
+</div>
+</section>
+<section class="slide" id="today" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">오늘의 두 시간</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">보고, 따라 하고, 내 일로 가져갑니다</h2>
+<table style="font-size:30px; color:#22201C">
+<tr style="background:#EFE8DC"><th style="width:16%">시각</th><th style="width:60%">무엇을</th><th style="width:24%">방식</th></tr>
+<tr><td>0:00</td><td>여는 이야기 · 세팅 확인</td><td>확인</td></tr>
+<tr><td>0:15</td><td>왜 클로드일까 — 질문 하나</td><td>듣기</td></tr>
+<tr style="background:#FAF0D6"><td>0:22</td><td><b>스킬</b> — 공문 스킬 만들기 · 한글 가정통신문</td><td><b>직접</b></td></tr>
+<tr><td>0:55</td><td>쉬는 시간 · 커피 주문</td><td>휴식</td></tr>
+<tr style="background:#FAF0D6"><td>1:05</td><td><b>코워크</b> — 폴더 맡기기 · 안 낸 사람 찾기</td><td><b>직접</b></td></tr>
+<tr><td>1:35</td><td><b>프로젝트</b> — 과정안 방 하나</td><td>시연 · 직접</td></tr>
+<tr><td>1:48</td><td>아티팩트 · 커피 룰렛 · 마무리</td><td>체험</td></tr>
+</table>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">여주초 클로드 연수 · 여는 이야기</p>
+</section>
+<section class="slide" id="results" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">오늘 끝나면 남는 것</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">이 다섯 가지를 직접 만들어 갑니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:20px; border:1px solid #E4DED2; border-radius:20px">
+<img src="img/gongmun_result.jpg" alt="공문을 교직원 안내 메시지로 바꾼 결과" style="width:100%; height:240px; object-fit:contain; background:#EFE8DC; border-radius:12px">
+<p style="font-size:28px; font-weight:700; line-height:1.3">① 공문 안내 스킬</p>
+<p style="font-size:24px; color:#5A5249; line-height:1.4">공문 → 교직원 메시지</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:20px; border:1px solid #E4DED2; border-radius:20px">
+<img src="img/letter_result.jpg" alt="우리 학교 서식에 채워진 한글 가정통신문" style="width:100%; height:240px; object-fit:contain; background:#EFE8DC; border-radius:12px">
+<p style="font-size:28px; font-weight:700; line-height:1.3">② 한글 가정통신문</p>
+<p style="font-size:24px; color:#5A5249; line-height:1.4">메모 → 우리 학교 서식</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:20px; border:1px solid #E4DED2; border-radius:20px">
+<img src="img/consent_after_xlsx.jpg" alt="동의서와 명렬표를 대조해 정리한 엑셀" style="width:100%; height:240px; object-fit:contain; background:#EFE8DC; border-radius:12px">
+<p style="font-size:28px; font-weight:700; line-height:1.3">③ 안 낸 사람 명단</p>
+<p style="font-size:24px; color:#5A5249; line-height:1.4">동의서 × 명렬표</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:20px; border:1px solid #E4DED2; border-radius:20px">
+<img src="img/plan_result.jpg" alt="성취기준이 채워진 교수학습 과정안" style="width:100%; height:240px; object-fit:contain; background:#EFE8DC; border-radius:12px">
+<p style="font-size:28px; font-weight:700; line-height:1.3">④ 교수학습 과정안</p>
+<p style="font-size:24px; color:#5A5249; line-height:1.4">성취기준 → 과정안</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:20px; border:1px solid #E4DED2; border-radius:20px">
+<img src="img/coffee_app.jpg" alt="오늘의 커피 담당자 룰렛 웹페이지" style="width:100%; height:240px; object-fit:contain; background:#EFE8DC; border-radius:12px">
+<p style="font-size:28px; font-weight:700; line-height:1.3">⑤ 커피 담당자</p>
+<p style="font-size:24px; color:#5A5249; line-height:1.4">말로 만든 웹페이지</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">여주초 클로드 연수 · 여는 이야기</p>
+</section>
+<section class="slide" id="setup" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">시작 전 세팅 · 8분</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">네 가지만 확인하고 시작합니다</h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+<div style="display:flex; flex-direction:column; gap:10px; background:#FFFDF9; padding:32px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38">① 인터넷 창이 아니라 ‘앱’</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">작업 표시줄의 클로드 아이콘으로 엽니다. 코워크는 앱에서만 됩니다.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; background:#FFFDF9; padding:32px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38">② 연수용 계정 · 여주초등학교 Team</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">왼쪽 아래 이름을 눌러 ‘여주초등학교 Team’이 골라져 있는지 봅니다.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; background:#FFFDF9; padding:32px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38">③ 모델은 Sonnet · 중간</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">입력창 아래 오른쪽. Haiku로 되어 있으면 Sonnet으로 바꿉니다.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; background:#FFFDF9; padding:32px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38">④ 스킬 메뉴가 보이는지</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">설정 → 기능에서 스킬을 켭니다. 안 켜면 메뉴가 아예 안 보입니다.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🛠️ 시작 전 세팅 탭 — 막히면 ‘잘 안 될 때’를 펼쳐 보세요</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#setup" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="question" data-transition="fade" style="background:#2A2622; color:#F3EDE3; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:48px">
+<p style="font-size:28px; font-weight:700; color:#E0A27E; letter-spacing:3px">오늘 가져가실 건 도구가 아니라 질문 하나</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:120px; font-weight:400; line-height:1.2; color:#F3EDE3">“이거, 내가 매주<br>똑같이 하고 있나?”</h1>
+<p style="font-size:40px; color:#D9CFC2; line-height:1.5">이번 주에 두 번 이상 하신 일 하나를 떠올려 두세요.<br>그게 오늘 스킬이 될 후보입니다.</p>
+</section>
+<section class="slide" id="shift" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">왜 클로드일까</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">AI가 ‘답하는 것’에서 ‘일하는 것’으로 넘어가고 있습니다</h2>
+<div style="display:flex; gap:40px; align-items:center">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FFFDF9; padding:40px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:40px; font-weight:700; color:#5A5249">묻고 답하는 AI</h3>
+<p style="font-size:30px; color:#5A5249; line-height:1.5">글을 써 줍니다. 복사하고, 붙이고, 저장하는 건 내가 합니다.</p>
+</div>
+<svg class="xarrow" viewBox="0 0 88 48" preserveAspectRatio="none" style="width:120px; height:64px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FAF0D6; padding:40px; border:2px solid #C9A544; border-radius:20px">
+<h3 style="font-size:40px; font-weight:700; color:#8A6A12">일을 맡기는 AI (에이전트)</h3>
+<p style="font-size:30px; color:#4A3D1E; line-height:1.5">파일을 열고, 읽고, 나누고, 저장까지 합니다. 오늘 배우실 쪽입니다.</p>
+</div>
+</div>
+<p style="font-size:30px; color:#5A5249; line-height:1.5">오늘 배우는 <b>시키는 방법</b>은 챗GPT·제미나이에서도 똑같이 통합니다.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 💡 왜 클로드일까 탭</p>
+</section>
+<section class="slide" id="three" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">오늘 다룰 것은 셋</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">어떤 일이냐에 따라 고르면 됩니다</h2>
+<table style="font-size:30px; color:#22201C">
+<tr style="background:#EFE8DC"><th style="width:18%">무엇</th><th style="width:38%">이럴 때</th><th style="width:26%">한마디로</th><th style="width:18%">플랜</th></tr>
+<tr><td><b>스킬</b></td><td>매주 똑같이 하는 일</td><td>나만의 업무 매뉴얼</td><td>무료 가능</td></tr>
+<tr><td><b>코워크</b></td><td>파일이 폴더에 쌓여 있는 일</td><td>내 자리에 앉은 동료</td><td>유료</td></tr>
+<tr><td><b>프로젝트</b></td><td>한 해 내내 같은 자료를 펴 놓고 하는 일</td><td>업무 하나에 방 하나</td><td>무료 5개</td></tr>
+</table>
+<p style="font-size:30px; color:#5A5249; line-height:1.5">오늘 만든 스킬은 연수가 끝나도 남습니다. 파일로 받아 개인 계정에 올리시면 됩니다.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 💡 왜 클로드일까 탭</p>
+</section>
+<section class="slide" id="sk-div" data-transition="push" style="background:#B55C38; color:#FBF6EE; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:32px">
+<p style="font-size:160px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; line-height:1; color:#F6D9C7">01</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:104px; font-weight:400; line-height:1.15; color:#FBF6EE">스킬 — 한 번 가르쳐두기</h1>
+<p style="font-size:40px; color:#FBEBDD; line-height:1.4">클로드에게 건네는 나만의 업무 매뉴얼 · 33분</p>
+</section>
+<section class="slide" id="sk-what" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">스킬 ① 먼저 시연 — 보기만 하십니다</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:60px; font-weight:400; line-height:1.2">공문 한 장, 말 한마디</h2>
+<div style="background:#2A2622; padding:24px 40px; border-radius:16px">
+<p style="font-size:34px; color:#F3EDE3; line-height:1.4">새 대화창에 공문을 올리고 → <span style="color:#E0C177">“공문 안내 메시지로 바꿔 줘.”</span></p>
+</div>
+<div style="position:absolute; left:128px; top:414px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">전 — 교육지원청 공문 원문</p>
+<img src="img/gongmun_11731.jpg" alt="여주교육지원청 수업나눔 한마당 공문 원문" style="width:764px; height:440px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<svg class="xarrow" data-build-in="fade 1" viewBox="0 0 88 48" preserveAspectRatio="none" style="position:absolute; left:916px; top:633px; width:88px; height:48px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div data-build-in="rise 1" style="position:absolute; left:1028px; top:414px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#8A6A12">후 — 메신저에 바로 붙일 안내 메시지</p>
+<img src="img/gongmun_result.jpg" alt="공문을 교직원 안내 메시지로 바꾼 결과 화면" style="width:764px; height:440px; object-fit:contain; background:#FAF0D6; border-radius:16px">
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">이것이 스킬 — 한 번 가르쳐 두면 한마디로 · 공문에 없는 학교 사정은 [확인 필요]로 남깁니다</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#skill/s-demo" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="sk-make" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">스킬 ② 공문 스킬을 직접 만듭니다 · 전원</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">실제 공문과 내가 보낸 메시지로 가르칩니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">1단계</p>
+<h3 style="font-size:36px; font-weight:700; line-height:1.3">공문을 올리고, 내가 보낸 메시지를 붙입니다</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">교안에서 공문 받기 → 대화창에 끌어다 놓기</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">2단계</p>
+<h3 style="font-size:36px; font-weight:700; line-height:1.3">클로드가 먼저 비교합니다</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">내가 뺀 것 · 바꾼 것 · 공문에 없는데 채운 것</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FAF0D6; padding:36px; border:2px solid #C9A544; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#8A6A12">3단계</p>
+<h3 style="font-size:36px; font-weight:700; line-height:1.3">스킬로 저장합니다</h3>
+<p style="font-size:26px; color:#4A3D1E; line-height:1.5">‘스킬 저장’ 버튼 한 번</p>
+</div>
+</div>
+<div style="background:#2A2622; padding:28px 40px; border-radius:16px">
+<p style="font-size:30px; color:#F3EDE3; line-height:1.5">…이렇게 바꾸는 일을 스킬로 만들어 줘. <span style="color:#FF8A80">공문에 없는 학교 사정은 지어내지 말고 [확인 필요]로 남겨 줘.</span></p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🧰 스킬 → 2. 공문 스킬을 직접 만듭니다 — 프롬프트는 교안에서 복사</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#skill/s-make" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="sk-run" data-transition="fade" style="background:#FAF0D6; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:40px">
+<p style="font-size:28px; font-weight:700; color:#8A6A12; letter-spacing:2px">오늘의 하이라이트 — 진짜 도는지 확인합니다</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:96px; font-weight:400; line-height:1.2; color:#22201C"><b>새 대화창</b>에서,<br>다른 공문을 올리고 한 줄</h1>
+<div style="background:#2A2622; padding:36px 48px; border-radius:20px">
+<p style="font-size:56px; color:#F3EDE3; line-height:1.3">공문 안내 메시지로 바꿔 줘.</p>
+</div>
+<p style="font-size:36px; color:#4A3D1E; line-height:1.5">설명 없이 한 줄로 방금과 같은 모양이 나오면 — 스킬이 된 겁니다.</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#skill/s-run" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="sk-hwp" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">스킬 ③ 한글 스킬 — 만들지 않고 받아 올립니다</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">클로드에는 원래 한글이 없습니다. 스킬 하나로 생깁니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">받기</p>
+<h3 style="font-size:34px; font-weight:700; line-height:1.3">교안에서 한글 스킬 zip</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">압축은 풀지 않습니다</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">올리기</p>
+<h3 style="font-size:34px; font-weight:700; line-height:1.3">설정 → 스킬 → 업로드</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">zip 파일째로 올립니다</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FAF0D6; padding:36px; border:2px solid #C9A544; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#8A6A12">부르기</p>
+<h3 style="font-size:34px; font-weight:700; line-height:1.3">/yeoju-hangul-form</h3>
+<p style="font-size:26px; color:#4A3D1E; line-height:1.5">슬래시로 부르면 확실합니다</p>
+</div>
+</div>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">내 안내장이 <b>.hwp</b>라면 한글에서 <b>다른 이름으로 저장 → HWPX</b>로 바꿔 올리세요.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🧰 스킬 → 3. 한글 스킬을 받아 가정통신문을 씁니다</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#skill/s-5" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="sk-letter" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">스킬 ③ 가정통신문 한 장 — 메모만 주면 우리 학교 서식으로</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">지난번 5학년 안내장을 4학년 과학관 체험으로</h2>
+<div style="position:absolute; left:128px; top:303px; width:764px; display:flex; flex-direction:column; gap:12px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">올린 것 — 5학년 문화예술공연 안내장</p>
+<img src="img/letter_form.jpg" alt="5학년 문화예술공연 체험학습 신청 안내장과 뒷면 일정표" style="width:764px; height:500px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<svg class="xarrow" data-build-in="fade 1" viewBox="0 0 88 48" preserveAspectRatio="none" style="position:absolute; left:916px; top:553px; width:88px; height:48px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div data-build-in="rise 1" style="position:absolute; left:1028px; top:303px; width:764px; display:flex; flex-direction:column; gap:12px">
+<p style="font-size:26px; font-weight:700; color:#8A6A12">나온 것 — 4학년 과학관 안내장 (.hwpx)</p>
+<img src="img/letter_result.jpg" alt="4학년 가을 현장체험학습 신청 안내장과 뒷면 일정표" style="width:764px; height:500px; object-fit:contain; background:#FAF0D6; border-radius:16px">
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">표·칸·로고·절취선은 그대로, 글자만 바뀝니다 · 확인: 한글에서 Ctrl+F로 “서대문” “연극” 찾기</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#skill/s-6" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="sk-ask" data-transition="fade" style="background:#2A2622; color:#F3EDE3; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:48px">
+<p style="font-size:28px; font-weight:700; color:#E0A27E; letter-spacing:3px">오늘 하나만 가져가신다면</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:140px; font-weight:400; line-height:1.15; color:#F3EDE3">“모르는 건 물어봐.”</h1>
+<p style="font-size:40px; color:#D9CFC2; line-height:1.5">이 한 줄이 있으면 빠진 자리를 지어내지 않고 되묻습니다.<br>없으면 그럴듯하게 채워 넣습니다.</p>
+</section>
+<section class="slide" id="sk-end" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">스킬 마무리 — 진짜 업무로 한 번</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">이번 주에 두 번 이상 하신 일, 끝에 이 한 줄</h2>
+<div style="background:#2A2622; padding:40px 48px; border-radius:20px">
+<p style="font-size:44px; color:#F3EDE3; line-height:1.5">방금 한 작업 방식과 결과물 형식이 마음에 들어.<br>앞으로 반복해서 쓸 수 있게 <span style="color:#E0C177">스킬로 만들어 줘.</span></p>
+</div>
+<p style="font-size:32px; color:#5A5249; line-height:1.5">무엇을 하셨든 끝에 이걸 붙이시면, 다음부터는 한마디로 끝납니다.<br>스킬은 <b>무료 계정</b>에서도 만들고 · 쓰고 · 올리는 게 모두 됩니다.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🧰 스킬 → 스킬 마무리</p>
+</section>
+<section class="slide" id="break" data-transition="push" style="background:#2A2622; color:#F3EDE3; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:row; align-items:center; gap:80px">
+<div style="flex:1; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:28px; font-weight:700; color:#E0A27E; letter-spacing:3px">쉬는 시간 10분</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:96px; font-weight:400; line-height:1.2; color:#F3EDE3">쉬시는 동안<br>커피 주문 받습니다</h1>
+<p style="font-size:36px; color:#D9CFC2; line-height:1.5">휴대폰으로 들어와 이름과 메뉴를 적어 주세요.<br>마지막에 룰렛으로 오늘의 커피 담당자를 뽑습니다.</p>
+<p style="font-size:36px; color:#2A2622; background:#E0C177; padding:14px 28px; border-radius:16px; font-weight:700">doramge1984.github.io/coffee</p>
+</div>
+<div style="display:flex; flex-direction:column; align-items:center; gap:20px">
+<img src="img/coffee_qr.png" alt="커피 주문 페이지로 가는 QR코드" style="width:560px; height:560px; object-fit:contain; background:#FFFFFF; border-radius:24px; padding:24px">
+<p style="font-size:30px; font-weight:700; color:#E0C177">📱 카메라로 찍어 들어오세요</p>
+</div>
+</section>
+<section class="slide" id="cw-div" data-transition="push" style="background:#B55C38; color:#FBF6EE; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:32px">
+<p style="font-size:160px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; line-height:1; color:#F6D9C7">02</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:104px; font-weight:400; line-height:1.15; color:#FBF6EE">코워크 — 내 자리에 앉은 동료</h1>
+<p style="font-size:40px; color:#FBEBDD; line-height:1.4">폴더를 통째로 맡기는 일 · 30분</p>
+</section>
+<section class="slide" id="cw-what" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ① 채팅과 무엇이 다른가</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">채팅은 글을 써 주고, 코워크는 일을 합니다</h2>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#FFFDF9; padding:40px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:40px; font-weight:700; color:#5A5249">채팅</h3>
+<ul style="font-size:30px; color:#5A5249; line-height:1.7">
+<li>파일을 하나씩 올립니다</li>
+<li>답을 글로 받습니다</li>
+<li>복사하고, 저장하는 건 내가</li>
+</ul>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#FAF0D6; padding:40px; border:2px solid #C9A544; border-radius:20px">
+<h3 style="font-size:40px; font-weight:700; color:#8A6A12">코워크</h3>
+<ul style="font-size:30px; color:#4A3D1E; line-height:1.7">
+<li>폴더를 통째로 연결합니다</li>
+<li>파일을 열고, 읽고, 나누고, 이름을 바꿉니다</li>
+<li>결과를 <b>내 폴더에 파일로</b> 저장합니다</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🤝 코워크 → 1. 챗봇과 에이전트</p>
+</section>
+<section class="slide" id="cw-before" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ② 시작 전에</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">세 가지를 보고 시작합니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38; line-height:1.3">모델은 Sonnet · 중간</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">Haiku는 파일을 열어 보지 않고 이름만 보고 처리할 때가 많습니다</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38; line-height:1.3">폴더 작업 중엔 앱을 켜 두기</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">앱을 닫거나 절전 모드면 내 파일에 손을 못 댑니다</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:36px; font-weight:700; color:#B55C38; line-height:1.3">허용 창은 ‘항상 허용’</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">지울 때는 따로 한 번 더 묻습니다</p>
+</div>
+</div>
+<div style="background:#FBEDE4; padding:28px 36px; border-radius:16px; border:1px solid #E7C3AE">
+<p style="font-size:30px; color:#8E4527; line-height:1.5"><b>“컴퓨터를 사용하려고 합니다”</b>가 뜨면 <b>거부</b>하세요. 폴더 작업에는 필요 없습니다.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🤝 코워크 → 시작 전 준비 세 가지</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#cowork/cw-2" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="cw-warm" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ③ 몸풀기 — 어질러진 폴더 하나 맡기기 · 직접</p>
+<div style="background:#2A2622; padding:28px 40px; border-radius:16px">
+<p style="font-size:38px; color:#F3EDE3; line-height:1.5">이 다운로드 폴더 정리해 줘.<br><span style="color:#E0C177">이름만 보지 말고, 애매한 건 열어 보고 판단해 줘.</span></p>
+</div>
+<div style="position:absolute; left:128px; top:396px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">전 — 파일 35개가 한 폴더에</p>
+<img src="img/ba_before.jpg" alt="정리 전 다운로드 폴더" style="width:764px; height:420px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<svg class="xarrow" data-build-in="fade 1" viewBox="0 0 88 48" preserveAspectRatio="none" style="position:absolute; left:916px; top:605px; width:88px; height:48px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div data-build-in="rise 1" style="position:absolute; left:1028px; top:396px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#8A6A12">후 — 업무별 폴더로, 지운 파일 없음</p>
+<img src="img/ba_after.jpg" alt="정리 후 업무별로 나뉜 폴더" style="width:764px; height:420px; object-fit:contain; background:#FAF0D6; border-radius:16px">
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">둘째 줄이 “어떻게 할지”를 알려 줍니다 — 한 줄 더 알려 주면 결과가 달라집니다</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#cowork/c-first" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="cw-consent" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ④ 본 실습 — 안 낸 사람 찾기 · 직접</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">동의서 사진 열 장 × 명렬표 스물한 명</h2>
+<div style="display:flex; gap:40px; align-items:start">
+<div style="flex:1; display:flex; flex-direction:column; gap:20px">
+<div style="background:#2A2622; padding:28px 36px; border-radius:16px">
+<p style="font-size:28px; color:#F3EDE3; line-height:1.6">동의서 사진을 모두 읽고, 명렬표와 대조해서 안 낸 학생을 알려 줘.<br><span style="color:#FF8A80">흐릿한 건 [확인 필요]로.</span> 새 엑셀로 저장, <span style="color:#82B1FF">원본은 건드리지 마.</span><br><span style="color:#E0C177">바로 실행하지 말고 계획을 먼저 보여 줘.</span></p>
+</div>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">결과는 채팅 글이 아니라 <b>‘제출’ 칸이 채워진 엑셀 파일</b>로 폴더에 생깁니다. → 다음 장</p>
+</div>
+<div style="width:760px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">전 — 동의서 사진 10장, 몇 장은 흐릿하게</p>
+<img src="img/consent_before.jpg" alt="흐릿한 사진이 섞인 동의서 사진 폴더" style="width:760px; height:440px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🤝 코워크 → 3. 본 실습 — 프롬프트 전문은 교안에서 복사</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#cowork/c-consent" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="cw-consent-ba" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ④ 본 실습 — 결과</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:60px; font-weight:400; line-height:1.2">비어 있던 ‘제출’ 칸이 채워진 새 엑셀</h2>
+<div style="position:absolute; left:128px; top:298px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">전 — 명렬표 21명, 제출 칸은 비어 있음</p>
+<img src="img/consent_roster.jpg" alt="제출 칸이 빈 3학년 1반 명렬표" style="width:764px; height:560px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<svg class="xarrow" data-build-in="fade 1" viewBox="0 0 88 48" preserveAspectRatio="none" style="position:absolute; left:916px; top:577px; width:88px; height:48px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div data-build-in="rise 1" style="position:absolute; left:1028px; top:298px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#8A6A12">후 — 제출·미제출·[확인 필요]가 채워진 새 파일</p>
+<img src="img/consent_after_xlsx.jpg" alt="제출 칸이 채워진 명렬표 엑셀" style="width:764px; height:560px; object-fit:contain; background:#FAF0D6; border-radius:16px">
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">원본 명렬표는 그대로 — 결과는 새 엑셀 파일로 폴더에 생깁니다</p>
+</section>
+<section class="slide" id="cw-point" data-transition="fade" style="background:#FAF0D6; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:48px">
+<p style="font-size:28px; font-weight:700; color:#8A6A12; letter-spacing:2px">여기서 짚기</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:128px; font-weight:400; line-height:1.2; color:#22201C">글을 쓴 게 아니라,<br>일을 했습니다</h1>
+<p style="font-size:40px; color:#4A3D1E; line-height:1.5">사진을 열어 읽고 → 명렬표와 대조하고 → 새 파일로 저장.<br>그리고 확인이 필요한 곳은 사람에게 넘겼습니다.</p>
+</section>
+<section class="slide" id="cw-photo" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ⑤ 강사 시연 — 보기만 하십니다</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:60px; font-weight:400; line-height:1.2">IMG_5102.jpg 열세 장 — 열어 보고 이름을 바꿉니다</h2>
+<div style="position:absolute; left:128px; top:298px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">전 — IMG_5102, IMG_5103… 열어 봐야 압니다</p>
+<img src="img/field_before.jpg" alt="IMG 번호로만 된 체험학습 사진 13장" style="width:764px; height:540px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<svg class="xarrow" data-build-in="fade 1" viewBox="0 0 88 48" preserveAspectRatio="none" style="position:absolute; left:916px; top:567px; width:88px; height:48px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div data-build-in="rise 1" style="position:absolute; left:1028px; top:298px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#8A6A12">후 — [날짜_활동_번호]로, 폴더 없이 이름만</p>
+<img src="img/field_flat_explorer.jpg" alt="날짜_활동_번호로 이름이 바뀐 체험학습 사진 파일 목록" style="width:764px; height:540px; object-fit:contain; background:#FAF0D6; border-radius:16px">
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">바꾸기 전에 표로 먼저 보여 줍니다 · 보고 나서 “폴더 없이 이름만으로” 한마디 더</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#cowork/c-field" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="cw-three" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 ⑥ 결과를 바꾸는 세 마디</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">같은 일도 이 세 마디로 달라집니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">① 계획 먼저</p>
+<h3 style="font-size:36px; font-weight:700; line-height:1.4">“바로 하지 말고 계획을 보여 줘”</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">큰일은 단계로 나눠 하나씩 확인</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">② 나눠서</p>
+<h3 style="font-size:36px; font-weight:700; line-height:1.4">“서브 에이전트로 나눠서 해 줘”</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">자료가 많을 때 여럿이 동시에</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:24px; font-weight:700; color:#B55C38">③ 한 번 더</p>
+<h3 style="font-size:36px; font-weight:700; line-height:1.4">“검증을 한 번 더 해 줘”</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">원본과 대조하고 숫자를 다시 셉니다</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🤝 코워크 → 결과를 바꾸는 세 마디</p>
+</section>
+<section class="slide" id="cw-limits" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">코워크 마무리 — 알아 두실 다섯 가지</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">만능은 아닙니다. 그래서 폴더 지침(claude.md)</h2>
+<table style="font-size:28px; color:#22201C">
+<tr style="background:#EFE8DC"><th style="width:46%">한계</th><th style="width:54%">그래서</th></tr>
+<tr><td>① 새 대화는 앞 대화의 규칙을 모릅니다</td><td><b>폴더 지침(claude.md)</b>에 적어 둡니다</td></tr>
+<tr><td>② 한 번에 다룰 양이 정해져 있습니다</td><td>폴더를 나눠, 한 번에 한 가지 일로</td></tr>
+<tr><td>③ 실시간 정보는 스스로 모릅니다</td><td>공문 원문을 올리거나 검색을 시킵니다</td></tr>
+<tr><td>④ 내 폴더 작업은 컴퓨터가 켜져 있어야</td><td>긴 작업 땐 절전을 잠시 끕니다</td></tr>
+<tr><td>⑤ 같은 요청도 결과가 조금씩 다릅니다</td><td>마음에 들면 그 방식을 <b>폴더 지침</b>에</td></tr>
+</table>
+<div style="background:#2A2622; padding:24px 36px; border-radius:16px">
+<p style="font-size:28px; color:#F3EDE3; line-height:1.5">이 폴더의 파일들을 살펴보고, 앞으로 이 폴더에서 지킬 작업 규칙을 폴더 지침(claude.md)으로 만들어 줘.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🤝 코워크 → 알아 두실 다섯 가지 · 📖 더 알아보기 → 새 대화가 앞 대화를 모릅니다</p>
+</section>
+<section class="slide" id="pj-div" data-transition="push" style="background:#B55C38; color:#FBF6EE; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:32px">
+<p style="font-size:160px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; line-height:1; color:#F6D9C7">03</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:104px; font-weight:400; line-height:1.15; color:#FBF6EE">프로젝트 — 업무 하나에 방 하나</h1>
+<p style="font-size:40px; color:#FBEBDD; line-height:1.4">과정안 한 장을 같이 만듭니다 · 13분</p>
+</section>
+<section class="slide" id="pj-what" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">프로젝트 ① 자리 · 방법 · 손</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">오늘 배운 셋은 이렇게 맞물립니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FAF0D6; padding:40px; border:2px solid #C9A544; border-radius:20px">
+<p style="font-size:28px; font-weight:700; color:#8A6A12">자리</p>
+<h3 style="font-size:44px; font-weight:700">프로젝트</h3>
+<p style="font-size:28px; color:#4A3D1E; line-height:1.5">자료와 지침을 넣어 두는 방. 그 방의 모든 대화가 늘 참고합니다</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:40px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:28px; font-weight:700; color:#B55C38">방법</p>
+<h3 style="font-size:44px; font-weight:700">스킬</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">일하는 순서. 어느 대화에서나 부르면 켜집니다</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:40px; border:1px solid #E4DED2; border-radius:20px">
+<p style="font-size:28px; font-weight:700; color:#B55C38">손</p>
+<h3 style="font-size:44px; font-weight:700">코워크</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">내 폴더에서 직접 열고, 바꾸고, 저장합니다</p>
+</div>
+</div>
+<p style="font-size:30px; color:#5A5249; line-height:1.5">과정안처럼 <b>한 해 내내 같은 성취기준·양식</b>을 펴 놓고 하는 일에 맞습니다.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🗂️ 프로젝트 → 1. 프로젝트가 뭔가요</p>
+</section>
+<section class="slide" id="pj-make" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">프로젝트 ② 과정안 방 만들기</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">방을 만들고, 지침과 폴더를 붙입니다</h2>
+<div style="display:flex; gap:40px; align-items:start">
+<ol style="flex:1; font-size:30px; color:#22201C; line-height:1.6">
+<li>＋ 새 프로젝트 → 이름 <b>교수학습과정안</b>, 목표 한 줄</li>
+<li>방 오른쪽 <b style="color:#B55C38">지침 → 추가</b>에 규칙을 붙여넣고 저장</li>
+<li>방 오른쪽 <b>폴더 ＋</b>로 ‘교수학습과정안’ 폴더 연결</li>
+<li>방 안에서 <b>새 대화</b> → 과정안 시키기</li>
+</ol>
+<img src="img/project_guide_dialog.jpg" alt="프로젝트 지침 설정 창에 지침을 붙여넣은 화면" style="width:700px; height:498px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<div style="background:#FBEDE4; padding:22px 32px; border-radius:16px; border:1px solid #E7C3AE">
+<p style="font-size:28px; color:#8E4527; line-height:1.5">‘목표’ 칸은 지침이 아닙니다. 규칙은 꼭 <b>지침 → 추가</b>에 넣으세요.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🗂️ 프로젝트 → 2. 교수학습 과정안 프로젝트</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#project/pj-cur" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="pj-result" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">프로젝트 ③ 이렇게 나옵니다</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:60px; font-weight:400; line-height:1.2">성취기준 칸이 파일에서 그대로 채워집니다</h2>
+<div style="position:absolute; left:128px; top:298px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#5A5249">전 — 방에 넣어 둔 여주초 과정안 양식(예시)</p>
+<img src="img/plan_sample.jpg" alt="여주초 교수학습과정안 양식 예시" style="width:764px; height:560px; object-fit:contain; background:#EFE8DC; border-radius:16px">
+</div>
+<svg class="xarrow" data-build-in="fade 1" viewBox="0 0 88 48" preserveAspectRatio="none" style="position:absolute; left:916px; top:577px; width:88px; height:48px; "><path d="M0 14H53V0L88 24L53 48V34H0Z" fill="#B55C38"/></svg>
+<div data-build-in="rise 1" style="position:absolute; left:1028px; top:298px; width:764px; display:flex; flex-direction:column; gap:10px">
+<p style="font-size:26px; font-weight:700; color:#8A6A12">후 — 4학년 사회 3/6차시, 성취기준은 파일 그대로</p>
+<img src="img/plan_result.jpg" alt="성취기준이 채워진 4학년 사회 교수학습 과정안" style="width:764px; height:560px; object-fit:contain; background:#FAF0D6; border-radius:16px">
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">빠진 칸은 지어내지 않고 먼저 되묻습니다 · 더 좋은 초안은 한마디 더 — “동기유발을 우리 반 학급 회의 장면으로 바꿔 줘.”</p>
+</section>
+<section class="slide" id="ar-div" data-transition="push" style="background:#B55C38; color:#FBF6EE; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:32px">
+<p style="font-size:160px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; line-height:1; color:#F6D9C7">04</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:104px; font-weight:400; line-height:1.15; color:#FBF6EE">아티팩트 — 말로 만드는 웹페이지</h1>
+<p style="font-size:40px; color:#FBEBDD; line-height:1.4">오늘 보신 웹교안도 이렇게 만들었습니다</p>
+</section>
+<section class="slide" id="ar-make" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">아티팩트 ① 선생님이 쓰실 자리는 둘</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:64px; font-weight:400; line-height:1.2">버튼으로 고르고, 복사해서 붙여넣으면 됩니다</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:38px; font-weight:700; color:#B55C38">📄 학부모 안내 페이지</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">안내장을 고르거나 직접 쓰면 → 폰에서 보는 페이지, 준비물은 체크 목록으로</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:38px; font-weight:700; color:#B55C38">🧑‍🏫 수업 페이지</h3>
+<p style="font-size:28px; color:#5A5249; line-height:1.5">학년 · 과목 · 활동(O/X, 퀴즈, 카드 뒤집기…)을 고르면 → 아이들이 눌러 보는 페이지</p>
+</div>
+</div>
+<div style="background:#FAF0D6; padding:28px 36px; border-radius:16px; border:2px solid #C9A544">
+<p style="font-size:30px; color:#4A3D1E; line-height:1.5">만든 것은 <b>패들렛</b>에 — 화면 캡처 + 쓴 프롬프트 + “내일 어디에 쓸지” 한 줄</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">웹교안 🎨 아티팩트 → 2. 이렇게 만들어 보세요</p>
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#artifact/ar-2" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="ar-coffee" data-transition="fade" style="background:#2A2622; color:#F3EDE3; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px; display:flex; flex-direction:row; align-items:center; gap:80px">
+<div style="flex:1; display:flex; flex-direction:column; gap:36px">
+<p style="font-size:28px; font-weight:700; color:#E0A27E; letter-spacing:3px">아티팩트 ② 체험해 보기</p>
+<h1 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:104px; font-weight:400; line-height:1.2; color:#F3EDE3">오늘의 커피 담당자는?</h1>
+<p style="font-size:36px; color:#D9CFC2; line-height:1.5">말 몇 마디로 만든 페이지에<br>구글 시트를 붙여, 모두의 화면이 같이 돕니다.</p>
+</div>
+<img src="img/coffee_app.jpg" alt="오늘의 커피 담당자 룰렛 화면" style="width:640px; height:594px; object-fit:contain; border-radius:20px; background:#3A342E">
+<p style="position:absolute; right:128px; top:48px; font-size:24px; font-weight:700; color:#22201C; background:#FAF0D6; border:2px solid #C9A544; padding:8px 24px; border-radius:999px; white-space:nowrap">📖 <a href="index.html#artifact/ar-4" target="yjlesson">웹교안 이 부분 열기 →</a></p>
+</section>
+<section class="slide" id="take3" data-transition="fade" style="background:#2A2622; color:#F3EDE3; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px">
+<p style="position:absolute; left:128px; top:274px; width:1664px; font-size:28px; font-weight:700; color:#E0A27E; letter-spacing:3px">마무리 — 오늘 가져가실 세 줄</p>
+<h2 data-build-in="rise 1" style="position:absolute; left:128px; top:353px; width:1664px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:84px; font-weight:400; line-height:1.2; color:#F3EDE3">“모르는 건 물어봐.”</h2>
+<h2 data-build-in="rise 2" style="position:absolute; left:128px; top:482px; width:1664px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:84px; font-weight:400; line-height:1.2; color:#E0C177">“바로 하지 말고 계획을 먼저 보여 줘.”</h2>
+<h2 data-build-in="rise 3" style="position:absolute; left:128px; top:611px; width:1664px; font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:84px; font-weight:400; line-height:1.2; color:#9CC5E8">“원본은 건드리지 마.”</h2>
+<p data-build-in="fade 4" style="position:absolute; left:128px; top:752px; width:1664px; font-size:36px; color:#D9CFC2; line-height:1.5">어떤 AI에든, 어떤 일이든 — 끝에 이 세 줄.</p>
+</section>
+<section class="slide" id="close" data-transition="fade" style="background:#F7F4EE; color:#22201C; font-family:'Noto Sans KR', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<p style="font-size:24px; font-weight:700; color:#B55C38; letter-spacing:2px">집에 가셔서</p>
+<h2 style="font-family:'Gowun Dodum', 'Noto Sans KR', sans-serif; font-size:72px; font-weight:400; line-height:1.2">교안은 그대로 남습니다. 막히면 여기부터</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:34px; font-weight:700; color:#B55C38">🎁 선물 탭</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">무료 계정에서 되는 것 · 스크롤 캡처 · 크롬 연동</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:34px; font-weight:700; color:#B55C38">📖 더 알아보기</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">믿고 쓰는 법 · 막힐 때 · 전체 지침 · 메모리</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFDF9; padding:36px; border:1px solid #E4DED2; border-radius:20px">
+<h3 style="font-size:34px; font-weight:700; color:#B55C38">🤝 코워크로 더</h3>
+<p style="font-size:26px; color:#5A5249; line-height:1.5">영수증 정산 · 사진 이름 · 선도학교 계획서</p>
+</div>
+</div>
+<p style="font-size:32px; color:#22201C; line-height:1.5">웹교안 <b><a href="index.html" target="yjlesson">doramge1984.github.io/clau</a></b> · 문의 <b>ai@flowdx.kr</b> · flowdx.kr</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#8A8076">감사합니다 — 이애진 · FlowDX</p>
+</section>
+</div>
+
+<div id="bar">
+<button type="button" id="bPrev" aria-label="이전">◀</button>
+<span id="bNum">1 / 1</span>
+<button type="button" id="bNext" aria-label="다음">▶</button>
+<button type="button" id="bLock" aria-label="발표자 노트">🔒</button>
+</div>
+
+<div id="lock"><form id="lockf" autocomplete="off">
+<b>발표자 노트 보기</b>
+<input type="password" id="lockpw" inputmode="numeric" placeholder="암호" aria-label="암호">
+<small id="lockerr"></small>
+<div class="row"><button type="button" class="no" id="lockx">닫기</button><button type="submit" class="ok">열기</button></div>
+</form></div>
+
+<div id="notes">
+<div id="nhead"><span><b id="nnum">1 / 1</b> · <span id="nbuild"></span></span><span id="nclock"></span></div>
+<div id="ntitle"></div>
+<div id="nnext"></div>
+<div id="nbody"></div>
+<div id="nnav"><button type="button" class="sm" id="nclose">노트 닫기</button><button type="button" id="nprev">◀ 이전</button><button type="button" id="nnx">다음 ▶</button></div>
+</div>
+
+<script>
+var ENC = {"s": "iYqnj/uBHasxlPtOfZRl7g==", "i": "NjfjL2fnPpqD6eyw", "c": "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", "n": 250000};
+(function(){
+  try{ window.name = 'yjslides'; }catch(e){}
+  var stage = document.getElementById('stage');
+  var S = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var N = S.length, cur = 0, step = 0, NOTES = null;
+
+  function ss(k,v){ try{ if(v===undefined) return sessionStorage.getItem(k); if(v===null) sessionStorage.removeItem(k); else sessionStorage.setItem(k,v); }catch(e){ return null; } }
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+
+  // builds
+  S.forEach(function(s){
+    var els = Array.prototype.slice.call(s.querySelectorAll('[data-build-in]'));
+    var orders = [];
+    els.forEach(function(el){
+      var p = (el.getAttribute('data-build-in')||'fade').trim().split(/\s+/);
+      var kind = p[0] || 'fade', ord = parseInt(p[1],10); if(isNaN(ord)) ord = 1;
+      el._ord = ord; el.classList.add('b-'+kind);
+      if(orders.indexOf(ord) < 0) orders.push(ord);
+    });
+    orders.sort(function(a,b){ return a-b; });
+    s._els = els; s._orders = orders;
+  });
+  function maxStep(i){ return S[i]._orders.length; }
+  function applyBuilds(i, st){
+    var s = S[i], shown = s._orders.slice(0, st);
+    s._els.forEach(function(el){ el.classList.toggle('bh', shown.indexOf(el._ord) < 0); });
+  }
+
+  function fit(){
+    var W = window.innerWidth, H = window.innerHeight, sc, top = 0, left;
+    if(document.body.classList.contains('nm')){
+      var maxH = Math.max(140, Math.min(H*0.38, W*1080/1920));
+      sc = Math.min(W/1920, maxH/1080);
+      left = (W - 1920*sc)/2;
+      document.getElementById('notes').style.top = (1080*sc) + 'px';
+    } else {
+      sc = Math.min(W/1920, H/1080);
+      left = (W - 1920*sc)/2; top = (H - 1080*sc)/2;
+    }
+    stage.style.transform = 'translate('+left+'px,'+top+'px) scale('+sc+')';
+  }
+
+  function show(i, st){
+    i = Math.max(0, Math.min(N-1, i));
+    if(i !== cur){ S[cur].classList.remove('on'); }
+    cur = i; step = Math.max(0, Math.min(maxStep(i), st));
+    S[cur].classList.add('on');
+    applyBuilds(cur, step);
+    var id = S[cur].id;
+    try{ history.replaceState(null, '', '#'+id); }catch(e){}
+    ls('yj_slide', id);
+    document.getElementById('bNum').textContent = (cur+1) + ' / ' + N;
+    renderNotes();
+  }
+  function next(){ if(step < maxStep(cur)) show(cur, step+1); else if(cur < N-1) show(cur+1, 0); }
+  function prev(){ if(step > 0) show(cur, step-1); else if(cur > 0) show(cur-1, maxStep(cur-1)); }
+
+  function esc(t){ return t.replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+  function renderNotes(){
+    if(!NOTES) return;
+    var id = S[cur].id, ms = maxStep(cur);
+    document.getElementById('nnum').textContent = (cur+1) + ' / ' + N;
+    document.getElementById('nbuild').textContent = ms ? ('클릭 ' + step + ' / ' + ms + (step < ms ? ' — 다음을 누르면 화면이 나타납니다' : '')) : '';
+    document.getElementById('ntitle').textContent = NOTES.titles[id] || '';
+    var nx = S[cur+1] ? (NOTES.titles[S[cur+1].id] || '') : '마지막 장';
+    document.getElementById('nnext').textContent = '다음 장: ' + nx;
+    var body = esc(NOTES.notes[id] || '(노트 없음)');
+    body = body.split('\n').map(function(l){ return l.indexOf('😄') === 0 ? '<span class="w">'+l+'</span>' : l; }).join('\n');
+    document.getElementById('nbody').innerHTML = body;
+    document.getElementById('nbody').scrollTop = 0;
+  }
+
+  function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for(var k=0;k<b.length;k++) a[k] = b.charCodeAt(k); return a; }
+  function decrypt(pw){
+    if(!(window.crypto && crypto.subtle)) return Promise.reject(new Error('nocrypto'));
+    return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
+      .then(function(km){ return crypto.subtle.deriveKey({name:'PBKDF2', salt:b64(ENC.s), iterations:ENC.n, hash:'SHA-256'}, km, {name:'AES-GCM', length:256}, false, ['decrypt']); })
+      .then(function(key){ return crypto.subtle.decrypt({name:'AES-GCM', iv:b64(ENC.i)}, key, b64(ENC.c)); })
+      .then(function(buf){ return JSON.parse(new TextDecoder().decode(buf)); });
+  }
+  function openNotes(data, pw){
+    NOTES = data; ss('yj_np', pw);
+    if(!ss('yj_nt')) ss('yj_nt', String(Date.now()));
+    document.body.classList.add('nm'); fit(); renderNotes(); tick();
+  }
+  function closeNotes(){ document.body.classList.remove('nm'); ss('yj_np', null); NOTES = null; fit(); }
+
+  var lock = document.getElementById('lock'), pwin = document.getElementById('lockpw'), err = document.getElementById('lockerr');
+  function askLock(){ if(NOTES){ closeNotes(); return; } err.textContent=''; pwin.value=''; lock.classList.add('on'); setTimeout(function(){ pwin.focus(); }, 50); }
+  document.getElementById('bLock').onclick = function(e){ e.stopPropagation(); askLock(); };
+  document.getElementById('lockx').onclick = function(){ lock.classList.remove('on'); };
+  document.getElementById('lockf').onsubmit = function(e){
+    e.preventDefault(); var pw = pwin.value.trim(); err.textContent = '여는 중…';
+    decrypt(pw).then(function(d){ lock.classList.remove('on'); openNotes(d, pw); })
+      .catch(function(x){ err.textContent = (x && x.message==='nocrypto') ? '이 브라우저에서는 열 수 없습니다.' : '암호가 맞지 않습니다.'; pwin.value=''; pwin.focus(); });
+  };
+  document.getElementById('nclose').onclick = closeNotes;
+  document.getElementById('nprev').onclick = prev;
+  document.getElementById('nnx').onclick = next;
+  document.getElementById('bPrev').onclick = function(e){ e.stopPropagation(); prev(); };
+  document.getElementById('bNext').onclick = function(e){ e.stopPropagation(); next(); };
+
+  function pad(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var el = document.getElementById('nclock'); if(!NOTES) return;
+    var d = new Date(), t0 = parseInt(ss('yj_nt')||Date.now(),10), m = Math.floor((Date.now()-t0)/60000);
+    el.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' · 경과 ' + Math.floor(m/60) + ':' + pad(m%60);
+  }
+  setInterval(tick, 20000);
+
+  document.addEventListener('keydown', function(e){
+    if(lock.classList.contains('on')){ if(e.key === 'Escape') lock.classList.remove('on'); return; }
+    var k = e.key;
+    if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '||k==='Enter'){ e.preventDefault(); next(); }
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){ e.preventDefault(); prev(); }
+    else if(k==='Home'){ show(0,0); } else if(k==='End'){ show(N-1, maxStep(N-1)); }
+  });
+  stage.addEventListener('click', function(e){
+    if(e.target.closest && e.target.closest('a')) return;
+    var W = window.innerWidth;
+    if(!document.body.classList.contains('nm') && e.clientX < W*0.2) prev(); else next();
+  });
+  var tx = null, ty = null;
+  stage.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, {passive:true});
+  stage.addEventListener('touchend', function(e){
+    if(tx === null) return; var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){ if(dx < 0) next(); else prev(); }
+  }, {passive:true});
+
+  var idleT;
+  function wake(){ document.body.classList.add('act'); document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(function(){ document.body.classList.remove('act'); document.body.classList.add('idle'); }, 2500); }
+  document.addEventListener('mousemove', wake); document.addEventListener('touchstart', wake, {passive:true});
+
+  function idx(id){ for(var k=0;k<N;k++) if(S[k].id===id) return k; return -1; }
+  function fromHash(){ var h = decodeURIComponent((location.hash||'').slice(1)); var i = idx(h); if(i >= 0 && i !== cur) show(i, 0); }
+  window.addEventListener('hashchange', fromHash);
+  window.addEventListener('resize', fit);
+
+  var start = idx(decodeURIComponent((location.hash||'').slice(1)));
+  if(start < 0) start = idx(ls('yj_slide')||'');
+  if(start < 0) start = 0;
+  cur = start; show(start, 0); fit();
+
+  var saved = ss('yj_np');
+  if(saved){ decrypt(saved).then(function(d){ openNotes(d, saved); }).catch(function(){ ss('yj_np', null); }); }
+})();
+</script>
+</body>
+</html>

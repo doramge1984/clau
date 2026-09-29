@@ -898,6 +898,9 @@ h4#pj-s1.stephead{margin-top:1.6em}
 .cb .memo-pick{margin:10px 0}
 .cb .memo-l{min-width:40px}
 .memo-in{font-family:inherit;font-size:15px;padding:7px 12px;border:1.5px solid var(--clay);border-radius:999px;background:var(--paper);color:var(--ink);width:180px}
+.back2s{position:fixed;left:16px;bottom:16px;z-index:90;display:none;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:#2A2622;color:#F3EDE3;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+body.froms .back2s{display:flex}
+.back2s:hover{background:#B55C38}
 </style>
 </head>
 <body>
@@ -4171,6 +4174,17 @@ function sideSpy(){
   });
   ta.addEventListener('input', render); subj.addEventListener('input', render);
   render();
+})();
+</script>
+<a class="back2s" href="slides.html" target="yjslides">◀ 슬라이드로</a>
+<script>
+/* 슬라이드(slides.html)에서 넘어왔거나 강사 모드일 때만 '슬라이드로' 버튼 */
+(function(){
+  try{ if(!window.name) window.name='yjlesson'; }catch(e){}
+  var fs=false;
+  try{ if((document.referrer||'').indexOf('slides.html')>=0) sessionStorage.setItem('yj_fs','1'); fs=sessionStorage.getItem('yj_fs')==='1'; }catch(e){}
+  function upd(){ document.body.classList.toggle('froms', fs || document.body.classList.contains('tch')); }
+  upd(); setInterval(upd, 1500);
 })();
 </script>
 </body>
